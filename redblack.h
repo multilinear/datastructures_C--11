@@ -281,9 +281,6 @@ bool RedBlack<Node_T, Val_T>::insert(Node_T *new_n) {
     // Known: grandparent is black, parent is red, uncle is black,
     //   new_n is an outer, not inner child
 
-    // TODO(mbrewer): These last 2 ifs... one of them has to happen
-    //   so we should be able to drop some conditionals here.
-
     // Case 5
     // now that it's an outer child the rotation is easy
     // rotate so parent replaces grandparent.
@@ -370,14 +367,11 @@ Node_T *RedBlack<Node_T, Val_T>::remove(Node_T *n) {
       // If n is not the parent, we swap all state
       PRINT("n is not replacement's parent case\n");
 
-      // TODO(mbrewer): replacement is not parent's child
-      //   therefore it's a left child - so we can use that here 
+      // Replacement is not parent's child
+      //   therefore it's a left child 
+      //   Thus we can elide the check for which child replacement is
       // make n, replacement's parent's child
-      if (replacement->parent->left == replacement) {
-        replacement->parent->left = n;
-      } else {
-        replacement->parent->right = n;
-      }
+      replacement->parent->left = n;
       n->parent = replacement->parent;
 
       tmp = replacement->left;
