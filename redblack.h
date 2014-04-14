@@ -77,19 +77,6 @@ class RedBlackNode_base {
     void print(void) {
       printf("?");
     }
-  private:
-    void setRight(Node_T *n) {
-      right = n;
-      if (n) {
-        n->parent = this;
-      }
-    }
-    void setLeft(Node_T *n) {
-      left = n;
-      if (n) {
-        n->parent = this;
-      }
-    }
 };
 
 
@@ -437,8 +424,15 @@ Node_T *RedBlack<Node_T, Val_T>::remove(Node_T *n) {
   // If there's no right subtree than n is fine to delete already
   CHECK();
 
+  // n has at most one non-leaf child, it's child could be red or black
+  // if it's child is black, then it cannot have children. If it did
+  // then then path to it's direct-leaf child would have 1 black, while
+  // paths through the other would have at least 2
+  // therefore... if it's child exists the child must be red
+  // Thus we can elide the check for child->red in the following test
+
   // pre-Case -1: n is red OR n's child is red
-  if (n->red || child && child->red) {
+  if (n->red || child) {
     PRINT("PreCase -1\n");
     // If child esists, just make it black, this way if we were black
     // we haven't removed any more blacks.
@@ -474,11 +468,6 @@ Node_T *RedBlack<Node_T, Val_T>::remove(Node_T *n) {
   // child must be a leaf, otherwise the leaf hanging off it would make for more black nodes
   // than the path to our leaf child therefore:
   // Known: n is black, and has only leafs for children
-
-  // NOTE: I believe this means that checking if the child is red in case -1 is unncessessary
-  // since if child exists (thus having children) it MUST be red, simply because otherwise
-  // there would be 2 blacks on that path
-  // TODO(mbrewer): take action on above, once everything is working
 
   // pre-Case 0: n is root
   if (!n->parent) {
