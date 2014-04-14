@@ -1,4 +1,6 @@
 /*
+ * Copywrite: Matthew Brewer 2014-04-14 
+ * 
  * Invariants:
  * - Root is always black
  * - Leaves are always black
@@ -30,6 +32,13 @@
  * optimization by the compiler. We could do it left/right as an array, thus
  * allowing moduler arithmatic to take care of the mirror cases. But, it will
  * probably not be optimized as well by the compiler.
+ *
+ *   Not much abstraction:
+ * If you look through the cases you'll see that we avoid a LOT of coditional
+ * branches by not abstracting out things like rotations and re-parenting. In
+ * most cases we have some information that lets us elide some conditionals
+ * Thus abstraction would improve readability but at the cost of efficiency.
+ * As a core library we decided we could debug it once, and it'd be worth it.
  */
 
 #ifndef REDBLACK_H
@@ -501,7 +510,8 @@ Node_T *RedBlack<Node_T, Val_T>::remove(Node_T *n) {
     // NOTE: case 1 never triggers the first time through this loop
     // it's only used in the recursive case, so this test is wasteful
     // most of the time it's run
-    // TODO(mbrewer): Do something about the above
+    // At a glance it looks like fixing this wouldn't really be worth it
+    
     // Case 1:
     Node_T *parent = n->parent;
     if(!parent) {
@@ -574,7 +584,6 @@ Node_T *RedBlack<Node_T, Val_T>::remove(Node_T *n) {
       PRINT("case 2 complate\n");
       PRINT_TREE();
     }
-    // TODO(mbrewer): can sibling be a leaf here? it looks like i CAN
     // Known: n is black, parent exists, sibling is black and not a leaf
 
     // Case3: parent is black and siblings's children are black
