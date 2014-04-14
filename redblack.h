@@ -770,7 +770,7 @@ Node_T *RedBlack<Node_T, Val_T>::remove(Node_T *n) {
     parent->right = nullptr;
   }
   PRINT("completed removal\n");
-  //CHECK_ALL();
+  CHECK_ALL();
   return node_to_delete;
 } 
 
