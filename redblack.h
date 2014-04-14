@@ -374,20 +374,16 @@ Node_T *RedBlack<Node_T, Val_T>::remove(Node_T *n) {
       replacement->parent->left = n;
       n->parent = replacement->parent;
 
-      tmp = replacement->left;
       // make n's left child, replacement's left child
       replacement->left = n->left;
       if (replacement->left) {
         replacement->left->parent = replacement;
       }
 
-      //TODO(mbrewer): we know replacement doesn't have a left child
-      //  so this can be simplified.
+      // We know replacement doesn't have a left child
+      //  Thus we can elide the null check and reparent
       // make replacement's left child, n's left child
-      n->left = tmp;
-      if(n->left) {
-        n->left->parent = n;
-      }
+      n->left = nullptr;
 
       tmp = replacement->right;
       // make n's right child, replacement's right child 
@@ -414,17 +410,15 @@ Node_T *RedBlack<Node_T, Val_T>::remove(Node_T *n) {
       replacement->right = n;
       n->parent = replacement;
 
-      tmp = replacement->left;
       // make n's left child, replacement's left child 
       replacement->left = n->left;
       if (replacement->left) {
         replacement->left->parent = replacement;
       }
+      // We know that replacement doesn't have a left child
+      //   thus we can elide the null check and reparent
       // make replacement's left child, n's left child
-      n->left = tmp;
-      if (n->left) {
-        n->left->parent = n;
-      }
+      n->left = nullptr;
     }
     // and make replacement, parent's child
     if (parent) {
