@@ -1,5 +1,19 @@
 /*
  * Copywrite: Matthew Brewer 2014-04-14 
+ *
+ * How to use this library:
+ *  You can look at the unittest for an example.
+ *  Basically, include this file, write a new "node" class that inherits
+ *  from RedBlackNode_base, you'll have to pass the classname into the
+ *  template as well.
+ *
+ *  This class will need a "compare" and a "val" methods. See
+ *  RedBlackNode_base for details on these methods.
+ *  You may also want to supply a "print" method to aid in debugging
+ *  of your class... yeah we should probably sprintf, but I didn't feel like it
+ *
+ *  In case it's not obvious, you allocate you're own memory for use in this
+ *  class.
  * 
  * Invariants:
  * - Root is always black
@@ -7,7 +21,7 @@
  * - Red nodes can only have black children
  * - Every path from from any node N to it's descendants has the same number
  *    of black nodes 
- *
+
  * Design Decisions:
  *
  *   We use no recursion (except traversals):
@@ -44,8 +58,13 @@
 #ifndef REDBLACK_H
 #define REDBLACK_H
 
-//#define REDBLACK_DEBUG_VERBOSE
+// Define the this in your file if you want us to do some extremely
+// expensive consistancy checking - this is really useful if you're looking
+// for an elusive bug
 //#define REDBLACK_DEBUG
+// Define this to get tons of annoying and mostly useless debugging output
+// give it a try, but you probably don't want to do this.
+//#define REDBLACK_DEBUG_VERBOSE
 
 #ifdef REDBLACK_DEBUG_VERBOSE
 #define PRINT(msg) printf(msg)
