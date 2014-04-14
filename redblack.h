@@ -55,6 +55,10 @@
  * As a core library we decided we could debug it once, and it'd be worth it.
  */
 
+#include <stdio.h>
+#include <utility>
+#include "panic.h"
+
 #ifndef REDBLACK_H
 #define REDBLACK_H
 
@@ -110,7 +114,8 @@ class RedBlackNode_base {
 
 template<typename Node_T, typename Val_T>
 class RedBlack{
-  //static_assert(std::is_same<decltype(std::declval<Node_T>().val()), const Val_T>(), "please define a compare function on your RedBlackNode class")
+  static_assert(std::is_same<decltype(std::declval<Node_T>().val()), Val_T>(), "Please define a method Val_T val() method on Node_T class");
+  static_assert(std::is_same<decltype(Node_T::compare(std::declval<Val_T>(), std::declval<Val_T>())), int>(), "Please define a static method int compare(Val_T, Val_T) method on Node_T class");
   private:
     Node_T *root;
     void _check(Node_T *parent, Node_T *n);
