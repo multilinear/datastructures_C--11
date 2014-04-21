@@ -1,3 +1,23 @@
+/*
+ * Copyright: Matthew Brewer 2014-04-21
+ *
+ * This is a simple producer-consumer queue written using C++0x constructs.
+ *
+ * How to use:
+ *  WorkQueueNode is templatized on the work items being passed
+ *  producers call "enqueue", which is non-blocking, modulo mutices.
+ *  consumers call "dequeue", which blocks until work is available.
+ *
+ * Thread Safety:
+ *   This code is threadsafe
+ *   It does use locks in enqueue and dequeue, but should be safe
+ *
+ * Priority Inversions:
+ *   This structure is NOT safe if priority inversions between producers and
+ *   consumers are not safe. Mutices are shared between producres and
+ *   consumers.
+ */
+
 #include <atomic>
 #include <condition_variable>
 #include <mutex>

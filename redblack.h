@@ -1,5 +1,5 @@
 /*
- * Copywrite: Matthew Brewer 2014-04-14 
+ * Copyright: Matthew Brewer 2014-04-14 
  *
  * How to use this library:
  *  You can look at the unittest for an example.
@@ -21,7 +21,7 @@
  * - Red nodes can only have black children
  * - Every path from from any node N to it's descendants has the same number
  *    of black nodes 
-
+ *
  * Design Decisions:
  *
  *   We use no recursion (except traversals):
@@ -53,6 +53,9 @@
  * most cases we have some information that lets us elide some conditionals
  * Thus abstraction would improve readability but at the cost of efficiency.
  * As a core library we decided we could debug it once, and it'd be worth it.
+ * 
+ * Threadsafety:
+ *  thread compatible
  */
 
 #include <stdio.h>

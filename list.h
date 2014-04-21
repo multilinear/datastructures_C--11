@@ -1,6 +1,18 @@
-// Copyright:
-//  Matthew Brewer (mbrewer@smalladventures.net)
-//  2014-03-22
+/* Copyright:  Matthew Brewer (mbrewer@smalladventures.net)  2014-03-22 
+ *
+ * Simple singly linked C++ list
+ * 
+ * Use:
+ *  Build a "node" class yourself which inherits ListNode_base.
+ *  Pass in your class as the tempalte argument to ListNode_base.
+ *  e.g. class Node: public ListNode_base<Node> {
+ *
+ *  Create a list object, also templatized on your node class.
+ *  Allocate your node objects yourself, and enqueue/dequeue as you wish
+ *
+ * Threadsafety:
+ *  Thread compatible
+ */
 
 #include "panic.h"
 
