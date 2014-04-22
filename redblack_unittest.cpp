@@ -39,7 +39,7 @@ void print_tree(RedBlack<RedBlackNode, int> *t) {
     t->print();
 }
 
-#define TEST_SIZE 1000
+#define TEST_SIZE 500
 int ints[TEST_SIZE];
 int ints_start;
 int ints_end;
@@ -83,7 +83,6 @@ int main(int argc, char* argv[]) {
       delete tree.remove(tree.get(i));
     }
   }
-  printf("testing with random integers\n"); 
   int k;
   for (k=1; k<TEST_SIZE; k++) {
     ints_end=0;
@@ -122,5 +121,5 @@ int main(int argc, char* argv[]) {
       PANIC("Tree should be empty here, but isn't");
     }
   }
-  printf("Test complete, PASSED (didn't panic)\n");
+  printf("PASS\n");
 }

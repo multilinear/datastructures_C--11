@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "list.h"
 
+int last=-1;
 
 class Node: public ListNode_base<Node> {
   public:
@@ -10,8 +11,15 @@ class Node: public ListNode_base<Node> {
     int value;
 };
 
+void check(int n) {
+  if (last+1 != n) {
+    PANIC("Queue is not acting like a queue"); 
+  }
+  last = n;
+} 
 
 int main(int argc, char* argv[]) {
+  printf("Beginning list.h test\n");
   List<Node> L;
   int i=0;
   // one in one out
@@ -20,7 +28,7 @@ int main(int argc, char* argv[]) {
     L.enqueue(n);
   }
   for (int j=0; j<1; j++) {
-    printf("%i ", L.dequeue()->value);
+    check(L.dequeue()->value);
   }
   // two in 2 out
   for (int j=0; j<2; j++) {
@@ -28,7 +36,7 @@ int main(int argc, char* argv[]) {
     L.enqueue(n);
   }
   for (int j=0; j<2; j++) {
-    printf("%i ", L.dequeue()->value);
+    check(L.dequeue()->value);
   } 
   // two in 1 out
   for (int j=0; j<2; j++) {
@@ -36,7 +44,7 @@ int main(int argc, char* argv[]) {
     L.enqueue(n);
   }
   for (int j=0; j<1; j++) {
-    printf("%i ", L.dequeue()->value);
+    check(L.dequeue()->value);
   }
   // one in, add one
   for (int j=0; j<1; j++) {
@@ -45,10 +53,9 @@ int main(int argc, char* argv[]) {
   }
   // drain
   for (int j=0; j<2; j++) {
-    printf("%i ", L.dequeue()->value);
+    check(L.dequeue()->value);
   }
-  printf("\n");
-  printf("if numbers are in order above, pass\n");
+  printf("PASS\n");
   // And test destructor here
   return 0;
 }
