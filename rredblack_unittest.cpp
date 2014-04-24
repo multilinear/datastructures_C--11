@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include "panic.h"
 // This turns on rather expensive internal consistancy checking
-#define REDBLACK_DEBUG
-#include "redblack.h"
+#define RREDBLACK_DEBUG
+#include "rredblack.h"
 
-class RedBlackNode: public RedBlackNode_base<RedBlackNode, int> {
+class RedBlackNode: public RRedBlackNode_base<RedBlackNode, int> {
   public:
     int value;
   public:
@@ -38,7 +38,7 @@ void leaf_print() {
   printf("n");
 }
 
-void print_tree(RedBlack<RedBlackNode, int> *t) {
+void print_tree(RRedBlack<RedBlackNode, int> *t) {
     //t->order(pre_print, nullptr, post_print, leaf_print);
     t->print();
 }
@@ -48,7 +48,7 @@ int ints[TEST_SIZE];
 int ints_start;
 int ints_end;
 
-int check(RedBlack<RedBlackNode, int> *tree) {
+int check(RRedBlack<RedBlackNode, int> *tree) {
   int i;
   for (i=ints_start; i<ints_end; i++) {
     if(!tree->get(ints[i])) {
@@ -59,7 +59,7 @@ int check(RedBlack<RedBlackNode, int> *tree) {
 }
 
 int main(int argc, char* argv[]) {
-  RedBlack<RedBlackNode, int> tree;
+  RRedBlack<RedBlackNode, int> tree;
 
   int i;
   int j;
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
       tree.insert(n);
     }
     for (i=0; i<j; i++) {
-      delete tree.remove(tree.get(i));
+      delete tree.remove(i);
     }
     if (!tree.isempty()) {
       PANIC("Tree should be empty here, but isn't");
@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
       tree.insert(n);
     }
     for (i=j; i>0; i--) {
-      delete tree.remove(tree.get(i));
+      delete tree.remove(i);
     }
   }
   int k;
@@ -116,7 +116,7 @@ int main(int argc, char* argv[]) {
     }
     for(i=0; i<ints_end; i++) {
       RedBlackNode *n = tree.get(ints[i]);
-      delete tree.remove(tree.get(ints[i]));
+      delete tree.remove(ints[i]);
       ints_start += 1;
       // check that everything is in the list that should be
       check(&tree);

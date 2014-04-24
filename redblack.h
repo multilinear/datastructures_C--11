@@ -127,6 +127,7 @@ class RedBlack{
     void _order(void (*prefunc)(Node_T*), void (*infunc)(Node_T*), void (*postfunc)(Node_T*), void (*leaffunc)(void), Node_T *n);
   public:
     RedBlack();
+    ~RedBlack();
     Node_T *get(Val_T v);
     // Returns False if node is already in the tree
     bool insert(Node_T *n);
@@ -144,6 +145,13 @@ class RedBlack{
 template<typename Node_T, typename Val_T>
 RedBlack<Node_T, Val_T>::RedBlack() {
   root = nullptr;
+}
+
+template<typename Node_T, typename Val_T>
+RedBlack<Node_T, Val_T>::~RedBlack() {
+  if (root) {
+    PANIC("Tree is being destroyed, yet still contains nodes");
+  }
 }
 
 // Get functions
