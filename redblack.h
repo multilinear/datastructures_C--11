@@ -58,6 +58,11 @@
  *  thread compatible
  */
 
+// TODO(mbrewer): we should try branching on whether we are left or right subchild *first*
+//    we might avoid a lot of conditionals that way.
+//    note: in remove left cases lead to left cases, right to right. so no need
+//      to follow right cases after left or vice-versa
+
 #include <stdio.h>
 #include <utility>
 #include "panic.h"
