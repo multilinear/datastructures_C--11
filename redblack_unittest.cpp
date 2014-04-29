@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "panic.h"
 // This turns on rather expensive internal consistancy checking
-#define REDBLACK_DEBUG
+//#define REDBLACK_DEBUG
 #include "redblack.h"
 
 class RedBlackNode: public RedBlackNode_base<RedBlackNode, int> {
@@ -43,7 +43,7 @@ void print_tree(RedBlack<RedBlackNode, int> *t) {
     t->print();
 }
 
-#define TEST_SIZE 500
+#define TEST_SIZE 1000
 int ints[TEST_SIZE];
 int ints_start;
 int ints_end;
