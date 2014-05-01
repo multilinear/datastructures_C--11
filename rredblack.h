@@ -187,7 +187,10 @@ Node_T *RRedBlack<Node_T, Val_T>::_insert_balance_right(Node_T *n) {
   Node_T *c2;
   Node_T *c3;
   Node_T *c4;
-  //Case 1
+  // Note: there's an alternative algorithm with 3 cases that colors
+  // a2 red more rarely and usually colors it black - this causes less
+  // uptree propogation.
+  // It's unclear if it would be a win for a recursive version like this.
   if (isred<Node_T>(n->right) && isred<Node_T>(n->right->left)) {
     a1 = n;
     a2 = n->right->left;
@@ -229,7 +232,6 @@ Node_T *RRedBlack<Node_T, Val_T>::_insert_balance_left(Node_T *n) {
   Node_T *c2;
   Node_T *c3;
   Node_T *c4;
-  //Case 1
   if (isred<Node_T>(n->left) && isred<Node_T>(n->left->left)) {
     a1 = n->left->left;
     a2 = n->left;

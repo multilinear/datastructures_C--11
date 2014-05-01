@@ -188,10 +188,16 @@ bool RedBlack<Node_T, Val_T>::isempty(void) {
 template<typename Node_T, typename Val_T>
 bool RedBlack<Node_T, Val_T>::insert(Node_T *new_n) {
   PRINT("Begin Insert\n");
-  CHECK_ALL();
   new_n->right = nullptr;
   new_n->left = nullptr;
   new_n->red = true;
+  #ifdef REDBLACK_DEBUG_VERBOSE
+  printf("inserting: ");
+  new_n->print();
+  printf("\n");
+  #endif
+  PRINT_TREE();
+  CHECK_ALL();
   // We do this here, so we don't have to do the check every iteration
   if (!root) {
     PRINT("Case no root\n");
@@ -228,25 +234,19 @@ bool RedBlack<Node_T, Val_T>::insert(Node_T *new_n) {
     }
   }
   CHECK();
+  PRINT_TREE();
 
   // balance it
   while (true) {
-    // Note: case 1 exists here due to recursing back up the tree in some cases
-
-    // Case 1, this is the root
-    if (!new_n->parent) {
-      PRINT("case 1\n");
-      // root can't be red so repaint it black
-      // it adds a black to all paths from root, so it's always safe
-      new_n->red = false;
-      break;
-    }
-    // known: parent exists
+    // Inputs to this loop are: new_n, parent
+    // Note: Case 1 (root case) is checked on insert before we get here
+    // In recursive cases it's checked prior to recursion in each branch
+    // We do this because we already need to check for NULL there anyway
 
     // Case 2, parent is black
     if (!parent->red) {
       PRINT("case 2\n");
-      // If our parent is black, and we added a red, we didn't break anything
+      // If our parent is black, it's all good
       break;
     }
     // known: parent is red
@@ -258,109 +258,153 @@ bool RedBlack<Node_T, Val_T>::insert(Node_T *new_n) {
     // Known: parent is red and grandparent is black
 
     // Case 3, uncle is also red
+    // NOTE: One version of the algorithm (see rredblack.h) doesn't use case 3
+    // For that version to work we recolor the parent red and it's children black
+    // in cases 4 and 5, instead of parent black and children red... downside is that
+    // it always propogates upwards, whereas having case 3 here is the only upwards
+    // propogation, the other two get to break out of our loop.
     Node_T *grandparent = parent->parent;
+
+    // TODO(mbrewer): use this conditional for the following case 4/5 as well?
     Node_T *uncle = grandparent->left==parent ? grandparent->right : grandparent->left;
     if (uncle && uncle->red) {
-      PRINT("case 3\n");
+      PRINT("Case 3\n");
       // Repaint both black, so we add black everywhere.
       // Recurse on parent so we can fix that we now have more blacks than
       // the rest of the tree.
       uncle->red = false;
       parent->red = false;
       grandparent->red = true;
-      // Recurse on grandparent 
+      // Recurse on grandparent (grandparent is red, so we have to check it) 
       new_n = grandparent;
       parent = grandparent->parent;
+      // This is the only case where we haven't already checked root
+      // due to other logic, so we move Case 1 into case 5 to save the
+      // conditional in all other cases
+      // Case 1, this is the root
+      if (!parent) {
+        PRINT("case 1\n");
+        // root can't be red so repaint it black
+        new_n->red = false;
+        break;
+      }
       continue;
     }
     // Known: grandparent is black, parent is red, uncle is black
 
-    // Case 4, uncle is black, and new_n is an "inner" child
-    // basically, make it an outer child instead, so we can keep going
-    if (parent->right == new_n && grandparent->left == parent) {
-      PRINT("case 4\n");
-      // make new_n's left child, parent's right child
-      Node_T *tmp = new_n->left;
-      parent->right = tmp;
-      if (tmp) {
-        tmp->parent = parent;
+    // Now we branch left/right
+    if (grandparent->left == parent) {
+      PRINT("Left case\n");
+      // Case 4
+      if (new_n == parent->right) {
+        PRINT("Case 4\n");
+        // make new_n's left child, parent's left
+        parent->right = new_n->left;
+        if (parent->right) {
+          parent->right->parent = parent;
+        }
+        // make parent, new_n's left child
+        new_n->left = parent;
+        parent->parent = new_n;
+        // TODO(mbrewer): This gets overwritten in Case 5
+        // shortcircuiting case 5 would save 4 or so moves
+        grandparent->left = new_n;
+        new_n->parent = grandparent;
+        // and rename for case 5
+        Node_T *tmp = parent;
+        parent = new_n;
+        new_n = tmp;
       }
-      // make parent, left child of new_n
-      new_n->left = parent;
-      parent->parent = new_n;
-      // make new_n, left child of grandparent
-      grandparent->left = new_n;
-      new_n->parent = grandparent;
-      // relabel parent as new_n, and vice-versa, for case 5
-      tmp = new_n;
-      new_n = parent;
-      parent = tmp;
-    } else if (parent->left == new_n && grandparent->right == parent) {
-      PRINT("case 4\n");
-      // make new_n's right child, parent's left child
-      Node_T *tmp = new_n->right;
-      parent->left = tmp;
-      if (tmp) {
-        tmp->parent = parent;
-      }
-      // make parent, right child of new_n
-      new_n->right = parent;
-      parent->parent = new_n;
-      // make new_n, right child of grandparent
-      grandparent->right = new_n;
-      new_n->parent = grandparent;
-      // relabel parent as new_n, and vice-versa, for case 5
-      tmp = new_n;
-      new_n = parent;
-      parent = tmp;
-    }
-    // Known: grandparent is black, parent is red, uncle is black,
-    //   new_n is an outer, not inner child
-
-    // Case 5
-    // now that it's an outer child the rotation is easy
-    // rotate so parent replaces grandparent.
-    // parent was red and becomes black, maintaining the blacks on new_n's tree
-    // grandparent was black and becomes red, maintaining the black on uncle's tree
-    // and now new_n's parent is black, so new_n is happy
-    PRINT("case 5\n");
-    Node_T *great_grandparent = grandparent->parent;
-    if (parent->left == new_n && grandparent->left == parent) {
-      // make parent's right child, grandparent's left child
+      CHECK();
+      // Case 5
+      PRINT("Case 5\n");
+      // left - left, so we rotate right on p
+      Node_T *great_grandparent = grandparent->parent;
+      // make parent right, grandparent's left
       grandparent->left = parent->right;
       if (grandparent->left) {
         grandparent->left->parent = grandparent;
       }
-      // make grandparent, parent's right child
+      // make grandparent, parent's right
       parent->right = grandparent;
-      grandparent->parent = parent;
-    } else {
-      // make parent's left child, grandparent's right child
-      grandparent->right = parent->left;
-      if (grandparent->right) {
-        grandparent->right->parent = grandparent;
+      grandparent->parent = parent; 
+      // and recolor
+      parent->red = false;
+      grandparent->red = true;
+      // if there's no great greatparent, we're root and we're done
+      // embedded case 1
+      if (!great_grandparent) {
+        root = parent;
+        parent->parent = nullptr;
+        parent->red = false;
+        // we're at root
+        break;
       }
-      // make grandparent, parent's left child
-      parent->left = grandparent;
-      grandparent->parent = parent;
-
-    }
-    if (great_grandparent) {
-      // make make parent great-grandparent's child
+      // make p great grandparent's child
       if (great_grandparent->left == grandparent) {
         great_grandparent->left = parent;
       } else {
         great_grandparent->right = parent;
       }
       parent->parent = great_grandparent;
-    } else {
-      parent->parent = nullptr;
-      root = parent;
+      break;
+    } 
+    PRINT("Right case\n");
+    // Case 4
+    if (new_n == parent->left) {
+      PRINT("Case 4\n");
+      // make new_n's right child, parent's right
+      parent->left = new_n->right;
+      if (parent->left) {
+        parent->left->parent = parent;
+      }
+      // make parent, new_n's right child
+      new_n->right = parent;
+      parent->parent = new_n;
+      // TODO(mbrewer): This gets overwritten in Case 5
+      // shortcircuiting case 5 would save 4 moves in this case
+      grandparent->right = new_n;
+      new_n->parent = grandparent;
+      // and rename for case 5
+      Node_T *tmp = parent;
+      parent = new_n;
+      new_n = tmp;
     }
-    grandparent->red = true;
+    CHECK();
+    // Case 5
+    PRINT("Case 5\n");
+    // right - right, so we rotate left on p
+    Node_T *great_grandparent = grandparent->parent;
+    // make parent left, grandparent's right
+    grandparent->right = parent->left;
+    if (grandparent->right) {
+      grandparent->right->parent = grandparent;
+    }
+    // make grandparent, parent's left
+    parent->left = grandparent;
+    grandparent->parent = parent; 
+    // and recolor
     parent->red = false;
+    grandparent->red = true;
+    // if there's no great greatparent, we're root and we're done
+    // embedded case 1
+    if (!great_grandparent) {
+      root = parent;
+      parent->parent = nullptr;
+      parent->red = false;
+      // we're at root
+      break;
+    }
+    // make p great grandparent's child
+    if (great_grandparent->right == grandparent) {
+      great_grandparent->right = parent;
+    } else {
+      great_grandparent->left = parent;
+    }
+    parent->parent = great_grandparent;
     break;
   }
+  PRINT_TREE();
   CHECK_ALL();
   PRINT("insert complete\n");
   return true;
@@ -568,7 +612,7 @@ Node_T *RedBlack<Node_T, Val_T>::remove(Node_T *n) {
       sibling = parent->left;
     }
 
-    // n either is a real black node, not a leaf node.
+    // n is a real black node, not a leaf node. (we only recurse on black)
     // therefore n has "children", and thus has black path length at least 2 from
     // parent to n's children 
     // if sibling had no children it would have black path length only 1 so
@@ -644,7 +688,7 @@ Node_T *RedBlack<Node_T, Val_T>::remove(Node_T *n) {
     // Known: n is black, sibling is black and not a leaf, parent is red 
 
     PRINT("checking case 4\n");
-    // Case4: parent is red and sibling's children are black
+    // Case 4: parent is red and sibling's children are black
     if (parent->red  
         && !(sibling->left && sibling->left->red)
         && !(sibling->right && sibling->right->red)) {
@@ -834,7 +878,12 @@ size_t RedBlack<Node_T, Val_T>::_checkAll(Node_T *parent, Node_T *n) {
   size_t b_left = _checkAll(n, n->left);  
   size_t b_right = _checkAll(n, n->right);
   if (n->parent != parent) {
-    PANIC("Node is corrupt");
+    printf("Node: ");
+    n->print();
+    printf(" Parent: ");
+    parent->print();
+    printf("\n");
+    PANIC("Node is corrupt: it doesn't point to it's parent");
   }
   if (b_left != b_right) {
     PANIC("left subtree has different black count than right subree");
