@@ -4,10 +4,13 @@
  */
 
 #include <stdio.h>
-#include <panic.h>
+#include <utility>
+#include "panic.h"
 
 #ifndef AVL_H
 #define AVL_H
+
+//#define AVL_DEBUG_VERBOSE
 
 #ifdef AVL_DEBUG_VERBOSE
 #define PRINT(msg) printf(msg)
@@ -30,13 +33,10 @@ template<typename Node_T, typename Val_T>
 class AVLNode_base {
   public:
     Node_T *left;
-    Node_T *right
+    Node_T *right;
     Node_T *parent;
-    // TODO(mbrewer): remove this!
-    // This gives 2^256 nodes in the tree... that's a LOT
-    uint8_t depth;
     // We shouldn't need the above, just this
-    uint8_t balance;
+    int8_t balance;
 
     // The following functions need to be overriden!
     // They do not need to be virtual though, so simply don't exist in the base
@@ -53,18 +53,7 @@ class AVLNode_base {
     void print(void) {
       printf("?");
     }
-    // This should not be overriden
-    int balance_factor() {
-      int depth_l = left ? left->depth : 0;
-      int depth_r = right? right->depth: 0;
-      return depth_l - depth_r;
-    }
-    void recompute_depth() {
-      int depth_l = left ? left->depth : 0;
-      int depth_r = right? right->depth: 0;
-      depth = (depth_l > depth_r ? depth_l : depth_r) + 1;
-    }
-}
+};
 
 template <typename Node_T, typename Val_T>
 class AVL{
@@ -75,11 +64,13 @@ class AVL{
     void _check(Node_T *parent, Node_T *n);
     size_t _checkAll(Node_T *parent, Node_T *n);
     void _print(Node_T *n);
+    int _rotate_left(Node_T *a);
+    int _rotate_right(Node_T *a);
   public:
     AVL();
     Node_T *get(Val_T v);
     // Returns False if node is already in the tree
-    bool insert(Node_T *n);
+    void insert(Node_T *n);
     // Assumes the node is in the tree
     //   if it's not you're going to have a bad time.
     Node_T* remove(Node_T *n);
@@ -88,7 +79,7 @@ class AVL{
     void check(void);
     void checkAll(void);
     void print(void);
-}
+};
 
 template <typename Node_T, typename Val_T>
 AVL<Node_T, Val_T>::AVL() {
@@ -119,22 +110,134 @@ bool AVL<Node_T, Val_T>::isempty(void) {
   return !root;
 }
 
+// Transform: 
+//   A         B
+//    \       / 
+//     B  -> A
+//    /       \
+//   C         C
 template<typename Node_T, typename Val_T>
-bool AVL<Node_T, Val_T>::insert(Node_T *n) {
+int AVL<Node_T, Val_T>::_rotate_left(Node_T *a) {
+  Node_T *b = a->right;
+  Node_T *c = b->left;
+  Node_T *parent = a->parent;
+  b->left = a;
+  a->parent = b;
+  a->right = c;
+  if (c) {
+    c->parent = a;
+  }
+  if (parent) {
+    if (parent->left == a) {
+      parent->left = b;
+    } else {
+      parent->right = b;
+    }
+  } else {
+    root = b;
+  }
+  b->parent = parent;
+  // and update balance factors
+  // YES this is hard to figure out! the result table is terrible.
+  // I ran out the entire table, then figured out the rules below from 
+  // staring at it. There's probably something better *shrug*
+  int8_t a_balance = a->balance;
+  int8_t b_balance = b->balance;
+  // this is how much deeper the rotation make this subtree.
+  // Often negative.
+  // In an AVL tree, we should never perform rotations
+  // that make it positive.
+  int deeper; 
+  if (b_balance >= 0) {
+    a->balance = a_balance + 1;
+    if (a_balance >= 0) {
+      b->balance = a_balance + b_balance + 2;
+      deeper = 1;
+    } else {
+      b->balance = b_balance + 1;
+      deeper = 0;
+    }
+  } else {
+    a->balance = a_balance - b_balance + 1;
+    b->balance = a_balance + 2;
+    // for a_balance 1 deeper should actually be 1 not 2
+    // but a_balance is always -2 or -1 here, or we're not doing the rotation
+    // in an AVL tree
+    deeper = a_balance + 1; 
+  }
+  return deeper;
+}
+
+// Transform: 
+//   A    B
+//  /      \ 
+// B   ->   A 
+//  \      /
+//   C    C
+template<typename Node_T, typename Val_T>
+int AVL<Node_T, Val_T>::_rotate_right(Node_T *a) {
+  Node_T *b = a->left;
+  Node_T *c = b->right;
+  Node_T *parent = a->parent;
+  b->right = a;
+  a->parent = b;
+  a->left = c;
+  if (c) {
+    c->parent = a;
+  }
+  if (parent) {
+    if (parent->right == a) {
+      parent->right = b;
+    } else {
+      parent->left = b;
+    }
+  } else {
+    root = b;
+  }
+  b->parent = parent;
+  // and update balance factors
+  // YES this is hard to figure out! the result table is terrible.
+  // I ran out the entire table, then figured out the rules below from 
+  // staring at it. There's probably something better *shrug*
+  int8_t a_balance = a->balance;
+  int8_t b_balance = b->balance;
+  int deeper;
+  if (b_balance <= 0) {
+    a->balance = a_balance - 1;
+    if (a_balance <= 0) {
+      b->balance = a_balance + b_balance - 2;
+      deeper = 1;
+    } else {
+      b->balance = b_balance - 1;
+      deeper = 0;
+    }
+  } else {
+    a->balance = a_balance - b_balance - 1;
+    b->balance = a_balance - 2;
+    // for a_balance -1 deeper should actually be 1 not 2
+    // but a_balance is always 2 or 1 here, or we're not doing the rotation
+    // in an AVL tree
+    deeper = -a_balance + 1; 
+  }
+  return deeper;
+}
+
+template<typename Node_T, typename Val_T>
+void AVL<Node_T, Val_T>::insert(Node_T *n) {
   PRINT("Begin Insert\n");
   CHECK_ALL();
   PRINT_TREE();
   n->right = nullptr;
   n->left = nullptr;
-  n->depth = 1;
   n->balance = 0;
   // We do this here, so we don't have to do the check every iteration
   if (!root) {
     root = n;
     root->parent = nullptr;
-    root->red = false; // root so recolor black
+    PRINT_TREE();
     CHECK_ALL();
-    return true;
+    PRINT("Insert complete\n");
+    return;
   }
   Node_T *parent = root;
 
@@ -157,177 +260,117 @@ bool AVL<Node_T, Val_T>::insert(Node_T *n) {
       parent = parent->left;
     } else {
       // We already have one of those
-      CHECK_ALL();
-      return false;
+      PANIC("Node already exists!");
     }
   }
   CHECK();
+  PRINT("node added\n");
+  PRINT_TREE();
   // Now we balance
 
   // n has no children, so it's balanced.
 
-  // it's parent has depth 1 on one side, and it was nearly balanced before
-  // so it's balanced enough
+  // parent didn't have a child on the side n is on (or we wouldn't have added one)
+  // thus it either had no children or one child on the other side.
+  // Therefore it is either balanced, or only 1 off.
 
-  // so we need to start at new_n->parent->parent, or grandparent
-  // conveniently, parent and new_n are the other nodes we need handles for.
-  Node_T *grandparent = parent->parent;
-  Node_T* tmp;
-  // tracks whether we've found a root for which we aren't a new deeper branch
-  // once we do the balance stops propogating
-  bool balance_propogate = true;
+  // So, we start by just checking parent.
+  // loop invariant is n and parent are done, we're working on grandparent
+
+  // TODO(mbrewer): we should be able to move this up to where we parented n
+  //   saving the duplicate parent->left = n test.
   // fix parent's balance
   if (parent->left == n) {
-    if (parent->balance <= 0) {
-      balance_propogate = false; 
-    }
     parent->balance += 1;
+    if (parent->balance <= 0) {
+      CHECK_ALL();
+      return;
+    }
   } else {
-    if (parent->balance >= 0) {
-      balance_propogate = false; 
-    }
     parent->balance -= 1;
+    if (parent->balance >= 0) {
+      CHECK_ALL();
+      return;
+    }
   }
-  while (grandparent && balance_propogate ) {
+  // so we need to start at new_n->parent->parent, or grandparent
+  // conveniently, parent is the other node we need a handle for.
+  Node_T* tmp;
+  Node_T *grandparent = parent->parent;
+  while (grandparent) {
     // fix grandparent's balance
-    if (grandparent->left == n) {
-      if (grandparent->balance <= 0) {
-        balance_propogate = false; 
-      }
+    if (grandparent->left == parent) {
       grandparent->balance += 1;
+      // if balance is 0 or less, we aren't the deep branch
+      // so we haven't added to the depth of grandparent.
+      if (grandparent->balance <= 0) {
+        break;
+      }
     } else {
-      if (grandparent->balance >= 0) {
-        balance_propogate = false; 
-      }
       grandparent->balance -= 1;
-    }
-    // We have to correct depths as we go up the tree, so we can
-    // compute balance factors.
-    // balance factors only depend on children's depth, so we only need
-    // to make sure n and parent's depths' get updated each pass
-    // n is already correct, so we update parent
-    parent->recompute_depth();
-  
-    if (grandparent->balance_factor() == 2) {
-      if (parent->balance_factor() == -1) {
-        // make n's left child parent's right child
-        parent->right = n->left;
-        if(parent->right) {
-          parent->right->parent = parent;
-        }
-        // make parent n's left child
-        n->left = parent;
-        parent->parent = n;
-        // and make n grandfather's left child
-        grandfather->left = n;
-        n->parent = grandfather;
-        // and reset parent and n pointers
-        tmp = n;
-        n = parent;
-        parent = tmp; 
-        // we moved these nodes
-        n->recompute_depth();
-        parent->recompute_depth();
+      // if balance is 0 or less, we aren't the deep branch
+      // so we haven't added to the depth of grandparent.
+      if (grandparent->balance >= 0) {
+        break;
       }
+    }
+ 
+    // TODO(mbrewer): This can only be true if grandparent->left = parent
+    // we could stack the cases to avoid a conditional each loop
+    if (grandparent->balance == 2) {
+      if (parent->balance == -1) {
+        PRINT("LEFT RIGHT\n");
+        PRINT_TREE();
+        _rotate_left(parent);
+        PRINT_TREE();
+        parent = parent->parent; 
+      }
+      PRINT("LEFT LEFT\n");
+      PRINT_TREE();
       // rotate grandparent and parent right 
-      Node_T * great_grandparent = grandparent->parent;
-      // make parent's right child grandparent's left child
-      grandparent->left = parent->right;
-      if(grandparent->left) {
-        grandparent->left->parent = grandparent;
+      int deeper = _rotate_right(grandparent); 
+      PRINT_TREE();
+      grandparent = parent->parent;
+      // if we made this branch shallower, we're done
+      if (deeper < 0) {
+        break;
       }
-      // make grandparent parent's right child
-      parent->right = grandparent;
-      grandparent->parent = parent;
-      // and make parent great_grandparent's child
-      if (great_grandparent) {
-        if (great_grandparent->left = grandparent) {
-          great_grandparent->left = parent;
-        } else {
-          great_grandparent->right = parent;
-        parent->parent = great_grandparent;
-      } else {
-        root = parent;
-        parent->parent = nullptr;
+    } else if (grandparent->balance == -2) {
+      if (parent->balance == 1) {
+        PRINT("RIGHT LEFT\n");
+        PRINT_TREE();
+        _rotate_right(parent);
+        PRINT_TREE();
+        parent = parent->parent; 
       }
-      // we moved grandparent down a new subtree under it
-      // so we need to recompute it's depth
-      grandparent->recompute_depth();
-      // parent now has grandparent for a child, so we need to recpmute it's depth
-      parent->recompute_depth();
-      // and finally set up for our next iteration
-      grandparent = parent;
-      parent = n;
-    } else if (grandparent->balance_factor() == -2) {
-      if (parent->balance_factor() == 1) {
-        // make n's right child parent's left child
-        parent->left = n->right;
-        if(parent->left) {
-          parent->left->parent = parent;
-        }
-        // make parent n's right child
-        n->right = parent;
-        parent->parent = n;
-        // and make n grandfather's right child
-        grandfather->right = n;
-        n->parent = grandfather;
-        // and reset parent and n pointers
-        tmp = n;
-        n = parent;
-        parent = tmp; 
-        // we moved these nodes
-        n->recompute_depth();
-        parent->recompute_depth();
+      PRINT("RIGHT RIGHT\n");
+      PRINT_TREE();
+      int deeper = _rotate_left(grandparent);
+      PRINT_TREE();
+      grandparent = parent->parent;
+      // if we made this branch shallower, we're done
+      if (deeper < 0) {
+        break;
       }
-      // rotate grandparent and parent left 
-      Node_T * great_grandparent = grandparent->parent;
-      // make parent's left child grandparent's right child
-      grandparent->right = parent->left;
-      if(grandparent->right) {
-        grandparent->right->parent = grandparent;
-      }
-      // make grandparent parent's left child
-      parent->left = grandparent;
-      grandparent->parent = parent;
-      // and make parent great_grandparent's child
-      if (great_grandparent) {
-        if (great_grandparent->right = grandparent) {
-          great_grandparent->right = parent;
-        } else {
-          great_grandparent->left = parent;
-        parent->parent = great_grandparent;
-      } else {
-        root = parent;
-        parent->parent = nullptr;
-      }
-      // we moved grandparent down a new subtree under it
-      // so we need to recompute it's depth
-      grandparent->recompute_depth();
-      // parent now has grandparent for a child, so we need to recpmute it's depth
-      parent->recompute_depth();
-      // and finally set up for our next iteration
-      grandparent = parent;
-      parent = n;
+    } else {
+      // go up to the next one
+      parent = grandparent;
+      grandparent = grandparent->parent;
     }
-    // go up to the next one
-    n = parent; 
-    parent = grandparent;
-    grandparent = grandparent->parent;
-    // note that parent's depth was correct, so now n's depth is correct.
-    // as it was when we entered the loop
   }
-  // On the last iteration grandparent is root, we walk up to where grandparent
-  // is null, and then drop out of the loop. thus parent is now root, but it's
-  // depth hasn't been calculated, just for cleanliness, so all depths of all
-  // nodes are known we do it here.
-  // Note that this could be elided (if you do, update the checkAll() method).
-  parent->recompute_depth();
+  PRINT_TREE();
   CHECK_ALL();
-  return true;  
+  PRINT("Insert complete\n");
+  return;  
 }
 
 template<typename Node_T, typename Val_T>
 Node_T *AVL<Node_T, Val_T>::remove(Node_T *n)  {
+  PRINT("Begin remove: ");
+  #ifdef AVL_DEBUG_VERBOSE
+  n->print();
+  printf("\n");
+  #endif
   CHECK_ALL();
   PRINT_TREE();
 
@@ -382,7 +425,7 @@ Node_T *AVL<Node_T, Val_T>::remove(Node_T *n)  {
         n->right->parent = n;
       }
     } else {
-            // if n is the parent, we have to do special case things out
+      // if n is the parent, we have to special case things out
       PRINT("Case: n is replacement's parent\n");
       // known: replacement can only be n's right child
       //   because we took one step right, then walked left
@@ -417,10 +460,10 @@ Node_T *AVL<Node_T, Val_T>::remove(Node_T *n)  {
     }
     replacement->parent = parent;
     // swap color too
-    uint8_t tmp_depth;
-    tmp_depth = replacement->depth;
-    replacement->depth = n->depth;
-    n->depth = tmp_depth;
+    int8_t tmp_balance;
+    tmp_balance = replacement->balance;
+    replacement->balance = n->balance;
+    n->balance = tmp_balance;
     // and continue with removing n, now in a more useful place
     PRINT("Done replacement\n");
     PRINT_TREE();
@@ -433,18 +476,101 @@ Node_T *AVL<Node_T, Val_T>::remove(Node_T *n)  {
   // If there's no right subtree than n is fine to delete already
   // Nodeswap is complete
   CHECK();
+  PRINT("beginning remove balance\n");
+  PRINT_TREE();
+  // we're going to remove n, but we'll wait until later to simplify logic here.
+  Node_T *sibling;
+  Node_T *old_n = n;
+  bool done = false;
+  while (n->parent && !done) {
+    Node_T *parent = n->parent;
+    if (parent->left == n) { 
+      sibling = parent->right;
+      parent->balance -= 1; 
+      // TODO(mbrewer): it's not this simple, we need to case it here simply
+      // and for rotations case it out post-rotation (I think?) 
+      if (parent->balance <= -1) {
+        done = true;
+        //break;
+      }
+    } else {
+      sibling = parent->left;
+      parent->balance += 1; 
+      if (parent->balance >= 1) {
+        done = true;
+        // should we be using parent->balance > 0, done = true?
+        //break;
+      }
+    }
 
-    
-
-
+    // we removed an element from n's subtree.
+    // so n's sibling is the side with extra elements
+    if (parent->balance == 2) {
+      done = false;
+      if (sibling->balance == -1) {
+        PRINT("LEFT, RIGHT\n");
+        PRINT_TREE();
+        _rotate_left(sibling);
+        PRINT_TREE();
+        sibling = sibling->parent; 
+      }
+      PRINT("LEFT, LEFT\n");
+      PRINT_TREE();
+      int deeper = _rotate_right(parent); 
+      PRINT_TREE();
+      parent = parent->parent;
+      // since we're removing, making it shallower
+      // doesn't help us
+      // and it better not be deeper
+      if (deeper == 0) {
+        done = true;
+      }
+    } else if (parent->balance == -2) {
+      done = false;
+      if (sibling->balance == 1) {
+        PRINT("RIGHT, LEFT\n");
+        PRINT_TREE();
+        _rotate_right(sibling);
+        PRINT_TREE();
+        sibling = sibling->parent; 
+      }
+      PRINT("RIGHT, RIGHT\n");
+      PRINT_TREE();
+      int deeper = _rotate_left(parent);
+      PRINT_TREE();
+      parent = parent->parent;
+      // since we're removing, making it shallower
+      // doesn't help us
+      // and it better not be deeper
+      if (deeper == 0) {
+        done = true;
+      }
+    }
+    // go up to the next one
+    n = parent;
+  }
+  Node_T *parent = old_n->parent;
+  if (parent) {
+    if (parent->left == old_n) {
+      parent->left = child;
+    } else {
+      parent->right = child;
+    }
+  } else {
+    root = child;
+  }
+  if (child) {
+    child->parent = parent;
+  }
+  PRINT_TREE();
   CHECK_ALL();
+  PRINT("remove complete\n");
   return nullptr;
 }
 
 template<typename Node_T, typename Val_T>
 void AVL<Node_T, Val_T>::check(void) {
   _check(nullptr, root);
-  PRINT("check() passed\n");
 }
 
 template<typename Node_T, typename Val_T>
@@ -466,22 +592,36 @@ void AVL<Node_T, Val_T>::_check(Node_T *parent, Node_T *n) {
 
 template<typename Node_T, typename Val_T>
 void AVL<Node_T, Val_T>::checkAll(void) {
-  checkALL(nullptr, root);
-  PRINT("check() passed\n");
+  _checkAll(nullptr, root);
 }
 
 template<typename Node_T, typename Val_T>
-int AVL<Node_T, Val_T>::_checkAll(Node_T *parent, Node_T *n) {
+size_t AVL<Node_T, Val_T>::_checkAll(Node_T *parent, Node_T *n) {
   if (!n) {
     return 0;
   } 
-  int size_l = checkAll(n, n->left);
-  int size_r = checkAll(n, n->right);
+  size_t size_l = _checkAll(n, n->left);
+  size_t size_r = _checkAll(n, n->right);
+  // If this is outside of a 32 bit integer, something REALLY
+  // exciting happened (it should be -2 to 2... always)
   int diff = size_l-size_r;
+  if (size_l - size_r != n->balance) {
+    print();
+    printf("node's balance is wrong: ");
+    n->print();
+    printf("\n");   
+    PANIC("node doesn't know it's balance");
+  }
   if (diff < -1 || diff > 1) {
+    print();
+    printf("difference between left and right is %d\n", diff);
+    printf("for node");
+    n->print();
+    printf("\n");
     PANIC("left and right subtrees differ in size"); 
   }
   if (n->parent != parent) {
+    PRINT_TREE();
     printf("Node: ");
     n->print();
     printf(" Parent: ");
@@ -489,10 +629,7 @@ int AVL<Node_T, Val_T>::_checkAll(Node_T *parent, Node_T *n) {
     printf("\n");
     PANIC("Node is corrupt, it doesn't point to it's parent");
   }
-  int depth = (size_l > size_r ? size_l : size_r) + 1;
-  if (depth != n->depth) {
-    PANIC("node doesn't know it's depth");
-  }
+  size_t depth = (size_l > size_r ? size_l : size_r) + 1;
   return depth;
 }
 
@@ -503,7 +640,7 @@ void AVL<Node_T, Val_T>::print() {
 }
 
 template<typename Node_T, typename Val_T>
-void RedBlack<Node_T, Val_T>::_print(Node_T *n) {
+void AVL<Node_T, Val_T>::_print(Node_T *n) {
   if (!n) {
     printf("n");
     return;

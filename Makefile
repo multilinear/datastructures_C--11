@@ -1,6 +1,8 @@
-test: all ; ./dlist_unittest && ./list_unittest && ./rredblack_unittest && ./redblack_unittest && ./ringbuffer_unittest && ./ts_ringbuffer_unittest && ./ts_work_queue_unittest
+test: all ; ./avl_unittest && ./dlist_unittest && ./list_unittest && ./rredblack_unittest && ./redblack_unittest && ./ringbuffer_unittest && ./ts_ringbuffer_unittest && ./ts_work_queue_unittest
 
-all: dlist_unittest list_unittest redblack_unittest rredblack_unittest ringbuffer_unittest ts_ringbuffer_unittest ts_work_queue_unittest
+all: avl_unittest dlist_unittest list_unittest redblack_unittest rredblack_unittest ringbuffer_unittest ts_ringbuffer_unittest ts_work_queue_unittest
+
+avl_unittest: *.h *.cpp ; g++ -O3 --std=c++11 avl_unittest.cpp -o avl_unittest
 
 dlist_unittest: *.h *.cpp ; g++ --std=c++11 dlist_unittest.cpp -o dlist_unittest
 
