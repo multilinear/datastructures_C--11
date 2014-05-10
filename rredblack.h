@@ -64,6 +64,12 @@
 #define CHECK_ALL()
 #endif
 
+// To experiment with the two different balancing algorithms
+// and compare performance, define SIMPLER_ALGORITHM
+#define SIMPLER_ALGORITHM
+
+// The more complex algorithm outperforms the simple one by about 3%
+// in my tests... so pretty small
 
 template<typename Node_T, typename Val_T>
 class RRedBlackNode_base {
@@ -82,9 +88,15 @@ class RRedBlack{
     static void _check(Node_T *parent, Node_T *n);
     static size_t _checkAll(Node_T *parent, Node_T *n);
     static void _print(Node_T *n);
+    #ifdef SIMPLER_ALGORITHM
     static Node_T *_insert(Node_T *n, Node_T *new_n);
     static Node_T *_insert_balance_right(Node_T *n);
     static Node_T *_insert_balance_left(Node_T *n);
+    #else
+    static Node_T *_insert(Node_T *n, Node_T *new_n, bool *balanced);
+    static Node_T *_insert_balance_right(Node_T *n, bool *balanced);
+    static Node_T *_insert_balance_left(Node_T *n, bool *balanced);
+    #endif
     static Node_T *_remove(Node_T *n, Val_T v, Node_T **old_n, bool *balanced);
     static Node_T *_remove_balance_right(Node_T *n, bool *balanced);
     static Node_T *_remove_balance_left(Node_T *n, bool *balanced);
@@ -146,12 +158,23 @@ void RRedBlack<Node_T, Val_T>::insert(Node_T *new_n) {
   new_n->right = nullptr;
   new_n->left = nullptr;
   new_n->red = true;
+  #ifdef SIMPLER_ALGORITHM
   root = _insert(root, new_n);
+  #else
+  bool balanced = false;
+  root = _insert(root, new_n, &balanced);
+  #endif
   root->red = false;
   PRINT_TREE();
   CHECK_ALL();
 }    
 
+template<typename Node_T>
+bool isred(Node_T *n) {
+  return n && n->red;
+}
+
+#ifdef SIMPLER_ALGORITHM
 template<typename Node_T, typename Val_T>
 Node_T *RRedBlack<Node_T, Val_T>::_insert(Node_T *n, Node_T *new_n) {
   if (!n) {
@@ -168,11 +191,6 @@ Node_T *RRedBlack<Node_T, Val_T>::_insert(Node_T *n, Node_T *new_n) {
     PANIC("Element inserted twice!");
   }
 }    
-
-template<typename Node_T>
-bool isred(Node_T *n) {
-  return n && n->red;
-}
 
 template<typename Node_T, typename Val_T>
 Node_T *RRedBlack<Node_T, Val_T>::_insert_balance_right(Node_T *n) {
@@ -259,6 +277,140 @@ Node_T *RRedBlack<Node_T, Val_T>::_insert_balance_left(Node_T *n) {
   a3->right = c4;
   return a2;
 }
+#else
+template<typename Node_T, typename Val_T>
+Node_T *RRedBlack<Node_T, Val_T>::_insert(Node_T *n, Node_T *new_n, bool *balanced) {
+  if (!n) {
+    return new_n;
+  }
+  int c = Node_T::compare(new_n->val(), n->val());
+  if (c > 0) {
+    n->right =_insert(n->right, new_n, balanced);
+    if (!*balanced) {
+      return _insert_balance_right(n, balanced);
+    } else {
+      return n;
+    }
+  } else if (c < 0) {
+    n->left = _insert(n->left, new_n, balanced);
+    if (!*balanced) {
+      return _insert_balance_left(n, balanced);
+    } else {
+      return n;
+    }
+  } else {
+    PANIC("Element inserted twice!");
+  }
+}    
+
+template<typename Node_T, typename Val_T>
+Node_T *RRedBlack<Node_T, Val_T>::_insert_balance_right(Node_T *n, bool *balanced) {
+  PRINT("balance right\n");
+  Node_T *grandparent = n;
+  Node_T *a1;  
+  Node_T *a2;
+  Node_T *a3;
+  Node_T *c1;
+  Node_T *c2;
+  Node_T *c3;
+  Node_T *c4;
+  if (!isred<Node_T>(n->right)) {
+    return n;
+  } else if (isred<Node_T>(n->left)) {
+    PRINT("UNCLE\n");
+    n->left->red = false;
+    n->right->red =  false;
+    n->red = true;
+    return n;
+  } else if (isred<Node_T>(n->right->left)) {
+    PRINT("RIGHT LEFT\n");
+    a1 = n;
+    a2 = n->right->left;
+    a3 = n->right;
+    c1 = n->left;
+    c2 = n->right->left->left;
+    c3 = n->right->left->right;
+    c4 = n->right->right;
+  } else if (isred<Node_T>(n->right->right)) {
+    PRINT("RIGHT RIGHT\n");
+    a1=n;
+    a2=n->right;
+    a3=n->right->right;
+    c1 = n->left;
+    c2 = n->right->left;
+    c3 = n->right->right->left;
+    c4 = n->right->right->right;
+  } else {
+    return n;
+  }
+  a2->red = false;
+  a2->left = a1;
+  a2->right = a3;
+  a1->red = true;
+  a1->left = c1;
+  a1->right = c2;
+  a3->red = true;
+  a3->left = c3;
+  a3->right = c4;
+  *balanced = true;
+  return a2;
+}
+
+template<typename Node_T, typename Val_T>
+Node_T *RRedBlack<Node_T, Val_T>::_insert_balance_left(Node_T *n, bool *balanced) {
+  PRINT("balance left\n");
+  Node_T *grandparent = n;
+  Node_T *a1;  
+  Node_T *a2;
+  Node_T *a3;
+  Node_T *c1;
+  Node_T *c2;
+  Node_T *c3;
+  Node_T *c4;
+  if (!isred<Node_T>(n->left)) {
+    return n;
+  } else if (isred<Node_T>(n->right)) {
+    PRINT("UNCLE\n");
+    n->right->red = false;
+    n->left->red =  false;
+    n->red = true;
+    return n;
+  } else if (isred<Node_T>(n->left->right)) {
+    PRINT("LEFT RIGHT\n");
+    a1 = n;
+    a2 = n->left->right;
+    a3 = n->left;
+    c1 = n->right;
+    c2 = n->left->right->right;
+    c3 = n->left->right->left;
+    c4 = n->left->left;
+  } else if (isred<Node_T>(n->left->left)) {
+    PRINT("LEFT LEFT\n");
+    a1=n;
+    a2=n->left;
+    a3=n->left->left;
+    c1 = n->right;
+    c2 = n->left->right;
+    c3 = n->left->left->right;
+    c4 = n->left->left->left;
+  } else {
+    return n;
+  }
+  a2->red = false;
+  a2->right = a1;
+  a2->left = a3;
+  a1->red = true;
+  a1->right = c1;
+  a1->left = c2;
+  a3->red = true;
+  a3->right = c3;
+  a3->left = c4;
+  *balanced = true;
+  return a2;
+}
+#endif
+
+
   
 template<typename Node_T, typename Val_T>
 Node_T *RRedBlack<Node_T, Val_T>::remove(Val_T v) {

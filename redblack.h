@@ -268,35 +268,37 @@ bool RedBlack<Node_T, Val_T>::insert(Node_T *new_n) {
     // propogation, the other two get to break out of our loop.
     Node_T *grandparent = parent->parent;
 
-    // TODO(mbrewer): use this conditional for the following case 4/5 as well?
-    Node_T *uncle = grandparent->left==parent ? grandparent->right : grandparent->left;
-    if (uncle && uncle->red) {
-      PRINT("Case 3\n");
-      // Repaint both black, so we add black everywhere.
-      // Recurse on parent so we can fix that we now have more blacks than
-      // the rest of the tree.
-      uncle->red = false;
-      parent->red = false;
-      grandparent->red = true;
-      // Recurse on grandparent (grandparent is red, so we have to check it) 
-      new_n = grandparent;
-      parent = grandparent->parent;
-      // This is the only case where we haven't already checked root
-      // due to other logic, so we move Case 1 into case 5 to save the
-      // conditional in all other cases
-      // Case 1, this is the root
-      if (!parent) {
-        PRINT("case 1\n");
-        // root can't be red so repaint it black
-        new_n->red = false;
-        break;
-      }
-      continue;
-    }
-    // Known: grandparent is black, parent is red, uncle is black
-
     // Now we branch left/right
     if (grandparent->left == parent) {
+      Node_T *uncle = grandparent->right;
+
+      // This code is duplicated so that we only have to do the grandparent->left == parent
+      // check once
+      if (uncle && uncle->red) {
+        PRINT("Case 3\n");
+        // Repaint both black, so we add black everywhere.
+        // Recurse on parent so we can fix that we now have more blacks than
+        // the rest of the tree.
+        uncle->red = false;
+        parent->red = false;
+        grandparent->red = true;
+        // Recurse on grandparent (grandparent is red, so we have to check it) 
+        new_n = grandparent;
+        parent = grandparent->parent;
+        // This is the only case where we haven't already checked root
+        // due to other logic, so we move Case 1 into case 5 to save the
+        // conditional in all other cases
+        // Case 1, this is the root
+        if (!parent) {
+          PRINT("case 1\n");
+          // root can't be red so repaint it black
+          new_n->red = false;
+          break;
+        }
+        continue;
+      }
+      // Known: grandparent is black, parent is red, uncle is black
+
       PRINT("Left case\n");
       // Case 4
       if (new_n == parent->right) {
@@ -352,6 +354,35 @@ bool RedBlack<Node_T, Val_T>::insert(Node_T *new_n) {
       parent->parent = great_grandparent;
       break;
     } 
+
+    Node_T *uncle = grandparent->left;
+    // This code is duplicated so that we only have to do the grandparent->left == parent
+    // check once
+    if (uncle && uncle->red) {
+      PRINT("Case 3\n");
+      // Repaint both black, so we add black everywhere.
+      // Recurse on parent so we can fix that we now have more blacks than
+      // the rest of the tree.
+      uncle->red = false;
+      parent->red = false;
+      grandparent->red = true;
+      // Recurse on grandparent (grandparent is red, so we have to check it) 
+      new_n = grandparent;
+      parent = grandparent->parent;
+      // This is the only case where we haven't already checked root
+      // due to other logic, so we move Case 1 into case 5 to save the
+      // conditional in all other cases
+      // Case 1, this is the root
+      if (!parent) {
+        PRINT("case 1\n");
+        // root can't be red so repaint it black
+        new_n->red = false;
+        break;
+      }
+      continue;
+    }
+    // Known: grandparent is black, parent is red, uncle is black
+
     PRINT("Right case\n");
     // Case 4
     if (new_n == parent->left) {
@@ -606,7 +637,12 @@ Node_T *RedBlack<Node_T, Val_T>::remove(Node_T *n) {
       CHECK();
       break;
     }
-    
+   
+    // We could split cases 2->5 into left/right cases
+    // it would save one conditional, and only in the cases 5 and 6.
+    // Overall that's a *lot* of complexity and duplicated code, so we've
+    // left out that optimization.
+    // 
     // Known: n is black, and parent exists
     Node_T *sibling;
     if (parent->left == n) {

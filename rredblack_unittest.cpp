@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
   int j;
   // insert in order, then remove
   printf("Begin RRedBlack.h test\n");
-  for (j=0; j<TEST_SIZE; j++) {
+  /*for (j=0; j<TEST_SIZE; j++) {
     for (i=0; i<j; i++) {
       RedBlackNode *n = new RedBlackNode(i);
       tree.insert(n);
@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
     for (i=j; i>0; i--) {
       delete tree.remove(i);
     }
-  }
+  }*/
   int k;
   for (k=1; k<TEST_SIZE; k++) {
     ints_end=0;
