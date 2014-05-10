@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "panic.h"
 // This turns on rather expensive internal consistancy checking
-#define AVL_DEBUG
+//#define AVL_DEBUG
 #include "avl.h"
 
 class AVLNode: public AVLNode_base<AVLNode, int> {
@@ -27,7 +27,7 @@ void print_tree(AVL<AVLNode, int> *t) {
     t->print();
 }
 
-#define TEST_SIZE 500
+#define TEST_SIZE 2000
 int ints[TEST_SIZE];
 int ints_start;
 int ints_end;
@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
   int j;
   // insert in order, then remove
   printf("Begin AVL.h test\n");
-  for (j=0; j<TEST_SIZE; j++) {
+  /*for (j=0; j<TEST_SIZE; j++) {
     for (i=0; i<j; i++) {
       AVLNode *n = new AVLNode(i);
       tree.insert(n);
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
     for (i=j; i>0; i--) {
       delete tree.remove(tree.get(i));
     }
-  }
+  }*/
   int k;
   for (k=1; k<TEST_SIZE; k++) {
     ints_end=0;

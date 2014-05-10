@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "panic.h"
 // This turns on rather expensive internal consistancy checking
-#define RREDBLACK_DEBUG
+//#define RREDBLACK_DEBUG
 #include "rredblack.h"
 
 class RedBlackNode: public RRedBlackNode_base<RedBlackNode, int> {
@@ -43,7 +43,7 @@ void print_tree(RRedBlack<RedBlackNode, int> *t) {
     t->print();
 }
 
-#define TEST_SIZE 500
+#define TEST_SIZE 2000
 int ints[TEST_SIZE];
 int ints_start;
 int ints_end;
@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
   int j;
   // insert in order, then remove
   printf("Begin RRedBlack.h test\n");
-  for (j=0; j<TEST_SIZE; j++) {
+  /*for (j=0; j<TEST_SIZE; j++) {
     for (i=0; i<j; i++) {
       RedBlackNode *n = new RedBlackNode(i);
       tree.insert(n);
@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
     for (i=j; i>0; i--) {
       delete tree.remove(i);
     }
-  }
+  }*/
   int k;
   for (k=1; k<TEST_SIZE; k++) {
     ints_end=0;

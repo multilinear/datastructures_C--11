@@ -150,13 +150,15 @@ int AVL<Node_T, Val_T>::_rotate_left(Node_T *a) {
   int deeper; 
   if (b_balance >= 0) {
     a->balance = a_balance + 1;
-    if (a_balance >= 0) {
-      b->balance = a_balance + b_balance + 2;
-      deeper = 1;
-    } else {
-      b->balance = b_balance + 1;
-      deeper = 0;
-    }
+    // this case is unneeded, leaving here though
+    // because it was so much work to figure out
+    //if (a_balance >= 0) {
+    //  b->balance = a_balance + b_balance + 2;
+    //  deeper = 1;
+    //} else {
+    b->balance = b_balance + 1;
+    deeper = 0;
+    //}
   } else {
     a->balance = a_balance - b_balance + 1;
     b->balance = a_balance + 2;
@@ -165,6 +167,7 @@ int AVL<Node_T, Val_T>::_rotate_left(Node_T *a) {
     // in an AVL tree
     deeper = a_balance + 1; 
   }
+  // returns the amount deeper it made this subtree
   return deeper;
 }
 
@@ -204,13 +207,13 @@ int AVL<Node_T, Val_T>::_rotate_right(Node_T *a) {
   int deeper;
   if (b_balance <= 0) {
     a->balance = a_balance - 1;
-    if (a_balance <= 0) {
-      b->balance = a_balance + b_balance - 2;
-      deeper = 1;
-    } else {
-      b->balance = b_balance - 1;
-      deeper = 0;
-    }
+    //if (a_balance <= 0) {
+    //  b->balance = a_balance + b_balance - 2;
+    //  deeper = 1;
+    //} else {
+    b->balance = b_balance - 1;
+    deeper = 0;
+    //}
   } else {
     a->balance = a_balance - b_balance - 1;
     b->balance = a_balance - 2;
@@ -219,6 +222,7 @@ int AVL<Node_T, Val_T>::_rotate_right(Node_T *a) {
     // in an AVL tree
     deeper = -a_balance + 1; 
   }
+  // returns the amount deeper it made this subtree
   return deeper;
 }
 
@@ -305,6 +309,26 @@ void AVL<Node_T, Val_T>::insert(Node_T *n) {
       // so we haven't added to the depth of grandparent.
       if (grandparent->balance <= 0) {
         break;
+      } 
+      if (grandparent->balance == 2) {
+        if (parent->balance == -1) {
+          PRINT("LEFT RIGHT\n");
+          PRINT_TREE();
+          _rotate_left(parent);
+          PRINT_TREE();
+          parent = parent->parent; 
+        }
+        PRINT("LEFT LEFT\n");
+        PRINT_TREE();
+        // rotate grandparent and parent right 
+        int deeper = _rotate_right(grandparent); 
+        PRINT_TREE();
+        grandparent = parent->parent;
+        // if we made this branch shallower, we're done
+        if (deeper < 0) {
+          break;
+        }
+        continue;
       }
     } else {
       grandparent->balance -= 1;
@@ -313,50 +337,29 @@ void AVL<Node_T, Val_T>::insert(Node_T *n) {
       if (grandparent->balance >= 0) {
         break;
       }
+      if (grandparent->balance == -2) {
+        if (parent->balance == 1) {
+          PRINT("RIGHT LEFT\n");
+          PRINT_TREE();
+          _rotate_right(parent);
+          PRINT_TREE();
+          parent = parent->parent; 
+        }
+        PRINT("RIGHT RIGHT\n");
+        PRINT_TREE();
+        int deeper = _rotate_left(grandparent);
+        PRINT_TREE();
+        grandparent = parent->parent;
+        // if we made this branch shallower, we're done
+        if (deeper < 0) {
+          break;
+        }
+        continue;
+      }
     }
- 
-    // TODO(mbrewer): This can only be true if grandparent->left = parent
-    // we could stack the cases to avoid a conditional each loop
-    if (grandparent->balance == 2) {
-      if (parent->balance == -1) {
-        PRINT("LEFT RIGHT\n");
-        PRINT_TREE();
-        _rotate_left(parent);
-        PRINT_TREE();
-        parent = parent->parent; 
-      }
-      PRINT("LEFT LEFT\n");
-      PRINT_TREE();
-      // rotate grandparent and parent right 
-      int deeper = _rotate_right(grandparent); 
-      PRINT_TREE();
-      grandparent = parent->parent;
-      // if we made this branch shallower, we're done
-      if (deeper < 0) {
-        break;
-      }
-    } else if (grandparent->balance == -2) {
-      if (parent->balance == 1) {
-        PRINT("RIGHT LEFT\n");
-        PRINT_TREE();
-        _rotate_right(parent);
-        PRINT_TREE();
-        parent = parent->parent; 
-      }
-      PRINT("RIGHT RIGHT\n");
-      PRINT_TREE();
-      int deeper = _rotate_left(grandparent);
-      PRINT_TREE();
-      grandparent = parent->parent;
-      // if we made this branch shallower, we're done
-      if (deeper < 0) {
-        break;
-      }
-    } else {
-      // go up to the next one
-      parent = grandparent;
-      grandparent = grandparent->parent;
-    }
+    // go up to the next one
+    parent = grandparent;
+    grandparent = grandparent->parent;
   }
   PRINT_TREE();
   CHECK_ALL();
