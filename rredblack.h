@@ -23,15 +23,10 @@
  *    of black nodes 
  *
  * Should I Use this or redblack.h?:
- *  Performance is nearly identical. rredblack is a touch better on small cases,
- *  but rredblack uses the stack heavilly, so don't use if you need a finite
- *  stack.
- *  The difference seems to even out on larger cases, redblack.h uses a touch
- *  more memory per node. The cost in cache performance seems to even out
- *  against the better shortcircuiting in the rebalance logic.
+ *  rredblack uses less storage space, but uses the stack.
+ *  redblack uses more storage space, but keeps the stack finite.
+ *  redblack runs about 13% faster than rredblack
  * 
- *  So... do you want less space used by nodes? or a finite stack?
- *
  * Design Decisions:
  *
  * This was made as a test of the comparitive performance of an easy to read
@@ -41,20 +36,7 @@
  * here is almost the only way to do it.
  * My hope was that I could make a performant red-black tree that was also legible.
  *
- * Performance:
- *   Run against a somewhat Naive implementation of the standard algorithm on wikipedia
- * (dropping obvious unneded conditionals etc., and using an entirely non-recursive
- * approach including parent pointers), this version lost by only ~1%, when compiled
- * with defaults on: gcc (Ubuntu/Linaro 4.8.1-10ubuntu9) 4.8.1. 
- * When compiled -O3 it actually beat the other version by ~5%. on 1000 nodes.
- *
- *   I later ran a test on 20000 nodes, simply inserting and then removing. Performance
- * between this version and the other is identical. (nodes were unseeded random values)
- * 
- *   If you *really* care, and memory and stack don't matter to you, profile
- * both for your use-case. If you do this I'd LOVE to see more updates here, thanks! 
- *
- * ThreadSafety:
+  * ThreadSafety:
  *   thread compatible
  */
 

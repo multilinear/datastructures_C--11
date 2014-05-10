@@ -1,0 +1,86 @@
+
+Benchmark results.
+
+TL:DR:
+AVL is the fastest
+RedBlack is functionally the same speed, but find can only be slower, due to balance factor
+RRedblack is slow ~13% slower, but uses less space.
+
+--------------------------------------------------------------------
+Full Experiment:
+
+Environment:
+This experiment was performed on a Dell XPS 12 convertable laptop/tablet with: Intel(R) Core(TM) i7-4500U CPU @ 1.80GHz, ubuntu desktop, gcc 4-8-1-10ubuntu9. Linux kernel 3-11.0-19-generic. CPU was in performance mode, and machine wasn't touched during tests. Other things were running, so this is anything but sanitary.
+
+Experiment:
+We generate numbers with rand(), for each we check if it's already in the tree with a "get()" if it's not we add it until we've added 20 million values.
+Next we walk throgh and remove the values one by one (we stored them in order in an array, and simply remove them in the same order we added them).
+
+That's the benchmark.
+
+To even the playing field I ran the 3 in serial without touching the machine. I run the entire test prior to timing it to make sure the CPU is already running full bore to get rid of order effects. So On that benchmark here's some runtimes (straight off the console):
+
+0,130 me@blackbox:C++11$ g++ -O3 -std=c++11 redblack_benchmark.cpp && ./a.out && time ./a.out && g++ -O3 -std=c++11 rredblack_benchmark.cpp && ./a.out && time ./a.out && g++ -O3 -std=c++11 avl_benchmark.cpp && ./a.out && time ./a.out
+Begin RedBlack.h benchmark
+gets 20093205
+Begin RedBlack.h benchmark
+gets 20093205
+
+real	0m51.763s
+user	0m51.413s
+sys	0m0.376s
+Begin RRedBlack.h benchmark
+gets 20093205
+Begin RRedBlack.h benchmark
+gets 20093205
+
+real	0m58.205s
+user	0m57.918s
+sys	0m0.316s
+Begin AVL.h benchmark
+gets 20093205
+Begin AVL.h benchmark
+gets 20093205
+
+real	0m50.351s
+user	0m50.051s
+sys	0m0.324s
+
+
+AVL is the fastest! It should be pretty rare that we randomly select an element in the list.
+I'm using "get" to check if the element is already in the tree, if there's a lot of gets that'd give AVL an advantage, so I had it track how many gets. W have twice as many gets as removes or inserts.
+
+Note that I'm not counting remove(get(i)) as a get, partly because that confuses matters with rredblack where that's not how it works.
+
+So, that workload is a bit AVL biased I guess, but overal it's only ~2% between the AVL and RedBlack on this workload. Also interestingly the recursive redblack tree sucks. That's about 13% worse! Earlier tests I ran came up with the same number. 
+
+So, there we have it. AVL and redblack are awesome, and the recursive version is much slower... sadness. 
+
+Now to test if the workload was AVL biased, I tried biasing it MORE twoards the AVL by tripling the number of gets, when I check if the element is in the tree, I do it 3 times making it 60 million gets instead of 20. Here's the results.
+
+0,0 me@blackbox:C++11$ g++ -O3 -std=c++11 redblack_benchmark.cpp && time ./a.out && time ./a.out && g++ -O3 -std=c++11 avl_benchmark.cpp && time ./a.out
+Begin RedBlack.h benchmark
+gets 20093205
+
+real	0m57.334s
+user	0m57.103s
+sys	0m0.260s
+Begin RedBlack.h benchmark
+gets 20093205
+
+real	0m56.508s
+user	0m56.214s
+sys	0m0.324s
+Begin AVL.h benchmark
+gets 20093205
+
+real	0m57.155s
+user	0m56.847s
+sys	0m0.332s
+
+
+I accidentally ran it twice and you can see the difference is well inside the variance. AVL should've gained on redblack in this scenerio, if those 20k gets were why AVL was doing well... but it did not. 
+
+This implies that AVL and redblack are actually about equivelent - except that AVL find is still faster than redblack (code is the same, and it might not have to go as deep).
+
+Givne this, I would be inclined to use the AVL implementation as things stand. 

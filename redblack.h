@@ -22,18 +22,6 @@
  * - Every path from from any node N to it's descendants has the same number
  *    of black nodes 
  *
- * Should I Use this or rredblack.h?:
- *  Performance is nearly identical. rredblack is a touch better on small cases,
- *  but rredblack uses the stack heavilly, so don't use if you need a finite
- *  stack.
- *  The difference seems to even out on larger cases, redblack.h uses a touch
- *  more memory per node. The cost in cache performance seems to even out
- *  against the better shortcircuiting in the rebalance logic.
- * 
- *  So... do you want less space used by nodes? or a finite stack?
- *
- *  For more performance details see rredblack.h.
- *
  * Design Decisions:
  *
  *   We use no recursion (except traversals):
