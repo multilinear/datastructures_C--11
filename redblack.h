@@ -22,6 +22,9 @@
  * - Every path from from any node N to it's descendants has the same number
  *    of black nodes 
  *
+ * For comparitive performance of structures see
+ * PERFORMANCE
+ *
  * Design Decisions:
  *
  *   We use no recursion (except traversals):

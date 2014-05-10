@@ -26,6 +26,7 @@
  *  rredblack uses less storage space, but uses the stack.
  *  redblack uses more storage space, but keeps the stack finite.
  *  redblack runs about 13% faster than rredblack
+ *  See PERFORMANCE for more details
  * 
  * Design Decisions:
  *
@@ -36,7 +37,7 @@
  * here is almost the only way to do it.
  * My hope was that I could make a performant red-black tree that was also legible.
  *
-  * ThreadSafety:
+ * ThreadSafety:
  *   thread compatible
  */
 

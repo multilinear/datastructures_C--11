@@ -1,6 +1,35 @@
 /*
  * Copywrite: Matthew Brewer 2014-04-19
  *
+ * For comparitive performance see:
+ * PERFORMANCE
+ *
+ * Design Decisions:
+ * 
+ *   balance factors:
+ * you can track depth or balance factor in an AVL tree. Depth is easier to
+ * think about. Given depth though, the data you need to recompute depth on
+ * a rotation is not just in the two nodes involved in the rotation, but
+ * their children. So you end up accessing another 3 nodes. So you can
+ * recompute your depth. Even worse, to figure out whether you need to do
+ * a rotation you also need to access those children.
+ * With balance factor the computation is much more local, thus saving a
+ * lot of extra pointer dereferences
+ *
+ *   This thing is weird?:
+ * When I wrote this implementation I went looking for other AVL
+ * implementations, and oddly was unable to find one. Implementations either
+ * were not actually AVL trees being actually balanced by size, or more often
+ * not actually quite balanced at all, OR they were Log(N)^2 or even NLog(N)
+ * for insert and remove due to depth/balance recomputation being idiotic. 
+ * So... I derived the formulas for adjusting balance factors myself.
+ * The algorithm for adjusting balance as we go up the tree, and terminating
+ * early if we are not the deepest branch (or become no longer the deepest branch
+ * due to a rotation), is also mine. There may be some other way this is 
+ * usually done.
+ * 
+ *   
+ *
  */
 
 #include <stdio.h>
@@ -10,8 +39,8 @@
 #ifndef AVL_H
 #define AVL_H
 
-//#define AVL_DEBUG_VERBOSE
 
+// Define this to see tons of detail about what the tree is doing
 #ifdef AVL_DEBUG_VERBOSE
 #define PRINT(msg) printf(msg)
 #define PRINT_TREE() print();
@@ -20,6 +49,9 @@
 #define PRINT_TREE()
 #endif
 
+// Define this to implement some expensive consistancy checking, this is great
+// for debugging code that uses the tree as well.
+// This checks all of the AVL invariants before and after ever oparation.
 #ifdef AVL_DEBUG
 #define CHECK() check()
 #define CHECK_ALL() checkAll()
@@ -86,7 +118,6 @@ AVL<Node_T, Val_T>::AVL() {
   root = nullptr;
 }
 
-// Get functions
 template<typename Node_T, typename Val_T>
 Node_T *AVL<Node_T, Val_T>::get(Val_T v) {
   Node_T *n = root;
@@ -207,6 +238,8 @@ int AVL<Node_T, Val_T>::_rotate_right(Node_T *a) {
   int deeper;
   if (b_balance <= 0) {
     a->balance = a_balance - 1;
+    // this case is unneeded, leaving here though
+    // because it was so much work to figure out
     //if (a_balance <= 0) {
     //  b->balance = a_balance + b_balance - 2;
     //  deeper = 1;
@@ -377,7 +410,7 @@ Node_T *AVL<Node_T, Val_T>::remove(Node_T *n)  {
   CHECK_ALL();
   PRINT_TREE();
 
-  #ifdef REDBLACK_DEBUG
+  #ifdef AVL_DEBUG
   if (!n) {
     PANIC("Tried to remove null");
   }
@@ -484,69 +517,59 @@ Node_T *AVL<Node_T, Val_T>::remove(Node_T *n)  {
   // we're going to remove n, but we'll wait until later to simplify logic here.
   Node_T *sibling;
   Node_T *old_n = n;
-  bool done = false;
-  while (n->parent && !done) {
+  while (n->parent) {
     Node_T *parent = n->parent;
     if (parent->left == n) { 
       sibling = parent->right;
       parent->balance -= 1; 
-      // TODO(mbrewer): it's not this simple, we need to case it here simply
-      // and for rotations case it out post-rotation (I think?) 
-      if (parent->balance <= -1) {
-        done = true;
-        //break;
+      if (parent->balance == -2) {
+        if (sibling->balance == 1) {
+          PRINT("RIGHT, LEFT\n");
+          PRINT_TREE();
+          _rotate_right(sibling);
+          PRINT_TREE();
+          sibling = sibling->parent; 
+        }
+        PRINT("RIGHT, RIGHT\n");
+        PRINT_TREE();
+        int deeper = _rotate_left(parent);
+        PRINT_TREE();
+        parent = parent->parent;
+        // since we're removing, making it shallower
+        // doesn't help us
+        // and it better not be deeper
+        if (deeper == 0) {
+          break;
+        }
+      } else if (parent->balance == -1) {
+        break;
       }
     } else {
       sibling = parent->left;
       parent->balance += 1; 
-      if (parent->balance >= 1) {
-        done = true;
-        // should we be using parent->balance > 0, done = true?
-        //break;
-      }
-    }
-
-    // we removed an element from n's subtree.
-    // so n's sibling is the side with extra elements
-    if (parent->balance == 2) {
-      done = false;
-      if (sibling->balance == -1) {
-        PRINT("LEFT, RIGHT\n");
+      // we removed an element from n's subtree.
+      // so n's sibling is the side with extra elements
+      if (parent->balance == 2) {
+        if (sibling->balance == -1) {
+          PRINT("LEFT, RIGHT\n");
+          PRINT_TREE();
+          _rotate_left(sibling);
+          PRINT_TREE();
+          sibling = sibling->parent; 
+        }
+        PRINT("LEFT, LEFT\n");
         PRINT_TREE();
-        _rotate_left(sibling);
+        int deeper = _rotate_right(parent); 
         PRINT_TREE();
-        sibling = sibling->parent; 
-      }
-      PRINT("LEFT, LEFT\n");
-      PRINT_TREE();
-      int deeper = _rotate_right(parent); 
-      PRINT_TREE();
-      parent = parent->parent;
-      // since we're removing, making it shallower
-      // doesn't help us
-      // and it better not be deeper
-      if (deeper == 0) {
-        done = true;
-      }
-    } else if (parent->balance == -2) {
-      done = false;
-      if (sibling->balance == 1) {
-        PRINT("RIGHT, LEFT\n");
-        PRINT_TREE();
-        _rotate_right(sibling);
-        PRINT_TREE();
-        sibling = sibling->parent; 
-      }
-      PRINT("RIGHT, RIGHT\n");
-      PRINT_TREE();
-      int deeper = _rotate_left(parent);
-      PRINT_TREE();
-      parent = parent->parent;
-      // since we're removing, making it shallower
-      // doesn't help us
-      // and it better not be deeper
-      if (deeper == 0) {
-        done = true;
+        parent = parent->parent;
+        // since we're removing, making it shallower
+        // doesn't help us
+        // and it better not be deeper
+        if (deeper == 0) {
+          break; 
+        }
+      } else if (parent->balance >= 1) {
+        break;
       }
     }
     // go up to the next one
