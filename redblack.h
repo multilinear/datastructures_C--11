@@ -112,7 +112,6 @@ class RedBlackNode_base {
     // Note: these don't need to be virtual, because we template on Node_T
     // const Val_T val(void) = 0;
 
-    // Note: sign extension takes care of cast if you use subtraction
     // This is equivelent to v1 - v2
     //static int compare(const Val_T *v1, const Val_T *v2) = 0; 
 
