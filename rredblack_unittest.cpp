@@ -1,21 +1,24 @@
 #include <stdio.h>
 #include "panic.h"
+#include "trivialdict.h"
 // This turns on rather expensive internal consistancy checking
 #define RREDBLACK_DEBUG
 #include "rredblack.h"
 
-class RedBlackNode: public RRedBlackNode_base<RedBlackNode, int> {
+#define TEST_SIZE 500
+
+class RRedBlackNode: public RRedBlackNode_base<RRedBlackNode, int> {
   public:
     int value;
   public:
+    RRedBlackNode(int v) {
+      value = v;
+    }
     const int val(void) {
       return value;
     }
     static const int compare(const int val1, const int val2) {
       return val1-val2;
-    }
-    RedBlackNode(int v) {
-      value = v;
     }
     void print(void) {
       if (red) {
@@ -26,71 +29,50 @@ class RedBlackNode: public RRedBlackNode_base<RedBlackNode, int> {
     }
 };
 
-void pre_print(RedBlackNode *n) {
-  printf("(%d,%d|", n->value, n->red);
-}
+class TrivialDictDatum {
+  public:
+    int value;
+  public:
+    TrivialDictDatum() { }
+    TrivialDictDatum(int i) {
+      value = i;
+    }
+    const int val(void) {
+      return value;
+    }
+    static const int compare(const int val1, const int val2) {
+      return val1-val2;
+    }
+    void print(void) {
+      printf("%d", value);
+    }
+};
 
-void post_print(RedBlackNode *n) {
-  printf(")");
-}
-
-void leaf_print() {
-  printf("n");
-}
-
-void print_tree(RRedBlack<RedBlackNode, int> *t) {
-    //t->order(pre_print, nullptr, post_print, leaf_print);
+void print_tree(RRedBlack<RRedBlackNode, int> *t) {
     t->print();
 }
 
-#define TEST_SIZE 500
-int ints[TEST_SIZE];
-int ints_start;
-int ints_end;
-
-int check(RRedBlack<RedBlackNode, int> *tree) {
-  int i;
-  for (i=ints_start; i<ints_end; i++) {
-    if(!tree->get(ints[i])) {
-      printf("%d\n", ints[i]);
+int check(RRedBlack<RRedBlackNode, int> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
+  auto i = dict->begin();
+  for (; i != dict->end(); i++) {
+    if(!tree->get(i->val())) {
+      printf("%d\n", i->val());
       PANIC("Element not in tree anymore!");
     }
   }
 }
 
 int main(int argc, char* argv[]) {
-  RRedBlack<RedBlackNode, int> tree;
+  TrivialDict<TrivialDictDatum, int> dict(TEST_SIZE);
+  RRedBlack<RRedBlackNode, int> tree;
 
   int i;
   int j;
   // insert in order, then remove
   printf("Begin RRedBlack.h test\n");
-  /*for (j=0; j<TEST_SIZE; j++) {
-    for (i=0; i<j; i++) {
-      RedBlackNode *n = new RedBlackNode(i);
-      tree.insert(n);
-    }
-    for (i=0; i<j; i++) {
-      delete tree.remove(i);
-    }
-    if (!tree.isempty()) {
-      PANIC("Tree should be empty here, but isn't");
-    }
-  }
-  for (j=1; j<TEST_SIZE; j++) {
-    // insert in reverse order, then remove in reverse order
-    for (i=j; i>0; i--) {
-      RedBlackNode *n = new RedBlackNode(i);
-      tree.insert(n);
-    }
-    for (i=j; i>0; i--) {
-      delete tree.remove(i);
-    }
-  }*/
   int k;
   for (k=1; k<TEST_SIZE; k++) {
-    ints_end=0;
-    ints_start=0;
+    dict.reset(TEST_SIZE);
     for (i=0; i<k; i++) {
       bool new_v = false;
       int r;
@@ -99,27 +81,25 @@ int main(int argc, char* argv[]) {
         // Note, we did not initialize rand, this is purposeful
         r = rand();
         new_v = true;
-        for (j=ints_start; j<ints_end; j++) {
-          if (ints[j] == r){
-            new_v = false;
-            break;
-          }
-        }
+        TrivialDictDatum d;
+        new_v = !dict.get(r, &d);
       }
       // put it in thet tree
-      RedBlackNode *n = new RedBlackNode(r);
+      RRedBlackNode *n = new RRedBlackNode(r);
       tree.insert(n);
       // and in the list
-      ints[ints_end++] = r;
+      dict.insert(r);
       // check that everything is in the list that should be
-      check(&tree);
+      check(&tree, &dict);
     }
-    for(i=0; i<ints_end; i++) {
-      RedBlackNode *n = tree.get(ints[i]);
-      delete tree.remove(ints[i]);
-      ints_start += 1;
+    while (!dict.isempty()) {
+      // We're invalidating our iterator every round, by modifying the tree
+      auto i = dict.begin();
+      RRedBlackNode *n = tree.get(i->val());
+      delete tree.remove(i->val());
+      dict.remove(i->val());
       // check that everything is in the list that should be
-      check(&tree);
+      check(&tree, &dict);
     }
     if (!tree.isempty()) {
       PANIC("Tree should be empty here, but isn't");

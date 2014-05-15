@@ -2,16 +2,18 @@
 #include "panic.h"
 #include "trivialdict.h"
 // This turns on rather expensive internal consistancy checking
-#define REDBLACK_DEBUG
-#include "redblack.h"
+#define BTREE_DEBUG
+#include "btree.h"
 
 #define TEST_SIZE 500
+#define ARITY 5
 
-class RedBlackNode: public RedBlackNode_base<RedBlackNode, int> {
+class BTreeDatum {
   public:
     int value;
   public:
-    RedBlackNode(int v) {
+    BTreeDatum(){}
+    BTreeDatum(int v) {
       value = v;
     }
     const int val(void) {
@@ -21,11 +23,7 @@ class RedBlackNode: public RedBlackNode_base<RedBlackNode, int> {
       return val1-val2;
     }
     void print(void) {
-      if (red) {
-        printf("%d,R", value);
-      } else {
-        printf("%d,B", value);
-      }
+      printf("%d", value);
     }
 };
 
@@ -48,14 +46,15 @@ class TrivialDictDatum {
     }
 };
 
-void print_tree(RedBlack<RedBlackNode, int> *t) {
+void print_tree(BTree<BTreeDatum,int,ARITY> *t) {
     t->print();
 }
 
-int check(RedBlack<RedBlackNode, int> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
+int check(BTree<BTreeDatum,int,ARITY> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
   auto i = dict->begin();
+  BTreeDatum d;
   for (; i != dict->end(); i++) {
-    if(!tree->get(i->val())) {
+    if(!tree->get(i->val(), &d)) {
       printf("%d\n", i->val());
       PANIC("Element not in tree anymore!");
     }
@@ -64,15 +63,17 @@ int check(RedBlack<RedBlackNode, int> *tree, TrivialDict<TrivialDictDatum,int> *
 
 int main(int argc, char* argv[]) {
   TrivialDict<TrivialDictDatum, int> dict(TEST_SIZE);
-  RedBlack<RedBlackNode, int> tree;
+  BTree<BTreeDatum,int,ARITY> tree;
 
   int i;
   int j;
   // insert in order, then remove
-  printf("Begin RedBlack.h test\n");
+  printf("Begin BTree.h test\n");
   int k;
   for (k=1; k<TEST_SIZE; k++) {
+    printf("************ testing size %d\n", k);
     dict.reset(TEST_SIZE);
+    //printf("**** Adding elements\n");
     for (i=0; i<k; i++) {
       bool new_v = false;
       int r;
@@ -84,26 +85,36 @@ int main(int argc, char* argv[]) {
         TrivialDictDatum d;
         new_v = !dict.get(r, &d);
       }
-      // put it in thet tree
-      RedBlackNode *n = new RedBlackNode(r);
-      tree.insert(n);
-      // and in the list
+      tree.insert(BTreeDatum(r));
       dict.insert(r);
-      // check that everything is in the list that should be
       check(&tree, &dict);
     }
+    //printf("**** Draining\n");
     while (!dict.isempty()) {
       // We're invalidating our iterator every round, by modifying the tree
+      // but we removed the first element, so we just start over again
       auto i = dict.begin();
-      RedBlackNode *n = tree.get(i->val());
-      delete tree.remove(tree.get(i->val()));
+      BTreeDatum d;
+      bool f;
+      //printf("removing %d\n", i->val());
+      f = tree.get(i->val(), &d);
+      if (!f) {
+        PANIC("tree lacks element it should have");
+      }
+      tree.remove(i->val(), &d);
+      f = tree.get(i->val(), &d);
+      if (f) {
+        printf("Element %d\n", i->val());
+        PANIC("tree has element it should not have");
+      }
       dict.remove(i->val());
-      // check that everything is in the list that should be
       check(&tree, &dict);
     }
+    //printf("Checking  that things are empty\n");
     if (!tree.isempty()) {
       PANIC("Tree should be empty here, but isn't");
     }
+    //printf("************ size %d complete\n", k);
   }
   printf("PASS\n");
 }
