@@ -15,6 +15,8 @@ Note:
   RRedBlack's API differs slightly due to lack of parent pointers, in this way it's simliar to
   BTree (remove takes a key, not a node)
 
+Note that a lot of BTree's performance is probably due to avoiding malloc. Depending on workload, if you already *had* structures and had to copy data in, BTree would likely come out slower than AVL. Similarly, f you have an extremely fast malloc that might change the equation.
+
 --------------------------------------------------------------------
 Full Experiment: (Redblack vs. RRedblack vs. AVL)
 
