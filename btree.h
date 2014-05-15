@@ -1,5 +1,35 @@
 /*
  * Copyright: Matthew Brewer (mbrewer@smalladventures.net) 2014-05-12
+ *
+ * This is an implementation of a binary B-tree, with lazy split/merge.
+ * If SIZE is set to 5, this implements a 2-3-4 tree with lazy split/merge.
+ *
+ * In this configuration, the tree is quite performant. See PERFORMANCE
+ *
+ * Design Decisions:
+ *   Lazy split/merge: if SIZE=5, then 1 and 5 are legal sizes temporarilly.
+ * When we walk down the tree for a remove(), we check for merges as we go
+ * This guarantees that the node we operate on, and all those above it, have
+ * at least 2 elements in them, as they should, thus we don't suddenly end up
+ * going farther out of bounds.
+ * On Insert we do the same thing with splits/rotations. Ensuring our invariants
+ * hold for all nodes on the path to the node we insert into.
+ * The advantage of this approach, is there's no need to recurse back up the
+ * tree. All operations can simply walk down the tree, and terminate.
+ *
+ *   Why the horrific template?
+ * I was trying to get speeds up. With this implementation if "T", the data
+ * stored in the tree, is a simple "int" we incur no extra costs, for
+ * construction and the like, yet compare() and val() get included statically
+ * and thus can be inlined out.
+ * We use "val()" so that if T is a pointer to some structure it's still efficient
+ * You can pass key's in (of type Val_T), for searches, e.g. a tid for a tree of
+ * thread structures. Again val() and compare() can be inlined.
+ * If for some reason you *want* to store entire classes in the B-tree it will
+ * work. If you do this you may want to go through making sure all the T's are T&
+ * so you don't call the copy constructor over and over and over again.
+ * Also, if T is complex read the requirements below very carefully.
+ *
  */
 
 #include <cstring>
@@ -9,8 +39,6 @@
 
 #ifndef BTREE_H
 #define BTREE_H
-
-//#define BTREE_DEBUG_VERBOSE
 
 // Define this to see tons of detail about what the tree is doing
 #ifdef BTREE_DEBUG_VERBOSE
