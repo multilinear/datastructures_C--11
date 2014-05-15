@@ -1,23 +1,24 @@
 #include <stdio.h>
 #include "panic.h"
-#include "avl.h"
+#include "btree.h"
 
+#define ARITY 5
 #define TEST_SIZE 20000000
 
-class AVLNode: public AVLNode_base<AVLNode, int> {
+class BTreeComp {
+  // For use with T=int, Val_T=int
   public:
-    int value;
-  public:
-    const int val(void) {
-      return value;
+    static const int val(const int T) {
+      return T;
     }
     static const int compare(const int val1, const int val2) {
       return val1-val2;
     }
-    AVLNode(int v) {
-      value = v;
+    static void printT(const int t) {
+      printf("%d", t);
     }
-    void print(void) {
+    static void printV(const int v) {
+      printf("%d", v);
     }
 };
 
@@ -27,12 +28,12 @@ int ints_start;
 int ints_end;
 
 int main(int argc, char* argv[]) {
-  AVL<AVLNode, int> tree;
+  BTree<int, int, BTreeComp, ARITY> tree;
 
   int i;
   int j;
   int gets=0;
-  printf("Begin AVL.h benchmark\n");
+  printf("Begin BTree.h benchmark\n");
   ints_end=0;
   ints_start=0;
   for (i=0; i<TEST_SIZE; i++) {
@@ -42,17 +43,18 @@ int main(int argc, char* argv[]) {
     while (!new_v) {
       // Note, we did not initialize rand, this is purposeful
       r = rand();
-      new_v = (tree.get(r) == nullptr); 
+      int junk;
+      new_v = !tree.get(r, &junk); 
       gets++;
     }
     // put it in thet tree
-    AVLNode *n = new AVLNode(r);
-    tree.insert(n);
+    tree.insert(r);
     // and in the list
     ints[ints_end++] = r;
   }
   for(i=0; i<ints_end; i++) {
-    delete tree.remove(tree.get(ints[i]));
+    int junk;
+    tree.remove(ints[i], &junk);
     ints_start += 1;
   }
   printf("gets %d\n", gets);

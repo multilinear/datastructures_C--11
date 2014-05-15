@@ -5,25 +5,23 @@
 #define BTREE_DEBUG
 #include "btree.h"
 
-#define TEST_SIZE 500
+#define TEST_SIZE 200
 #define ARITY 5
 
-class BTreeDatum {
+class BTreeComp {
+  // For use with T=int, Val_T=int
   public:
-    int value;
-  public:
-    BTreeDatum(){}
-    BTreeDatum(int v) {
-      value = v;
-    }
-    const int val(void) {
-      return value;
+    static const int val(const int T) {
+      return T;
     }
     static const int compare(const int val1, const int val2) {
       return val1-val2;
     }
-    void print(void) {
-      printf("%d", value);
+    static void printT(const int t) {
+      printf("%d", t);
+    }
+    static void printV(const int v) {
+      printf("%d", v);
     }
 };
 
@@ -46,13 +44,13 @@ class TrivialDictDatum {
     }
 };
 
-void print_tree(BTree<BTreeDatum,int,ARITY> *t) {
+void print_tree(BTree<int,int,BTreeComp,ARITY> *t) {
     t->print();
 }
 
-int check(BTree<BTreeDatum,int,ARITY> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
+int check(BTree<int,int,BTreeComp,ARITY> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
   auto i = dict->begin();
-  BTreeDatum d;
+  int d;
   for (; i != dict->end(); i++) {
     if(!tree->get(i->val(), &d)) {
       printf("%d\n", i->val());
@@ -63,7 +61,7 @@ int check(BTree<BTreeDatum,int,ARITY> *tree, TrivialDict<TrivialDictDatum,int> *
 
 int main(int argc, char* argv[]) {
   TrivialDict<TrivialDictDatum, int> dict(TEST_SIZE);
-  BTree<BTreeDatum,int,ARITY> tree;
+  BTree<int,int,BTreeComp,ARITY> tree;
 
   int i;
   int j;
@@ -71,7 +69,6 @@ int main(int argc, char* argv[]) {
   printf("Begin BTree.h test\n");
   int k;
   for (k=1; k<TEST_SIZE; k++) {
-    printf("************ testing size %d\n", k);
     dict.reset(TEST_SIZE);
     //printf("**** Adding elements\n");
     for (i=0; i<k; i++) {
@@ -85,7 +82,7 @@ int main(int argc, char* argv[]) {
         TrivialDictDatum d;
         new_v = !dict.get(r, &d);
       }
-      tree.insert(BTreeDatum(r));
+      tree.insert(r);
       dict.insert(r);
       check(&tree, &dict);
     }
@@ -94,7 +91,7 @@ int main(int argc, char* argv[]) {
       // We're invalidating our iterator every round, by modifying the tree
       // but we removed the first element, so we just start over again
       auto i = dict.begin();
-      BTreeDatum d;
+      int d;
       bool f;
       //printf("removing %d\n", i->val());
       f = tree.get(i->val(), &d);

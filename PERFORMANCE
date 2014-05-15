@@ -2,18 +2,21 @@
 Benchmark results.
 
 TL:DR:
-AVL is the fastest
-RedBlack is functionally the same speed, but find can only be slower, due to balance factor
-RRedblack (on simple mode) is slow ~13% slower, but uses less space.
+BTREE(arity 5) < AVL < REDBLACK < RREDBLACK 
 
-RRedblack also has two different algorithms "simple" (the one usually used for functional trees)
-and complex (the one usually used for C++ implementations).
-The simple implementation seems to be ~3% slower than the non-simple version. This means only 3% of the 13% above is due to the algorithm, the rest is the recursive/structural approach to implementation.
+BTree with arity of 5 is the fastest, beating AVL by ~20%.
+AVL is next, consistantly beating redblack by a couple percent.
+RedBlack is next, beating rredblack by ~10% due to implementation
+RRedblack is lowest, losing another 3% to RedBlack if using the slower balance algorithm
 
-Note: AVL has been improved further since this test, gaining another couple percent and making it a clear winner. Redblack had a very minor improvement, but not enough to matter.
+Note: 
+  BTree is the only one of these with internal memory allocation, and thus has a different API
+  AVL, and RedBlack have identical APIs
+  RRedBlack's API differs slightly due to lack of parent pointers, in this way it's simliar to
+  BTree (remove takes a key, not a node)
 
 --------------------------------------------------------------------
-Full Experiment:
+Full Experiment: (Redblack vs. RRedblack vs. AVL)
 
 Environment:
 This experiment was performed on a Dell XPS 12 convertable laptop/tablet with: Intel(R) Core(TM) i7-4500U CPU @ 1.80GHz, ubuntu desktop, gcc 4-8-1-10ubuntu9. Linux kernel 3-11.0-19-generic. CPU was in performance mode, and machine wasn't touched during tests. Other things were running, so this is anything but sanitary.
@@ -92,7 +95,7 @@ This implies that AVL and redblack are actually about equivelent - except that A
 Givne this, I would be inclined to use the AVL implementation as things stand. 
 
 ------------------------------------------------------------------------------
-Followup test
+Followup test (RRedBlack simple algorithm vs. faster algorithm)
 
 To isolate whether RRedBlack is slow due to algorithmic choice, I implemented the other algorithm. It now has a compile switch "SIMPLER_ALGORITHM" which switches it between the slightly more elegant algorithm, and the one more standard one used by RedBlack.
 
@@ -110,5 +113,20 @@ sys 0m0.320s
 As you can see, it is faster... but not much. This explains maybe 3% of the performance loss compared to RedBlack, but not the other 10%. The recursive implementation is simply slower - presumably due to lack of short-circuiting, and modification of the tree as we walk back up it.
 
 ------------------------------------------------------------------------------
+BTree vs. AVL tree
 
-Addendum
+ckbox:C++11$ g++ -O3 --std=c++11 btree_benchmark.cpp && time ./a.out && g++ -O3 --std=c++11 avl_benchmark.cpp && time ./a.out
+Begin BTree.h benchmark
+gets 20093205
+
+real  0m42.371s
+user  0m42.077s
+sys 0m0.315s
+Begin AVL.h benchmark
+gets 20093205
+
+real  0m51.720s
+user  0m51.357s
+sys 0m0.384s
+
+Note, BTW, that btree is *extrordinarilly* slow when compiled only O2. running some quick profiling this appears to be due to the accessors I wrote on the BTreeNode class for data and such. Basically, the abstraction costs, and until O3 the complier isn't stripping out those extra calls.

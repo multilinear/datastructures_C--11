@@ -34,18 +34,9 @@
 // expected to contain a pointer, an integer, or maybe 2 or 3 items at most
 // If you need to store something more complex, make T a class that contains
 // just a pointer to your more complex object
-//
-// Below are the requirements for T
-//
-// T must have a compare method on it like so:
-//static int compare(const Val_T *v1, const Val_T *v2) 
-// which should be analagous to v1 - v2
-//
-// T must have a flag_value method on it like so:
-//static T flag_value(void)
-// which should return a T which can be used as a flag value
-// for a simple pointer "nullptr" would work well.
-//
+
+// Below are the requirements for T, Val_T, C, and SIZE
+
 // T must have a valid, trivial, Copy() constructor:
 // Note that T will *move* in memory at times via the copy constructor,
 // so pointers to T cannot be used
@@ -56,9 +47,17 @@
 // which prints something for the element ("?" is find, but will make debugging harder)
 // I also suggest it be small and have no newlines
 
-// Val_T is simply whatever is returned by "T::val()", the point is for it to be easilly
+// Val_T is simply whatever is returned by "Val_T C::val(T)", the point is for it to be easilly
 // comparable, and small/cheap to toss around. An integral type of appropriate size for
 // your problem is probably what you want, though it can be anything.
+
+// C must have a compare method on it like so:
+// static int compare(const Val_T *v1, const Val_T *v2) 
+// which should be analagous to v1 - v2
+//
+// C must have a val method on it like so:
+// static Val_T val(T &v1) 
+// whith returns Val_T, that is whatever component of T is to be used for compare()
 
 // SIZE must be at least 5
 // if SIZE=4 then splitting the node creates an element of size 1. This gets
@@ -66,13 +65,11 @@
 // legal temporarilly. We want nodes to have at least 1 element in them (excepting root
 // which can transitionally be empty).
 
-template<typename T, typename Val_T, int SIZE>
+template<typename T, typename Val_T, typename C, int SIZE>
 class BTreeNode {
-  static_assert(std::is_same<decltype(std::declval<T>().val()), Val_T>(), "Please define a method Val_T val() method on T class");
-  static_assert(std::is_same<decltype(T::compare(std::declval<Val_T>(), std::declval<Val_T>())), int>(), "Please define a static method int compare(Val_T, Val_T) method on T class");
   private:
     T data[SIZE];
-    BTreeNode<T,Val_T,SIZE> *children[SIZE+1];
+    BTreeNode<T,Val_T,C,SIZE> *children[SIZE+1];
     size_t used;
   public:
     void print(void) {
@@ -85,7 +82,7 @@ class BTreeNode {
           printf("n");
         }
         printf(",");
-        data[i].print();
+        C::printT(data[i]);
         printf(",");
       }
       if(children[used]) {
@@ -95,7 +92,7 @@ class BTreeNode {
       }
       printf("]");
     }
-    BTreeNode<T,Val_T,SIZE>() {
+    BTreeNode<T,Val_T,C,SIZE>() {
       used = 0;
     }
     T get_data(size_t i) {
@@ -107,7 +104,7 @@ class BTreeNode {
       #endif
       return data[i];
     }
-    BTreeNode<T,Val_T,SIZE> *get_node(size_t i) {
+    BTreeNode<T,Val_T,C,SIZE> *get_node(size_t i) {
       #ifdef BTREE_DEBUG
       if (i >= used+1) {
         printf("i = %ld, used = %ld\n", i, used);
@@ -125,7 +122,7 @@ class BTreeNode {
       #endif
       data[i] = datum;
     }
-    void set_node(size_t i, BTreeNode<T,Val_T,SIZE> *n) {
+    void set_node(size_t i, BTreeNode<T,Val_T,C,SIZE> *n) {
       #ifdef BTREE_DEBUG
       if (i >= used+1) {
         printf("i = %ld, used = %ld\n", i, used);
@@ -152,7 +149,7 @@ class BTreeNode {
       // binary search
       size_t test = (s+l)/2; // rounds down
       while (s != test) {  
-        int c = T::compare(v, get_data(test).val());
+        int c = C::compare(v, C::val(get_data(test)));
         if (c > 0) { // v is larger
           s = test;
         } else if (c < 0) {
@@ -165,7 +162,7 @@ class BTreeNode {
       }
       if (s == 0) {
         // Outlier case, it might be *less* than s
-        int c = T::compare(v, get_data(s).val());
+        int c = C::compare(v, C::val(get_data(s)));
         if (c < 0) {
           return s; // pointer before first element
         } else if (c == 0) {
@@ -175,7 +172,7 @@ class BTreeNode {
       }
       if (l == used-1) {
         // Outlier case, it might be *greater* than l
-        int c = T::compare(v, get_data(l).val());
+        int c = C::compare(v, C::val(get_data(l)));
         if (c > 0) {
           return l+1; // pointer after last element
         } else if (c == 0) {
@@ -186,7 +183,7 @@ class BTreeNode {
       return s+1; // pointer after fist element
     }
     // Inserts a new datum in a node, with a child to it's right
-    void insert_right(size_t i, T datum, BTreeNode<T,Val_T,SIZE> *child) {
+    void insert_right(size_t i, T datum, BTreeNode<T,Val_T,C,SIZE> *child) {
       #ifdef BTREE_DEBUG
       if (i>used+1) {
         PANIC("Bad Index, index out of range");
@@ -205,7 +202,7 @@ class BTreeNode {
       set_node(i+1, child); 
     }
     // Inserts a new datum in a node, with a child to it's left
-    void insert_left(size_t i, T datum, BTreeNode<T,Val_T,SIZE> *child) {
+    void insert_left(size_t i, T datum, BTreeNode<T,Val_T,C,SIZE> *child) {
       #ifdef BTREE_DEBUG
       if (i>used+1) {
         PANIC("Bad Index, index out of range");
@@ -224,7 +221,7 @@ class BTreeNode {
       set_node(i, child); 
     }
     // Removes a datum from a node, along with the child to it's right
-    T remove_right(size_t i, BTreeNode<T,Val_T,SIZE> **pivot_child) {
+    T remove_right(size_t i, BTreeNode<T,Val_T,C,SIZE> **pivot_child) {
       T pivot = get_data(i);
       // get the pivot's right child
       *pivot_child = get_node(i+1);
@@ -235,7 +232,7 @@ class BTreeNode {
       return pivot;
     }
     // Removes a datum from a node, along with the child to it's left
-    T remove_left(size_t i, BTreeNode<T,Val_T,SIZE> **pivot_child) {
+    T remove_left(size_t i, BTreeNode<T,Val_T,C,SIZE> **pivot_child) {
       T pivot = get_data(i);
       // get the pivot's lect child
       *pivot_child = get_node(i);
@@ -247,7 +244,7 @@ class BTreeNode {
     }
     // split's a node, putting the right half of the node in right_n
     // returns the pivot datum (so it can be put in the parent)
-    T split(BTreeNode<T,Val_T,SIZE> *right_n) {
+    T split(BTreeNode<T,Val_T,C,SIZE> *right_n) {
       size_t pivot_i = (used-1)/2; // middle element for odd "used", lower of 2 middle for even "used"
       memcpy(right_n->data, &(data[pivot_i+1]), (used - pivot_i-1) * sizeof(T));
       memcpy(right_n->children, &(children[pivot_i+1]), (used - pivot_i) * sizeof(right_n));
@@ -256,7 +253,7 @@ class BTreeNode {
       return data[pivot_i];
     }
     // merge's this with right_n, using pivot as the dividing datum
-    void merge(T pivot, BTreeNode<T,Val_T,SIZE> *right_n) {
+    void merge(T pivot, BTreeNode<T,Val_T,C,SIZE> *right_n) {
       size_t old_used = used;
       used = used + right_n->used + 1;
       set_data(old_used, pivot);
@@ -265,17 +262,17 @@ class BTreeNode {
     }
 };
 
-template<typename T, typename Val_T, int SIZE>
+template<typename T, typename Val_T, typename C, int SIZE>
 class BTree {
-  static_assert(std::is_same<decltype(std::declval<T>().val()), Val_T>(), "Please define a method Val_T val() method on T class");
-  static_assert(std::is_same<decltype(T::compare(std::declval<Val_T>(), std::declval<Val_T>())), int>(), "Please define a static method int compare(Val_T, Val_T) method on T class");
+  static_assert(std::is_same<decltype(C::compare(std::declval<Val_T>(), std::declval<Val_T>())), int>(), "Please define a static method int compare(Val_T, Val_T) method on C class");
+  static_assert(std::is_same<decltype(C::val(std::declval<T>())), Val_T>(), "Please define a static method Val_T val(T) method on C class");
   private:
-    BTreeNode<T,Val_T,SIZE> *root;
-    Val_T* Check(BTreeNode<T,Val_T,SIZE> *n, Val_T *prev);
-    bool maybe_split(BTreeNode<T,Val_T,SIZE> *parent, BTreeNode<T,Val_T,SIZE> *n, size_t i);
-    bool maybe_merge(BTreeNode<T,Val_T,SIZE> *parent, size_t i);
-    std::pair<Val_T,Val_T> _check(BTreeNode<T,Val_T,SIZE> *n);
-    void _print(BTreeNode<T,Val_T,SIZE> *n);
+    BTreeNode<T,Val_T,C,SIZE> *root;
+    Val_T* Check(BTreeNode<T,Val_T,C,SIZE> *n, Val_T *prev);
+    bool maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTreeNode<T,Val_T,C,SIZE> *n, size_t i);
+    bool maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t i);
+    std::pair<Val_T,Val_T> _check(BTreeNode<T,Val_T,C,SIZE> *n);
+    void _print(BTreeNode<T,Val_T,C,SIZE> *n);
   public:
     BTree();
     ~BTree();
@@ -287,20 +284,20 @@ class BTree {
     bool isempty(void);
 };
 
-template<typename T, typename Val_T, int SIZE>
-BTree<T,Val_T,SIZE>::BTree() {
+template<typename T, typename Val_T, typename C, int SIZE>
+BTree<T,Val_T,C,SIZE>::BTree() {
   root = nullptr;
 }
 
-template<typename T, typename Val_T, int SIZE>
-BTree<T,Val_T,SIZE>::~BTree() {
+template<typename T, typename Val_T, typename C, int SIZE>
+BTree<T,Val_T,C,SIZE>::~BTree() {
   if (!isempty()) {
     PANIC("Tried to destroy non-empty tree");
   }
 }
 
-template<typename T, typename Val_T, int SIZE>
-bool BTree<T,Val_T,SIZE>::get(Val_T val, T *result) {
+template<typename T, typename Val_T, typename C, int SIZE>
+bool BTree<T,Val_T,C,SIZE>::get(Val_T val, T *result) {
   PRINT("BTree Get, begins\n");
   PRINT_TREE();
   CHECK();
@@ -323,26 +320,26 @@ bool BTree<T,Val_T,SIZE>::get(Val_T val, T *result) {
   return false;
 }
 
-template<typename T, typename Val_T, int SIZE>
-bool BTree<T,Val_T,SIZE>::isempty(void) {
+template<typename T, typename Val_T, typename C, int SIZE>
+bool BTree<T,Val_T,C,SIZE>::isempty(void) {
   // it is possible for root to have only one child
   // it'll resolve as soon as we run a remove or something, but
   // it means we have to check it's child for nullptr
   return root == nullptr || root->get_node(0) == nullptr;
 }
 
-template<typename T, typename Val_T, int SIZE>
-void BTree<T,Val_T,SIZE>::insert(T datum) {
+template<typename T, typename Val_T, typename C, int SIZE>
+void BTree<T,Val_T,C,SIZE>::insert(T datum) {
   PRINT("BTree Insert, begins\n");
   #ifdef BTREE_DEBUG_VERBOSE
   printf("inserting: ");
-  datum.print();
+  C::printT(datum);
   printf("\n");
   #endif
   PRINT_TREE();
   CHECK();
   auto *n = root;
-  BTreeNode<T,Val_T,SIZE> *parent = nullptr;
+  BTreeNode<T,Val_T,C,SIZE> *parent = nullptr;
   bool found = false;
   size_t i = 0;
 
@@ -353,13 +350,13 @@ void BTree<T,Val_T,SIZE>::insert(T datum) {
   }
 
   while(n) {
-    i = n->find(datum.val(), &found);
+    i = n->find(C::val(datum), &found);
     if (found) {
       PANIC("Element is already in tree");
     }
     if (maybe_split(n, n->get_node(i), i)) {
       // TODO(mbrewer): we can probably do better than re-searching
-      i = n->find(datum.val(), &found);
+      i = n->find(C::val(datum), &found);
       if (found) {
         PANIC("Element is already in tree");
       }
@@ -369,7 +366,7 @@ void BTree<T,Val_T,SIZE>::insert(T datum) {
   }
   // empty-tree case
   if (!parent) {
-    root = new BTreeNode<T,Val_T,SIZE>();
+    root = new BTreeNode<T,Val_T,C,SIZE>();
     root->insert_right(0, datum, nullptr);
     PRINT("BTree Insert, done\n");
     PRINT_TREE();
@@ -388,12 +385,12 @@ void BTree<T,Val_T,SIZE>::insert(T datum) {
   CHECK();
 }
 
-template<typename T, typename Val_T, int SIZE>
-bool BTree<T,Val_T,SIZE>::remove(Val_T v, T *result) {
+template<typename T, typename Val_T, typename C, int SIZE>
+bool BTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
   PRINT("BTree Remove, begins\n");
   PRINT_TREE();
   CHECK();
-  BTreeNode<T,Val_T,SIZE> *parent = nullptr;
+  BTreeNode<T,Val_T,C,SIZE> *parent = nullptr;
   auto *n = root;
   bool found;
   // if the root node is empty (except one child), delete it
@@ -412,7 +409,7 @@ bool BTree<T,Val_T,SIZE>::remove(Val_T v, T *result) {
       // deleting could migrate when/if we go to get a replacement element.
       // To simplify logic we check for a merge now, and re-search
       // for the element in case it moved
-      BTreeNode<T,Val_T,SIZE> *left_child = n->get_node(i);
+      BTreeNode<T,Val_T,C,SIZE> *left_child = n->get_node(i);
       if (left_child && maybe_merge(n, i)) {
         found = false;
         continue;
@@ -439,7 +436,7 @@ bool BTree<T,Val_T,SIZE>::remove(Val_T v, T *result) {
   *result = n->get_data(i);
   if (n->get_node(i) == nullptr){
     // If we're a leaf, we can just remove the datum
-    BTreeNode<T,Val_T,SIZE> *junk;  
+    BTreeNode<T,Val_T,C,SIZE> *junk;  
     n->remove_right(i, &junk); 
     PRINT("BTree Remove, complete\n");
     PRINT_TREE();
@@ -450,14 +447,14 @@ bool BTree<T,Val_T,SIZE>::remove(Val_T v, T *result) {
   // down into that node. 
 
   // If we're an inner node, we have to find a replacement datum
-  BTreeNode<T,Val_T,SIZE> *r;
+  BTreeNode<T,Val_T,C,SIZE> *r;
   r = n->get_node(i);
   // we've already checked merge on n's left child
   while (r->get_node(r->get_used())) { // walk down the right side of n's left child
     maybe_merge(r, r->get_used());
     r = r->get_node(r->get_used()); 
   }
-  BTreeNode<T,Val_T,SIZE> *junk;  
+  BTreeNode<T,Val_T,C,SIZE> *junk;  
   T replacement = r->remove_right(r->get_used()-1, &junk);
   n->set_data(i, replacement); 
   PRINT("BTree Remove, complete\n");
@@ -466,8 +463,8 @@ bool BTree<T,Val_T,SIZE>::remove(Val_T v, T *result) {
   return true; 
 }
 
-template<typename T, typename Val_T, int SIZE>
-bool BTree<T,Val_T,SIZE>::maybe_split(BTreeNode<T,Val_T,SIZE> *parent, BTreeNode<T,Val_T,SIZE> *n, size_t i){
+template<typename T, typename Val_T, typename C, int SIZE>
+bool BTree<T,Val_T,C,SIZE>::maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTreeNode<T,Val_T,C,SIZE> *n, size_t i){
   // We need to always have one spare element, if so, we're good!
   if (!n || n->get_used() < SIZE) {
     return false;
@@ -475,11 +472,11 @@ bool BTree<T,Val_T,SIZE>::maybe_split(BTreeNode<T,Val_T,SIZE> *parent, BTreeNode
   PRINT("Split begin\n");
   PRINT_TREE();
   CHECK();
-  auto right_n = new BTreeNode<T,Val_T,SIZE>();
+  auto right_n = new BTreeNode<T,Val_T,C,SIZE>();
   T pivot = n->split(right_n);
-  auto new_n = new BTreeNode<T,Val_T,SIZE>();
+  auto new_n = new BTreeNode<T,Val_T,C,SIZE>();
   if (!parent) {
-    parent = new BTreeNode<T,Val_T,SIZE>();
+    parent = new BTreeNode<T,Val_T,C,SIZE>();
     root = parent;
     parent->set_node(0, n);
     i = 0;
@@ -491,11 +488,11 @@ bool BTree<T,Val_T,SIZE>::maybe_split(BTreeNode<T,Val_T,SIZE> *parent, BTreeNode
   return true;  
 }
 
-template<typename T, typename Val_T, int SIZE>
-bool BTree<T,Val_T,SIZE>::maybe_merge(BTreeNode<T,Val_T,SIZE> *parent, size_t i){
+template<typename T, typename Val_T, typename C, int SIZE>
+bool BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t i){
   PRINT("Maybe merge\n");
   CHECK();
-  BTreeNode<T,Val_T,SIZE> *n = parent->get_node(i);
+  BTreeNode<T,Val_T,C,SIZE> *n = parent->get_node(i);
   if (!n || n->get_used() > (SIZE-1)/2-1) {
     return false;
   }
@@ -507,7 +504,7 @@ bool BTree<T,Val_T,SIZE>::maybe_merge(BTreeNode<T,Val_T,SIZE> *parent, size_t i)
       PRINT("stealing from node to left\n");
       // sibling is too large to join with, so rotate instead
       // Rotate right
-      BTreeNode<T,Val_T,SIZE> *sibling_child;
+      BTreeNode<T,Val_T,C,SIZE> *sibling_child;
       T sibling_datum = sibling->remove_right(sibling->get_used()-1, &sibling_child);
       T old_pivot = parent->get_data(i-1); 
       parent->set_data(i-1, sibling_datum); 
@@ -517,7 +514,7 @@ bool BTree<T,Val_T,SIZE>::maybe_merge(BTreeNode<T,Val_T,SIZE> *parent, size_t i)
       return true;
     }
     PRINT("merging with node to left\n");
-    BTreeNode<T,Val_T,SIZE> *junk;
+    BTreeNode<T,Val_T,C,SIZE> *junk;
     T pivot = parent->remove_right(i-1, &junk); // remove the element left of n, and n
     sibling->merge(pivot, n);
     delete n;
@@ -532,7 +529,7 @@ bool BTree<T,Val_T,SIZE>::maybe_merge(BTreeNode<T,Val_T,SIZE> *parent, size_t i)
     CHECK();
     // sibling is too large to join with, so we rotate instead
     // Rotate left 
-    BTreeNode<T,Val_T,SIZE> *sibling_child;
+    BTreeNode<T,Val_T,C,SIZE> *sibling_child;
     T sibling_datum = sibling->remove_left(0, &sibling_child);
     T old_pivot = parent->get_data(i); 
     parent->set_data(i, sibling_datum); 
@@ -542,7 +539,7 @@ bool BTree<T,Val_T,SIZE>::maybe_merge(BTreeNode<T,Val_T,SIZE> *parent, size_t i)
     return true;
   }
   PRINT("merging with node to right\n");
-  BTreeNode<T,Val_T,SIZE> *junk;
+  BTreeNode<T,Val_T,C,SIZE> *junk;
   T pivot = parent->remove_right(i, &junk); // remove the element right of n, and it's right child
   n->merge(pivot, sibling);
   delete sibling;
@@ -551,14 +548,14 @@ bool BTree<T,Val_T,SIZE>::maybe_merge(BTreeNode<T,Val_T,SIZE> *parent, size_t i)
   return true;
 }
 
-template<typename T, typename Val_T, int SIZE>
-void BTree<T,Val_T,SIZE>::print(void) {
+template<typename T, typename Val_T, typename C, int SIZE>
+void BTree<T,Val_T,C,SIZE>::print(void) {
   _print(root);
   printf("\n");
 }
  
-template<typename T, typename Val_T, int SIZE>
-void BTree<T,Val_T,SIZE>::_print(BTreeNode<T,Val_T,SIZE> *n) {
+template<typename T, typename Val_T, typename C, int SIZE>
+void BTree<T,Val_T,C,SIZE>::_print(BTreeNode<T,Val_T,C,SIZE> *n) {
   if (!n) {
     printf("n");
     return;
@@ -569,22 +566,22 @@ void BTree<T,Val_T,SIZE>::_print(BTreeNode<T,Val_T,SIZE> *n) {
     _print(n->get_node(i));
     printf(",");
     // we violate our object interface here... *shrug*
-    n->get_data(i).print();
+    C::printT(n->get_data(i));
     printf(",");
   }
   _print(n->get_node(n->get_used()));
   printf("]");
 }
  
-template<typename T, typename Val_T, int SIZE>
-void BTree<T,Val_T,SIZE>::check() {
+template<typename T, typename Val_T, typename C, int SIZE>
+void BTree<T,Val_T,C,SIZE>::check() {
   if (root) {
     _check(root);  
   }
 }
 
-template<typename T, typename Val_T, int SIZE>
-std::pair<Val_T,Val_T> BTree<T,Val_T,SIZE>::_check(BTreeNode<T,Val_T,SIZE> *n) {
+template<typename T, typename Val_T, typename C, int SIZE>
+std::pair<Val_T,Val_T> BTree<T,Val_T,C,SIZE>::_check(BTreeNode<T,Val_T,C,SIZE> *n) {
   if (n != root && n->get_used() < (SIZE-1)/2-1) {
     printf("Element: ");
     n->print();
@@ -612,12 +609,12 @@ std::pair<Val_T,Val_T> BTree<T,Val_T,SIZE>::_check(BTreeNode<T,Val_T,SIZE> *n) {
         minmax_initialized=true;
       } else {
         // track the smallest and largest
-        c = T::compare(range.first, min);
+        c = C::compare(range.first, min);
         if (c < 0) {
           PANIC("new min is smaller than old min");
           // notionally min=range.first, but we already panic-ed
         }
-        c = T::compare(range.second, max);
+        c = C::compare(range.second, max);
         if (c < 0) {
           printf("Node: ");
           n->get_node(i)->print();
@@ -632,14 +629,14 @@ std::pair<Val_T,Val_T> BTree<T,Val_T,SIZE>::_check(BTreeNode<T,Val_T,SIZE> *n) {
       }
     }
     if (i != n->get_used()) { 
-      Val_T v = n->get_data(i).val();
+      Val_T v = C::val(n->get_data(i));
       if (!minmax_initialized){
         min = v;
         max = v;
         minmax_initialized=true;
       }
       // track the smallest and largest
-      c = T::compare(v, min);
+      c = C::compare(v, min);
       if (c < 0) {
         printf("Node: ");
         n->print();
@@ -647,7 +644,7 @@ std::pair<Val_T,Val_T> BTree<T,Val_T,SIZE>::_check(BTreeNode<T,Val_T,SIZE> *n) {
         PANIC("new min is smaller than old min");
         // notionally min=range.first, but we already panic-ed
       }
-      c = T::compare(v, max);
+      c = C::compare(v, max);
       if (c < 0) {
         printf("Node: ");
         n->print();
