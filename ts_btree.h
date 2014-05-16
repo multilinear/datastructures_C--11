@@ -38,6 +38,12 @@
  * Threadsafety:
  *   this is threadsafe, based on locking semantics
  *
+ *   Note that we use standard mutices for locking. Reader/writer mutices
+ *   could be more performant for read-heavy workloads with high-threading
+ *   and large trees. shared_mutex isn't in the standard yet.
+ *   I considered writing my own, but to be sure it was worthwhile would require
+ *   extensive testing, so I'm going with the standard committe for now.
+ *
  */
 
 #include <cstring>

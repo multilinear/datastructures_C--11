@@ -28,36 +28,38 @@ class ListNode_base {
 
 template<typename Node_T> class List{
   private:
-    Node_T* head;
+    Node_T* _head;
     Node_T* tail;
   public:
     List();
     ~List();
+    bool isempty(void);
     void enqueue(Node_T*);
     Node_T* dequeue();
+    Node_T* peek(void);
 };
 
 template<typename Node_T>
 List<Node_T>::List(){
-  head = nullptr;
+  _head = nullptr;
   tail = nullptr;
 }
 
 template<typename Node_T>
 List<Node_T>::~List(){
-  if (head != nullptr || tail != nullptr){
+  if (_head != nullptr || tail != nullptr){
     PANIC("List destroyed while not empty");
   }
 }
 
 template<typename Node_T>
 void List<Node_T>::enqueue(Node_T* el){
-  auto tmp = head;
+  auto tmp = _head;
   // We do this here rather than in a constructor as it saves setting it to
   // NULL on dequeue, which we'd have to do to ensure re-enqueuing worked.
   el->next = nullptr;
   if (tail == nullptr) {
-    head = el;
+    _head = el;
     tail = el;
     return;
   }
@@ -67,15 +69,25 @@ void List<Node_T>::enqueue(Node_T* el){
 
 template<typename Node_T>
 Node_T* List<Node_T>::dequeue(){
-  auto el = head;
-  if (head == nullptr) {
+  auto el = _head;
+  if (_head == nullptr) {
     return nullptr;
   }
-  head = head->next;
-  if (head == nullptr) {
+  _head = _head->next;
+  if (_head == nullptr) {
     tail = nullptr;
   }
   return el;
+}
+
+template<typename Node_T>
+bool List<Node_T>::isempty(void) {
+  return _head == nullptr;
+}
+
+template<typename Node_T>
+Node_T *List<Node_T>::peek(void) {
+  return _head; 
 }
 
 #endif

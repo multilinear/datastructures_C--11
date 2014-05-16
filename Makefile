@@ -19,7 +19,7 @@ ringbuffer_unittest: *.h *.cpp ; g++ --std=c++11 ringbuffer_unittest.cpp -o ring
 
 trivialdict_unittest: *.h *.cpp ; g++ -O3 --std=c++11 trivialdict_unittest.cpp -o trivialdict_unittest
 
-ts_btree_unittest: *.h *.cpp ; g++ -O3 --std=c++11 ts_btree_unittest.cpp -o ts_btree_unittest
+ts_btree_unittest: *.h *.cpp ; g++ -O3 --std=c++11 -pthread ts_btree_unittest.cpp -o ts_btree_unittest
 
 ts_ringbuffer_unittest: *.h *.cpp ; g++ --std=c++11 -pthread ts_ringbuffer_unittest.cpp -o ts_ringbuffer_unittest
 
