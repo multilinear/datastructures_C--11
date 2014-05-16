@@ -40,6 +40,8 @@
 #ifndef BTREE_H
 #define BTREE_H
 
+//#define BTREE_DEBUG_VERBOSE
+
 // Define this to see tons of detail about what the tree is doing
 #ifdef BTREE_DEBUG_VERBOSE
 #define PRINT(msg) printf(msg)
@@ -298,7 +300,7 @@ class BTree {
     BTreeNode<T,Val_T,C,SIZE> *root;
     Val_T* Check(BTreeNode<T,Val_T,C,SIZE> *n, Val_T *prev);
     bool maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTreeNode<T,Val_T,C,SIZE> *n, size_t i);
-    bool maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t i);
+    int maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t i);
     std::pair<Val_T,Val_T> _check(BTreeNode<T,Val_T,C,SIZE> *n);
     void _print(BTreeNode<T,Val_T,C,SIZE> *n);
   public:
@@ -371,10 +373,19 @@ void BTree<T,Val_T,C,SIZE>::insert(T datum) {
   bool found = false;
   size_t i = 0;
 
-  // Check root
-  if (maybe_split(nullptr, n, i)) {
-    // if we split, root changed
-    n = root;
+  // Root splits look a little different, so seperate them out
+  if (root && root->get_used() == SIZE) {
+    auto right_n = new BTreeNode<T,Val_T,C,SIZE>();
+    T pivot = n->split(right_n);
+    auto new_n = new BTreeNode<T,Val_T,C,SIZE>();
+    root = new BTreeNode<T,Val_T,C,SIZE>();
+    root->set_node(0, n);
+    root->insert_right(0, pivot, right_n);
+    int c = C::compare(C::val(datum), C::val(root->get_data(i)));
+    if (c > 0) { 
+      i = 1;
+    }
+    n = root->get_node(i);
   }
 
   while(n) {
@@ -383,11 +394,14 @@ void BTree<T,Val_T,C,SIZE>::insert(T datum) {
       PANIC("Element is already in tree");
     }
     if (maybe_split(n, n->get_node(i), i)) {
-      // TODO(mbrewer): we can probably do better than re-searching
-      i = n->find(C::val(datum), &found);
-      if (found) {
-        PANIC("Element is already in tree");
+      // Rather than find, we can just check this one case
+      // Note that when we split, we always add the new node to our right
+      int c = C::compare(C::val(datum), C::val(n->get_data(i)));
+      if (c > 0) { 
+        i++;
       }
+      // brute force and ignorance method, solution above is faster
+      //i = n->find(C::val(datum), &found);
     }
     parent = n;
     n = n->get_node(i);
@@ -445,11 +459,17 @@ bool BTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
       // Now we're safe! the element won't suddenly move on us.
       break; 
     }
-    // first merge check is root's child, root never gets merged anyway
-    if (maybe_merge(n, i)) {
-      // TODO(mbrewer): we may not have to do the whole search here
-      // note though that rotations can change things to
-      i = n->find(v, &found);
+    // first merge check is root's child, root can't merge anyway
+    //printf("pre-merge i=%ld used=%ld\n", i, n->get_used());
+    if (maybe_merge(n, i) == 2) {
+      // If maybe_merge returns 1, we're still in the correct node
+      // this is the steeling and merge-right cases
+      // if we merge left it that node gets deleted, so we need to
+      // go to the node it merged with (which is one left)
+      i--;
+  
+      // this is the brute force and ignorance method
+      //i = n->find(v, &found);
     }
     n = n->get_node(i);
   }
@@ -503,12 +523,6 @@ bool BTree<T,Val_T,C,SIZE>::maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTree
   auto right_n = new BTreeNode<T,Val_T,C,SIZE>();
   T pivot = n->split(right_n);
   auto new_n = new BTreeNode<T,Val_T,C,SIZE>();
-  if (!parent) {
-    parent = new BTreeNode<T,Val_T,C,SIZE>();
-    root = parent;
-    parent->set_node(0, n);
-    i = 0;
-  }
   parent->insert_right(i, pivot, right_n);
   PRINT("Split end\n");
   PRINT_TREE();
@@ -516,13 +530,16 @@ bool BTree<T,Val_T,C,SIZE>::maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTree
   return true;  
 }
 
+// This returns 0 if nothing changed, nonzero if something did change.
+// 1 is returned for events that can only grow parent->get_node(i)
+// 2 is returned for events that shrink (actually, delete) parent->get_node(i)
 template<typename T, typename Val_T, typename C, int SIZE>
-bool BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t i){
+int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t i){
   PRINT("Maybe merge\n");
   CHECK();
   BTreeNode<T,Val_T,C,SIZE> *n = parent->get_node(i);
   if (!n || n->get_used() > (SIZE-1)/2-1) {
-    return false;
+    return 0;
   }
   // now we need to find someone to merge with 
   // check if there's a node to our left
@@ -539,7 +556,7 @@ bool BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_
       n->insert_left(0, old_pivot, sibling_child);
       PRINT_TREE();
       CHECK();
-      return true;
+      return 1;
     }
     PRINT("merging with node to left\n");
     BTreeNode<T,Val_T,C,SIZE> *junk;
@@ -548,7 +565,7 @@ bool BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_
     delete n;
     PRINT_TREE();
     CHECK();
-    return true;
+    return 2;
   }
   // if there's nothing to the left, there must be something to the right
   auto sibling = parent->get_node(i+1);
@@ -564,7 +581,7 @@ bool BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_
     n->insert_right(n->get_used(), old_pivot, sibling_child);
     PRINT_TREE();
     CHECK();
-    return true;
+    return 1;
   }
   PRINT("merging with node to right\n");
   BTreeNode<T,Val_T,C,SIZE> *junk;
@@ -573,7 +590,7 @@ bool BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_
   delete sibling;
   PRINT_TREE();
   CHECK();
-  return true;
+  return 1;
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
