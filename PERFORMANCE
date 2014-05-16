@@ -15,7 +15,14 @@ Note:
   RRedBlack's API differs slightly due to lack of parent pointers, in this way it's simliar to
   BTree (remove takes a key, not a node)
 
-Note that a lot of BTree's performance is probably due to avoiding malloc. Depending on workload, if you already *had* structures and had to copy data in, BTree would likely come out slower than AVL. Similarly, f you have an extremely fast malloc that might change the equation.
+Additionally:
+  BTree is not faster due to fewer mallocs, the affect lies elsewhere. Thus even if you need to malloc
+  for the BTree and not for AVL, the BTree may still be a win.
+  That said, AVL is an in-place structure, never moving your data around, so that has it's own utility
+  it also allows external allocation. So both are definitely useful
+
+On experimental results:
+  I only show one run here, tests were run several times and the results were surprisingly stable. Variance was relatively low. One reason I run the tests together like I do below is because when they do vary, both generally vary together. Note that for some tests I preloaded the CPU beforehand in case that mattered, I saw little difference so stopped bothering on later tests.
 
 --------------------------------------------------------------------
 Full Experiment: (Redblack vs. RRedblack vs. AVL)
@@ -132,3 +139,21 @@ user  0m51.357s
 sys 0m0.384s
 
 Note, BTW, that btree is *extrordinarilly* slow when compiled only O2. running some quick profiling this appears to be due to the accessors I wrote on the BTreeNode class for data and such. Basically, the abstraction costs, and until O3 the complier isn't stripping out those extra calls.
+
+------------------------------------------------------------------------------
+BTree vs. AVL tree (AVL only malloc's once)
+
+real  0m49.577s
+user  0m49.293s
+sys 0m0.300s
+Begin BTree.h benchmark
+gets 20093205
+
+real  0m41.744s
+user  0m41.433s
+sys 0m0.328s
+
+
+Here we see ~15% speed difference, even with the AVL tree not having to allocate at all. This clearly says that the btree is faster under most circumstances.
+
+
