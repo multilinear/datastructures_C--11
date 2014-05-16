@@ -1,6 +1,11 @@
 /*
  * Copyright: Matthew Brewer (mbrewer@smalladventures.net) 2014-05-12
  *
+ * This is the threadsafe version of the B-tree implementation
+ * Because it uses lazy split/merge all operations only go *downwards* on the
+ * tree. This means we can do simple lock-handoff as we walk down the tree.
+ * Thus this tree allows parallel access, modify and read at the same time.
+ *
  * This is an implementation of a binary B-tree, with lazy split/merge.
  * If SIZE is set to 5, this implements a 2-3-4 tree with lazy split/merge.
  *
@@ -31,22 +36,23 @@
  * Also, if T is complex read the requirements below very carefully.
  *
  * Threadsafety:
- *   thread compatible
+ *   this is threadsafe, based on locking semantics
  *
  */
 
 #include <cstring>
+#include <mutex>
 #include <stdio.h>
 #include <utility>
 #include "panic.h"
 
-#ifndef BTREE_H
-#define BTREE_H
+#ifndef TSBTREE_H
+#define TSBTREE_H
 
-//#define BTREE_DEBUG_VERBOSE
+//#define TSBTREE_DEBUG_VERBOSE
 
 // Define this to see tons of detail about what the tree is doing
-#ifdef BTREE_DEBUG_VERBOSE
+#ifdef TSBTREE_DEBUG_VERBOSE
 #define PRINT(msg) printf(msg)
 #define PRINT_TREE() print();
 #else
@@ -56,8 +62,8 @@
 
 // Define this to implement some expensive consistancy checking, this is great
 // for debugging code that uses the tree as well.
-// This checks all of the BTREE invariants before and after ever oparation.
-#ifdef BTREE_DEBUG
+// This checks all of the TSBTREE invariants before and after ever oparation.
+#ifdef TSBTREE_DEBUG
 #define CHECK() check()
 #else
 #define CHECK()
@@ -99,12 +105,13 @@
 // which can transitionally be empty).
 
 template<typename T, typename Val_T, typename C, int SIZE>
-class BTreeNode {
+class TSBTreeNode {
   private:
     T data[SIZE];
-    BTreeNode<T,Val_T,C,SIZE> *children[SIZE+1];
+    TSBTreeNode<T,Val_T,C,SIZE> *children[SIZE+1];
     size_t used;
   public:
+    std::mutex m;
     void print(void) {
       printf("[");
       size_t i;
@@ -112,7 +119,8 @@ class BTreeNode {
         if(children[i]) {
           printf("c");
         } else {
-          printf("n"); }
+          printf("n");
+        }
         printf(",");
         C::printT(data[i]);
         printf(",");
@@ -124,11 +132,11 @@ class BTreeNode {
       }
       printf("]");
     }
-    BTreeNode<T,Val_T,C,SIZE>() {
+    TSBTreeNode<T,Val_T,C,SIZE>() {
       used = 0;
     }
     T get_data(size_t i) {
-      #ifdef BTREE_DEBUG
+      #ifdef TSBTREE_DEBUG
       if (i >= used) {
         printf("i = %ld, used = %ld\n", i, used);
         PANIC("Bad Index, datum is empty");
@@ -136,8 +144,8 @@ class BTreeNode {
       #endif
       return data[i];
     }
-    BTreeNode<T,Val_T,C,SIZE> *get_node(size_t i) {
-      #ifdef BTREE_DEBUG
+    TSBTreeNode<T,Val_T,C,SIZE> *get_node(size_t i) {
+      #ifdef TSBTREE_DEBUG
       if (i >= used+1) {
         printf("i = %ld, used = %ld\n", i, used);
         PANIC("Bad Index, child is empty");
@@ -146,7 +154,7 @@ class BTreeNode {
       return children[i];
     }
     void set_data(size_t i, T datum) {
-      #ifdef BTREE_DEBUG
+      #ifdef TSBTREE_DEBUG
       if (i >= used) {
         printf("i = %ld, used = %ld\n", i, used);
         PANIC("Bad Index, datum is empty");
@@ -154,8 +162,8 @@ class BTreeNode {
       #endif
       data[i] = datum;
     }
-    void set_node(size_t i, BTreeNode<T,Val_T,C,SIZE> *n) {
-      #ifdef BTREE_DEBUG
+    void set_node(size_t i, TSBTreeNode<T,Val_T,C,SIZE> *n) {
+      #ifdef TSBTREE_DEBUG
       if (i >= used+1) {
         printf("i = %ld, used = %ld\n", i, used);
         PANIC("Bad Index, child is empty");
@@ -215,8 +223,8 @@ class BTreeNode {
       return s+1; // pointer after fist element
     }
     // Inserts a new datum in a node, with a child to it's right
-    void insert_right(size_t i, T datum, BTreeNode<T,Val_T,C,SIZE> *child) {
-      #ifdef BTREE_DEBUG
+    void insert_right(size_t i, T datum, TSBTreeNode<T,Val_T,C,SIZE> *child) {
+      #ifdef TSBTREE_DEBUG
       if (i>used+1) {
         PANIC("Bad Index, index out of range");
       } 
@@ -234,8 +242,8 @@ class BTreeNode {
       set_node(i+1, child); 
     }
     // Inserts a new datum in a node, with a child to it's left
-    void insert_left(size_t i, T datum, BTreeNode<T,Val_T,C,SIZE> *child) {
-      #ifdef BTREE_DEBUG
+    void insert_left(size_t i, T datum, TSBTreeNode<T,Val_T,C,SIZE> *child) {
+      #ifdef TSBTREE_DEBUG
       if (i>used+1) {
         PANIC("Bad Index, index out of range");
       } 
@@ -253,7 +261,7 @@ class BTreeNode {
       set_node(i, child); 
     }
     // Removes a datum from a node, along with the child to it's right
-    T remove_right(size_t i, BTreeNode<T,Val_T,C,SIZE> **pivot_child) {
+    T remove_right(size_t i, TSBTreeNode<T,Val_T,C,SIZE> **pivot_child) {
       T pivot = get_data(i);
       // get the pivot's right child
       *pivot_child = get_node(i+1);
@@ -264,7 +272,7 @@ class BTreeNode {
       return pivot;
     }
     // Removes a datum from a node, along with the child to it's left
-    T remove_left(size_t i, BTreeNode<T,Val_T,C,SIZE> **pivot_child) {
+    T remove_left(size_t i, TSBTreeNode<T,Val_T,C,SIZE> **pivot_child) {
       T pivot = get_data(i);
       // get the pivot's lect child
       *pivot_child = get_node(i);
@@ -276,7 +284,7 @@ class BTreeNode {
     }
     // split's a node, putting the right half of the node in right_n
     // returns the pivot datum (so it can be put in the parent)
-    T split(BTreeNode<T,Val_T,C,SIZE> *right_n) {
+    T split(TSBTreeNode<T,Val_T,C,SIZE> *right_n) {
       size_t pivot_i = (used-1)/2; // middle element for odd "used", lower of 2 middle for even "used"
       memcpy(right_n->data, &(data[pivot_i+1]), (used - pivot_i-1) * sizeof(T));
       memcpy(right_n->children, &(children[pivot_i+1]), (used - pivot_i) * sizeof(right_n));
@@ -285,7 +293,7 @@ class BTreeNode {
       return data[pivot_i];
     }
     // merge's this with right_n, using pivot as the dividing datum
-    void merge(T pivot, BTreeNode<T,Val_T,C,SIZE> *right_n) {
+    void merge(T pivot, TSBTreeNode<T,Val_T,C,SIZE> *right_n) {
       size_t old_used = used;
       used = used + right_n->used + 1;
       set_data(old_used, pivot);
@@ -295,19 +303,20 @@ class BTreeNode {
 };
 
 template<typename T, typename Val_T, typename C, int SIZE>
-class BTree {
+class TSBTree {
   static_assert(std::is_same<decltype(C::compare(std::declval<Val_T>(), std::declval<Val_T>())), int>(), "Please define a static method int compare(Val_T, Val_T) method on C class");
   static_assert(std::is_same<decltype(C::val(std::declval<T>())), Val_T>(), "Please define a static method Val_T val(T) method on C class");
   private:
-    BTreeNode<T,Val_T,C,SIZE> *root;
-    Val_T* Check(BTreeNode<T,Val_T,C,SIZE> *n, Val_T *prev);
-    bool maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTreeNode<T,Val_T,C,SIZE> *n, size_t i);
-    int maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t i);
-    std::pair<Val_T,Val_T> _check(BTreeNode<T,Val_T,C,SIZE> *n);
-    void _print(BTreeNode<T,Val_T,C,SIZE> *n);
+    TSBTreeNode<T,Val_T,C,SIZE> *root;
+    Val_T* Check(TSBTreeNode<T,Val_T,C,SIZE> *n, Val_T *prev);
+    bool maybe_split(TSBTreeNode<T,Val_T,C,SIZE> *parent, TSBTreeNode<T,Val_T,C,SIZE> *n, size_t i);
+    int maybe_merge(TSBTreeNode<T,Val_T,C,SIZE> *parent, size_t i);
+    std::pair<Val_T,Val_T> _check(TSBTreeNode<T,Val_T,C,SIZE> *n);
+    void _print(TSBTreeNode<T,Val_T,C,SIZE> *n);
+    std::mutex m; // used for changing root
   public:
-    BTree();
-    ~BTree();
+    TSBTree();
+    ~TSBTree();
     bool get(Val_T val, T* result);
     bool insert(T);
     bool remove(Val_T val, T* result);
@@ -317,70 +326,96 @@ class BTree {
 };
 
 template<typename T, typename Val_T, typename C, int SIZE>
-BTree<T,Val_T,C,SIZE>::BTree() {
+TSBTree<T,Val_T,C,SIZE>::TSBTree() {
   root = nullptr;
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-BTree<T,Val_T,C,SIZE>::~BTree() {
+TSBTree<T,Val_T,C,SIZE>::~TSBTree() {
   if (!isempty()) {
     PANIC("Tried to destroy non-empty tree");
   }
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-bool BTree<T,Val_T,C,SIZE>::get(Val_T val, T *result) {
-  PRINT("BTree Get, begins\n");
+bool TSBTree<T,Val_T,C,SIZE>::get(Val_T val, T *result) {
+  PRINT("TSBTree Get, begins\n");
   PRINT_TREE();
   CHECK();
+  m.lock();
   auto *n = root;
+  std::mutex *lastm = &m; // Note that we hold this until we lock root's *child*
   bool found;
   while(n) {
     size_t i = n->find(val, &found);
     if (found) {
       *result = n->get_data(i);
-      PRINT("BTree Get, end found\n");
+      PRINT("TSBTree Get, end found\n");
       PRINT_TREE();
       CHECK();
       return true;
     }
     n = n->get_node(i);
+    if (n) {
+      n->m.lock();
+      lastm->unlock();
+      lastm = &(n->m);
+    }
   }
-  PRINT("BTree Get, end not found\n");
+  lastm->unlock();
+  PRINT("TSBTree Get, end not found\n");
   PRINT_TREE();
   CHECK();
   return false;
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-bool BTree<T,Val_T,C,SIZE>::isempty(void) {
+bool TSBTree<T,Val_T,C,SIZE>::isempty(void) {
   // it is possible for root to have only one child
   // it'll resolve as soon as we run a remove or something, but
   // it means we have to check it's child for nullptr
-  return root == nullptr || root->get_node(0) == nullptr;
+  m.lock();
+  bool result = root == nullptr || root->get_node(0) == nullptr;
+  m.unlock();
+  return result;
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-bool BTree<T,Val_T,C,SIZE>::insert(T datum) {
-  PRINT("BTree Insert, begins\n");
-  #ifdef BTREE_DEBUG_VERBOSE
+bool TSBTree<T,Val_T,C,SIZE>::insert(T datum) {
+  PRINT("TSBTree Insert, begins\n");
+  #ifdef TSBTREE_DEBUG_VERBOSE
   printf("inserting: ");
   C::printT(datum);
   printf("\n");
   #endif
   PRINT_TREE();
   CHECK();
+
+  m.lock();
   auto *n = root;
-  BTreeNode<T,Val_T,C,SIZE> *parent = nullptr;
+  TSBTreeNode<T,Val_T,C,SIZE> *parent = nullptr;
   bool found = false;
   size_t i = 0;
+  std::mutex *lastm = &m;
 
+  // empty-tree case
+  if (!root) {
+    root = new TSBTreeNode<T,Val_T,C,SIZE>();
+    root->insert_right(0, datum, nullptr);
+    lastm->unlock();
+    PRINT("TSBTree Insert, done\n");
+    PRINT_TREE();
+    CHECK();
+    return true;
+  }
+
+  // We have to hold the tree lock across this, due to deleting root
   // Root splits look a little different, so seperate them out
-  if (root && root->get_used() == SIZE) {
-    auto right_n = new BTreeNode<T,Val_T,C,SIZE>();
+  if (root->get_used() == SIZE) {
+    auto right_n = new TSBTreeNode<T,Val_T,C,SIZE>();
     T pivot = n->split(right_n);
-    auto new_n = new BTreeNode<T,Val_T,C,SIZE>();
-    root = new BTreeNode<T,Val_T,C,SIZE>();
+    auto new_n = new TSBTreeNode<T,Val_T,C,SIZE>();
+    root = new TSBTreeNode<T,Val_T,C,SIZE>();
     root->set_node(0, n);
     root->insert_right(0, pivot, right_n);
     int c = C::compare(C::val(datum), C::val(root->get_data(i)));
@@ -393,6 +428,7 @@ bool BTree<T,Val_T,C,SIZE>::insert(T datum) {
   while(n) {
     i = n->find(C::val(datum), &found);
     if (found) {
+      lastm->unlock();
       return false;
     }
     if (maybe_split(n, n->get_node(i), i)) {
@@ -407,37 +443,35 @@ bool BTree<T,Val_T,C,SIZE>::insert(T datum) {
     }
     parent = n;
     n = n->get_node(i);
+    if (n) {
+      // Note that if n is null we don't unlock parent's lock
+      // so we're safe below when we insert in parent
+      n->m.lock();
+      lastm->unlock();
+      lastm = &(n->m);
+    }
   }
-  // empty-tree case
-  if (!parent) {
-    root = new BTreeNode<T,Val_T,C,SIZE>();
-    root->insert_right(0, datum, nullptr);
-    PRINT("BTree Insert, done\n");
-    PRINT_TREE();
-    CHECK();
-    return true;
-  }
-  // Note - i should always be set by this point
-  // because if parent exists, then we had something to search
-  // before we looked at n
 
   // insert only occurs at leafs, parent is a leaf
   // it doesn't matter and insert_right is faster since it avoids any shifting 
   parent->insert_right(i, datum, nullptr);
-  PRINT("BTree Insert, done\n");
+  lastm->unlock();
+  PRINT("TSBTree Insert, done\n");
   PRINT_TREE();
   CHECK();
   return true;
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-bool BTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
-  PRINT("BTree Remove, begins\n");
+bool TSBTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
+  PRINT("TSBTree Remove, begins\n");
   PRINT_TREE();
   CHECK();
-  BTreeNode<T,Val_T,C,SIZE> *parent = nullptr;
+  m.lock();
+  TSBTreeNode<T,Val_T,C,SIZE> *parent = nullptr;
   auto *n = root;
   bool found;
+  std::mutex *lastm = &m;
   // if the root node is empty (except one child), delete it
   // this can only happen at root level
   if (n && !n->get_used()) {
@@ -454,7 +488,7 @@ bool BTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
       // deleting could migrate when/if we go to get a replacement element.
       // To simplify logic we check for a merge now, and re-search
       // for the element in case it moved
-      BTreeNode<T,Val_T,C,SIZE> *left_child = n->get_node(i);
+      TSBTreeNode<T,Val_T,C,SIZE> *left_child = n->get_node(i);
       if (left_child && maybe_merge(n, i)) {
         found = false;
         continue;
@@ -475,10 +509,16 @@ bool BTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
       //i = n->find(v, &found);
     }
     n = n->get_node(i);
+    if (n) {
+      n->m.lock();
+      lastm->unlock();
+      lastm = &(n->m);
+    }
   }
   // did we find it?
   if (!n) {
-    PRINT("BTree Remove, not found\n");
+    lastm->unlock();
+    PRINT("TSBTree Remove, not found\n");
     PRINT_TREE();
     CHECK();
     return false;
@@ -487,9 +527,10 @@ bool BTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
   *result = n->get_data(i);
   if (n->get_node(i) == nullptr){
     // If we're a leaf, we can just remove the datum
-    BTreeNode<T,Val_T,C,SIZE> *junk;  
+    TSBTreeNode<T,Val_T,C,SIZE> *junk;  
     n->remove_right(i, &junk); 
-    PRINT("BTree Remove, complete\n");
+    lastm->unlock();
+    PRINT("TSBTree Remove, complete\n");
     PRINT_TREE();
     CHECK();
     return true;
@@ -498,24 +539,25 @@ bool BTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
   // down into that node. 
 
   // If we're an inner node, we have to find a replacement datum
-  BTreeNode<T,Val_T,C,SIZE> *r;
+  TSBTreeNode<T,Val_T,C,SIZE> *r;
   r = n->get_node(i);
   // we've already checked merge on n's left child
   while (r->get_node(r->get_used())) { // walk down the right side of n's left child
     maybe_merge(r, r->get_used());
     r = r->get_node(r->get_used()); 
   }
-  BTreeNode<T,Val_T,C,SIZE> *junk;  
+  TSBTreeNode<T,Val_T,C,SIZE> *junk;  
   T replacement = r->remove_right(r->get_used()-1, &junk);
   n->set_data(i, replacement); 
-  PRINT("BTree Remove, complete\n");
+  lastm->unlock();
+  PRINT("TSBTree Remove, complete\n");
   PRINT_TREE();
   CHECK();
   return true; 
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-bool BTree<T,Val_T,C,SIZE>::maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTreeNode<T,Val_T,C,SIZE> *n, size_t i){
+bool TSBTree<T,Val_T,C,SIZE>::maybe_split(TSBTreeNode<T,Val_T,C,SIZE> *parent, TSBTreeNode<T,Val_T,C,SIZE> *n, size_t i){
   // We need to always have one spare element, if so, we're good!
   if (!n || n->get_used() < SIZE) {
     return false;
@@ -523,9 +565,9 @@ bool BTree<T,Val_T,C,SIZE>::maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTree
   PRINT("Split begin\n");
   PRINT_TREE();
   CHECK();
-  auto right_n = new BTreeNode<T,Val_T,C,SIZE>();
+  auto right_n = new TSBTreeNode<T,Val_T,C,SIZE>();
   T pivot = n->split(right_n);
-  auto new_n = new BTreeNode<T,Val_T,C,SIZE>();
+  auto new_n = new TSBTreeNode<T,Val_T,C,SIZE>();
   parent->insert_right(i, pivot, right_n);
   PRINT("Split end\n");
   PRINT_TREE();
@@ -537,10 +579,10 @@ bool BTree<T,Val_T,C,SIZE>::maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTree
 // 1 is returned for events that can only grow parent->get_node(i)
 // 2 is returned for events that shrink (actually, delete) parent->get_node(i)
 template<typename T, typename Val_T, typename C, int SIZE>
-int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t i){
+int TSBTree<T,Val_T,C,SIZE>::maybe_merge(TSBTreeNode<T,Val_T,C,SIZE> *parent, size_t i){
   PRINT("Maybe merge\n");
   CHECK();
-  BTreeNode<T,Val_T,C,SIZE> *n = parent->get_node(i);
+  TSBTreeNode<T,Val_T,C,SIZE> *n = parent->get_node(i);
   if (!n || n->get_used() > (SIZE-1)/2-1) {
     return 0;
   }
@@ -552,7 +594,7 @@ int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t
       PRINT("stealing from node to left\n");
       // sibling is too large to join with, so rotate instead
       // Rotate right
-      BTreeNode<T,Val_T,C,SIZE> *sibling_child;
+      TSBTreeNode<T,Val_T,C,SIZE> *sibling_child;
       T sibling_datum = sibling->remove_right(sibling->get_used()-1, &sibling_child);
       T old_pivot = parent->get_data(i-1); 
       parent->set_data(i-1, sibling_datum); 
@@ -562,7 +604,7 @@ int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t
       return 1;
     }
     PRINT("merging with node to left\n");
-    BTreeNode<T,Val_T,C,SIZE> *junk;
+    TSBTreeNode<T,Val_T,C,SIZE> *junk;
     T pivot = parent->remove_right(i-1, &junk); // remove the element left of n, and n
     sibling->merge(pivot, n);
     delete n;
@@ -577,7 +619,7 @@ int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t
     CHECK();
     // sibling is too large to join with, so we rotate instead
     // Rotate left 
-    BTreeNode<T,Val_T,C,SIZE> *sibling_child;
+    TSBTreeNode<T,Val_T,C,SIZE> *sibling_child;
     T sibling_datum = sibling->remove_left(0, &sibling_child);
     T old_pivot = parent->get_data(i); 
     parent->set_data(i, sibling_datum); 
@@ -587,7 +629,7 @@ int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t
     return 1;
   }
   PRINT("merging with node to right\n");
-  BTreeNode<T,Val_T,C,SIZE> *junk;
+  TSBTreeNode<T,Val_T,C,SIZE> *junk;
   T pivot = parent->remove_right(i, &junk); // remove the element right of n, and it's right child
   n->merge(pivot, sibling);
   delete sibling;
@@ -597,13 +639,13 @@ int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-void BTree<T,Val_T,C,SIZE>::print(void) {
+void TSBTree<T,Val_T,C,SIZE>::print(void) {
   _print(root);
   printf("\n");
 }
  
 template<typename T, typename Val_T, typename C, int SIZE>
-void BTree<T,Val_T,C,SIZE>::_print(BTreeNode<T,Val_T,C,SIZE> *n) {
+void TSBTree<T,Val_T,C,SIZE>::_print(TSBTreeNode<T,Val_T,C,SIZE> *n) {
   if (!n) {
     printf("n");
     return;
@@ -622,14 +664,14 @@ void BTree<T,Val_T,C,SIZE>::_print(BTreeNode<T,Val_T,C,SIZE> *n) {
 }
  
 template<typename T, typename Val_T, typename C, int SIZE>
-void BTree<T,Val_T,C,SIZE>::check() {
+void TSBTree<T,Val_T,C,SIZE>::check() {
   if (root) {
     _check(root);  
   }
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-std::pair<Val_T,Val_T> BTree<T,Val_T,C,SIZE>::_check(BTreeNode<T,Val_T,C,SIZE> *n) {
+std::pair<Val_T,Val_T> TSBTree<T,Val_T,C,SIZE>::_check(TSBTreeNode<T,Val_T,C,SIZE> *n) {
   if (n != root && n->get_used() < (SIZE-1)/2-1) {
     printf("Element: ");
     n->print();

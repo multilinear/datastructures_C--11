@@ -28,8 +28,8 @@
  * due to a rotation), is also mine. There may be some other way this is 
  * usually done.
  * 
- *   
- *
+ * Threadsafety:
+ *  thread compatible
  */
 
 #include <stdio.h>
@@ -102,7 +102,7 @@ class AVL{
     AVL();
     Node_T *get(Val_T v);
     // Returns False if node is already in the tree
-    void insert(Node_T *n);
+    bool insert(Node_T *n);
     // Assumes the node is in the tree
     //   if it's not you're going to have a bad time.
     Node_T* remove(Node_T *n);
@@ -260,7 +260,7 @@ int AVL<Node_T, Val_T>::_rotate_right(Node_T *a) {
 }
 
 template<typename Node_T, typename Val_T>
-void AVL<Node_T, Val_T>::insert(Node_T *n) {
+bool AVL<Node_T, Val_T>::insert(Node_T *n) {
   PRINT("Begin Insert\n");
   CHECK_ALL();
   PRINT_TREE();
@@ -274,7 +274,7 @@ void AVL<Node_T, Val_T>::insert(Node_T *n) {
     PRINT_TREE();
     CHECK_ALL();
     PRINT("Insert complete\n");
-    return;
+    return true;
   }
   Node_T *parent = root;
 
@@ -297,7 +297,7 @@ void AVL<Node_T, Val_T>::insert(Node_T *n) {
       parent = parent->left;
     } else {
       // We already have one of those
-      PANIC("Node already exists!");
+      return false;
     }
   }
   CHECK();
@@ -321,13 +321,13 @@ void AVL<Node_T, Val_T>::insert(Node_T *n) {
     parent->balance += 1;
     if (parent->balance <= 0) {
       CHECK_ALL();
-      return;
+      return true;
     }
   } else {
     parent->balance -= 1;
     if (parent->balance >= 0) {
       CHECK_ALL();
-      return;
+      return true;
     }
   }
   // so we need to start at new_n->parent->parent, or grandparent
@@ -397,7 +397,7 @@ void AVL<Node_T, Val_T>::insert(Node_T *n) {
   PRINT_TREE();
   CHECK_ALL();
   PRINT("Insert complete\n");
-  return;  
+  return true;  
 }
 
 template<typename Node_T, typename Val_T>
