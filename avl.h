@@ -141,12 +141,13 @@ bool AVL<Node_T, Val_T>::isempty(void) {
   return !root;
 }
 
-// Transform: 
-//   A         B
-//    \       / 
-//     B  -> A
-//    /       \
-//   C         C
+/* Transform: 
+ *   A         B
+ *    \       / 
+ *     B  -> A
+ *    /       \
+ *   C         C
+ */
 template<typename Node_T, typename Val_T>
 int AVL<Node_T, Val_T>::_rotate_left(Node_T *a) {
   Node_T *b = a->right;
@@ -202,12 +203,13 @@ int AVL<Node_T, Val_T>::_rotate_left(Node_T *a) {
   return deeper;
 }
 
-// Transform: 
-//   A    B
-//  /      \ 
-// B   ->   A 
-//  \      /
-//   C    C
+/* Transform: 
+ *   A    B
+ *  /      \ 
+ * B   ->   A 
+ *  \      /
+ *   C    C
+ */
 template<typename Node_T, typename Val_T>
 int AVL<Node_T, Val_T>::_rotate_right(Node_T *a) {
   Node_T *b = a->left;
@@ -332,7 +334,6 @@ bool AVL<Node_T, Val_T>::insert(Node_T *n) {
   }
   // so we need to start at new_n->parent->parent, or grandparent
   // conveniently, parent is the other node we need a handle for.
-  Node_T* tmp;
   Node_T *grandparent = parent->parent;
   while (grandparent) {
     // fix grandparent's balance

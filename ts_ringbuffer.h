@@ -70,7 +70,6 @@ TSRingBuffer<T>::~TSRingBuffer() {
  */
 template<typename T>
 bool TSRingBuffer<T>::enqueue(T data) {
-  bool inserted = false;
   // Because this is only safe for one writer anyway, we can elide the loop
   // we're the only thread that can modify tail anyway
   // Tail still needs to be atomic though, because we READ it in other threads

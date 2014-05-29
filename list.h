@@ -54,7 +54,6 @@ List<Node_T>::~List(){
 
 template<typename Node_T>
 void List<Node_T>::enqueue(Node_T* el){
-  auto tmp = _head;
   // We do this here rather than in a constructor as it saves setting it to
   // NULL on dequeue, which we'd have to do to ensure re-enqueuing worked.
   el->next = nullptr;

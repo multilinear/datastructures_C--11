@@ -19,7 +19,7 @@ void check(int n) {
 } 
 
 int main(int argc, char* argv[]) {
-  printf("Beginning list.h test\n");
+  printf("Begin List.h test\n");
   List<Node> L;
   int i=0;
   // one in one out

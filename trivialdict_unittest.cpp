@@ -30,7 +30,7 @@ int ints[TEST_SIZE];
 int ints_start;
 int ints_end;
 
-int check(TrivialDict<TrivialDictDatum,int> *dict) {
+void check(TrivialDict<TrivialDictDatum,int> *dict) {
   int i;
   for (i=ints_start; i<ints_end; i++) {
     TrivialDictDatum d;

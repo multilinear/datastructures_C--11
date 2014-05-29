@@ -224,7 +224,6 @@ class BTreeNode {
         PANIC("This node doesn't have space!")
       }
       #endif
-      size_t j;
       // shift the array
       memmove(&(data[i+1]), &(data[i]), (used-i) * sizeof(T));
       memmove(&(children[i+2]), &(children[i+1]), (used-i) * sizeof(child));
@@ -243,7 +242,6 @@ class BTreeNode {
         PANIC("This node doesn't have space!")
       }
       #endif
-      size_t j;
       // shift the array
       memmove(&(data[i+1]), &(data[i]), (used-i) * sizeof(T));
       memmove(&(children[i+1]), &(children[i]), (used-i+1) * sizeof(child));
@@ -379,7 +377,6 @@ bool BTree<T,Val_T,C,SIZE>::insert(T datum) {
   if (root && root->get_used() == SIZE) {
     auto right_n = new BTreeNode<T,Val_T,C,SIZE>();
     T pivot = n->split(right_n);
-    auto new_n = new BTreeNode<T,Val_T,C,SIZE>();
     root = new BTreeNode<T,Val_T,C,SIZE>();
     root->set_node(0, n);
     root->insert_right(0, pivot, right_n);
@@ -435,7 +432,6 @@ bool BTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
   PRINT("BTree Remove, begins\n");
   PRINT_TREE();
   CHECK();
-  BTreeNode<T,Val_T,C,SIZE> *parent = nullptr;
   auto *n = root;
   bool found;
   // if the root node is empty (except one child), delete it
@@ -525,7 +521,6 @@ bool BTree<T,Val_T,C,SIZE>::maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTree
   CHECK();
   auto right_n = new BTreeNode<T,Val_T,C,SIZE>();
   T pivot = n->split(right_n);
-  auto new_n = new BTreeNode<T,Val_T,C,SIZE>();
   parent->insert_right(i, pivot, right_n);
   PRINT("Split end\n");
   PRINT_TREE();
@@ -646,7 +641,6 @@ std::pair<Val_T,Val_T> BTree<T,Val_T,C,SIZE>::_check(BTreeNode<T,Val_T,C,SIZE> *
   std::pair<Val_T,Val_T> range;
   bool range_initialized=false;
   std::pair<Val_T,Val_T> oldrange;
-  bool oldrange_initialized=false;
   for (i=0; i < n->get_used()+1; i++) {
     if(n->get_node(i)) {
       range = _check(n->get_node(i));
@@ -705,7 +699,6 @@ std::pair<Val_T,Val_T> BTree<T,Val_T,C,SIZE>::_check(BTreeNode<T,Val_T,C,SIZE> *
     }
     if (range_initialized) {
       oldrange = range;
-      oldrange_initialized=true;
     }
   }
   return std::make_pair(min, max);

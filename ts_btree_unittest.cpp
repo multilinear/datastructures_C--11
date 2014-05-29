@@ -48,7 +48,7 @@ void print_tree(TSBTree<int,int,TSBTreeComp,ARITY> *t) {
     t->print();
 }
 
-int check(TSBTree<int,int,TSBTreeComp,ARITY> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
+void check(TSBTree<int,int,TSBTreeComp,ARITY> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
   auto i = dict->begin();
   int d;
   for (; i != dict->end(); i++) {
@@ -64,7 +64,6 @@ int main(int argc, char* argv[]) {
   TSBTree<int,int,TSBTreeComp,ARITY> tree;
 
   int i;
-  int j;
   // insert in order, then remove
   printf("Begin TSBTree.h test\n");
   int k;
@@ -114,4 +113,5 @@ int main(int argc, char* argv[]) {
     //printf("************ size %d complete\n", k);
   }
   printf("PASS\n");
+  return 0;
 }

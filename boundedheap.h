@@ -268,7 +268,6 @@ void BoundedHeap<Node_T,Val_T>::swap_with_parent(Node_T *n) {
 template<typename Node_T, typename Val_T>
 void BoundedHeap<Node_T,Val_T>::bubble_up(Node_T *n) {
   while (n->parent) {
-    Node_T *tmp;
     int c = Node_T::compare(n->val(), n->parent->val());
     if (c >= 0) {
       break;

@@ -28,7 +28,7 @@ void consumer() {
 }
 
 int main(int argc, char* argv[]) {
-  printf("Beginning ts_work_queue.h unittest\n");
+  printf("Begin TSWorkQueue.h unittest\n");
   wq = new WorkQueue<int>();
   // spawn the consumer
   std::thread consumer_thread(consumer);

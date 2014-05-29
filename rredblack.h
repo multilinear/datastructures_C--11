@@ -194,7 +194,6 @@ Node_T *RRedBlack<Node_T, Val_T>::_insert(Node_T *n, Node_T *new_n) {
 
 template<typename Node_T, typename Val_T>
 Node_T *RRedBlack<Node_T, Val_T>::_insert_balance_right(Node_T *n) {
-  Node_T *grandparent = n;
   Node_T *a1;  
   Node_T *a2;
   Node_T *a3;
@@ -239,7 +238,6 @@ Node_T *RRedBlack<Node_T, Val_T>::_insert_balance_right(Node_T *n) {
 
 template<typename Node_T, typename Val_T>
 Node_T *RRedBlack<Node_T, Val_T>::_insert_balance_left(Node_T *n) {
-  Node_T *grandparent = n;
   Node_T *a1;  
   Node_T *a2;
   Node_T *a3;
@@ -528,10 +526,7 @@ Node_T *RRedBlack<Node_T, Val_T>::_remove_balance_left(Node_T *n, bool *balanced
   Node_T *a1;
   Node_T *a2;
   Node_T *a3;
-  Node_T *c1;
-  Node_T *c2;
   Node_T *c3;
-  Node_T *c4;
   #ifdef RREDBLACK_DEBUG
   if (!n) {
     PANIC("Why did we try and rebalance null?");
@@ -618,10 +613,7 @@ Node_T *RRedBlack<Node_T, Val_T>::_remove_balance_right(Node_T *n, bool *balance
   Node_T *a1;
   Node_T *a2;
   Node_T *a3;
-  Node_T *c1;
-  Node_T *c2;
   Node_T *c3;
-  Node_T *c4;
   #ifdef RREDBLACK_DEBUG
   if (!n) {
     PANIC("Why did we try and rebalance null?");

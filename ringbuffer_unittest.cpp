@@ -4,11 +4,11 @@
 #include "ringbuffer.h"
 
 int main(int argc, char* argv[]) {
-  printf("beginning ringbuffer.h test\n");
+  printf("Begin RingBuffer.h test\n");
   RingBuffer<int> rbuf(13);
   int i;
   int j;
-  int el;
+  int el = 0;
   // fill and empty at different numbers
   for (i = 0; i<10; i++) { 
     for (j = 0; j<i; j++) {

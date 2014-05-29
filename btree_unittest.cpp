@@ -48,7 +48,7 @@ void print_tree(BTree<int,int,BTreeComp,ARITY> *t) {
     t->print();
 }
 
-int check(BTree<int,int,BTreeComp,ARITY> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
+void check(BTree<int,int,BTreeComp,ARITY> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
   auto i = dict->begin();
   int d;
   for (; i != dict->end(); i++) {
@@ -64,7 +64,6 @@ int main(int argc, char* argv[]) {
   BTree<int,int,BTreeComp,ARITY> tree;
 
   int i;
-  int j;
   // insert in order, then remove
   printf("Begin BTree.h test\n");
   int k;

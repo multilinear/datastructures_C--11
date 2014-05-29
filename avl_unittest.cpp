@@ -48,7 +48,7 @@ void print_tree(AVL<AVLNode, int> *t) {
     t->print();
 }
 
-int check(AVL<AVLNode, int> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
+void check(AVL<AVLNode, int> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
   auto i = dict->begin();
   for (; i != dict->end(); i++) {
     if(!tree->get(i->val())) {
@@ -63,7 +63,6 @@ int main(int argc, char* argv[]) {
   AVL<AVLNode, int> tree;
 
   int i;
-  int j;
   // insert in order, then remove
   printf("Begin AVL.h test\n");
   int k;
@@ -91,7 +90,6 @@ int main(int argc, char* argv[]) {
     while (!dict.isempty()) {
       // We're invalidating our iterator every round, by modifying the tree
       auto i = dict.begin();
-      AVLNode *n = tree.get(i->val());
       delete tree.remove(tree.get(i->val()));
       dict.remove(i->val());
       // check that everything is in the list that should be

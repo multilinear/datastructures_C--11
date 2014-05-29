@@ -238,7 +238,6 @@ class TSBTreeNode {
         PANIC("This node doesn't have space!")
       }
       #endif
-      size_t j;
       // shift the array
       memmove(&(data[i+1]), &(data[i]), (used-i) * sizeof(T));
       memmove(&(children[i+2]), &(children[i+1]), (used-i) * sizeof(child));
@@ -257,7 +256,6 @@ class TSBTreeNode {
         PANIC("This node doesn't have space!")
       }
       #endif
-      size_t j;
       // shift the array
       memmove(&(data[i+1]), &(data[i]), (used-i) * sizeof(T));
       memmove(&(children[i+1]), &(children[i]), (used-i+1) * sizeof(child));
@@ -420,7 +418,6 @@ bool TSBTree<T,Val_T,C,SIZE>::insert(T datum) {
   if (root->get_used() == SIZE) {
     auto right_n = new TSBTreeNode<T,Val_T,C,SIZE>();
     T pivot = n->split(right_n);
-    auto new_n = new TSBTreeNode<T,Val_T,C,SIZE>();
     root = new TSBTreeNode<T,Val_T,C,SIZE>();
     root->set_node(0, n);
     root->insert_right(0, pivot, right_n);
@@ -474,7 +471,6 @@ bool TSBTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
   PRINT_TREE();
   CHECK();
   m.lock();
-  TSBTreeNode<T,Val_T,C,SIZE> *parent = nullptr;
   auto *n = root;
   bool found;
   std::mutex *lastm = &m;
@@ -573,7 +569,6 @@ bool TSBTree<T,Val_T,C,SIZE>::maybe_split(TSBTreeNode<T,Val_T,C,SIZE> *parent, T
   CHECK();
   auto right_n = new TSBTreeNode<T,Val_T,C,SIZE>();
   T pivot = n->split(right_n);
-  auto new_n = new TSBTreeNode<T,Val_T,C,SIZE>();
   parent->insert_right(i, pivot, right_n);
   PRINT("Split end\n");
   PRINT_TREE();
@@ -694,7 +689,6 @@ std::pair<Val_T,Val_T> TSBTree<T,Val_T,C,SIZE>::_check(TSBTreeNode<T,Val_T,C,SIZ
   std::pair<Val_T,Val_T> range;
   bool range_initialized=false;
   std::pair<Val_T,Val_T> oldrange;
-  bool oldrange_initialized=false;
   for (i=0; i < n->get_used()+1; i++) {
     if(n->get_node(i)) {
       range = _check(n->get_node(i));
@@ -753,7 +747,6 @@ std::pair<Val_T,Val_T> TSBTree<T,Val_T,C,SIZE>::_check(TSBTreeNode<T,Val_T,C,SIZ
     }
     if (range_initialized) {
       oldrange = range;
-      oldrange_initialized=true;
     }
   }
   return std::make_pair(min, max);

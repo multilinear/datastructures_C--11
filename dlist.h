@@ -68,7 +68,6 @@ DList<Node_T>::~DList(){
 template<typename Node_T>
 void DList<Node_T>::enqueue(Node_T* el) {
   CHECK();
-  auto tmp = head;
   // We do this here rather than in a constructor as it saves setting it to
   // NULL on dequeue, which we'd have to do to ensure re-enqueuing worked.
   el->next = nullptr;

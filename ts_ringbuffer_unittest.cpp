@@ -35,7 +35,7 @@ void consumer() {
 
 
 int main(int argc, char* argv[]) {
-  printf("Running ts_ringbuffer.h test\n");
+  printf("Begin TSRingBuffer.h test\n");
   int i;
   int j;
   int el;

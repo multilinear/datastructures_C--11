@@ -21,7 +21,7 @@ class HeapNode: public BoundedHeapNode_base<HeapNode, int>{
 int main(int argc, char **argv) {
   BoundedHeap<HeapNode, int> heap;
   int i,j;
-  printf("Begin BoundedHeap unittest\n");
+  printf("Begin BoundedHeap.h unittest\n");
   for (j=0;j<200;j++) {
     for (i=0;i<j;i++) {
       heap.push(new HeapNode(i));
