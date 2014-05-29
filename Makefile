@@ -1,9 +1,11 @@
-test: all ; ./avl_unittest && ./btree_unittest && ./dlist_unittest && ./list_unittest && ./rredblack_unittest && ./redblack_unittest && ./ringbuffer_unittest && ./trivialdict_unittest && ./ts_btree_unittest && ./ts_ringbuffer_unittest && ./ts_work_queue_unittest
+test: all ; ./avl_unittest && ./boundedheap_unittest && ./btree_unittest && ./dlist_unittest && ./list_unittest && ./rredblack_unittest && ./redblack_unittest && ./ringbuffer_unittest && ./trivialdict_unittest && ./ts_btree_unittest && ./ts_ringbuffer_unittest && ./ts_work_queue_unittest
 
-all: avl_unittest btree_unittest dlist_unittest list_unittest redblack_unittest rredblack_unittest ringbuffer_unittest trivialdict_unittest ts_btree_unittest ts_ringbuffer_unittest ts_work_queue_unittest
+all: avl_unittest boundedheap_unittest btree_unittest dlist_unittest list_unittest redblack_unittest rredblack_unittest ringbuffer_unittest trivialdict_unittest ts_btree_unittest ts_ringbuffer_unittest ts_work_queue_unittest
 
 
 avl_unittest: *.h *.cpp ; g++ -O3 --std=c++11 avl_unittest.cpp -o avl_unittest
+
+boundedheap_unittest: *.h *.cpp ; g++ -O3 --std=c++11 boundedheap_unittest.cpp -o boundedheap_unittest
 
 btree_unittest: *.h *.cpp ; g++ -O3 --std=c++11 btree_unittest.cpp -o btree_unittest
 
@@ -25,6 +27,6 @@ ts_ringbuffer_unittest: *.h *.cpp ; g++ --std=c++11 -pthread ts_ringbuffer_unitt
 
 ts_work_queue_unittest: *.h *.cpp ; g++ --std=c++11 -pthread ts_work_queue_unittest.cpp -o ts_work_queue_unittest
 
-clean: ; rm avl_unittest btree_unittest dlist_unittest list_unittest redblack_unittest rredblack_unittest ringbuffer_unittest trivialdict_unittest ts_btree_unittest ts_ringbuffer_unittest ts_work_queue_unittest; true
+clean: ; rm avl_unittest boundedheap_unittest btree_unittest dlist_unittest list_unittest redblack_unittest rredblack_unittest ringbuffer_unittest trivialdict_unittest ts_btree_unittest ts_ringbuffer_unittest ts_work_queue_unittest; true
 
   
