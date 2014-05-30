@@ -1,0 +1,1086 @@
+ARITY: 5
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m41.003s
+user	0m39.145s
+sys	0m0.264s
+ARITY: 10
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m32.776s
+user	0m32.590s
+sys	0m0.200s
+ARITY: 15
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m30.179s
+user	0m30.004s
+sys	0m0.188s
+ARITY: 20
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m28.273s
+user	0m28.091s
+sys	0m0.192s
+ARITY: 25
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.823s
+user	0m27.634s
+sys	0m0.200s
+ARITY: 30
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m26.074s
+user	0m25.859s
+sys	0m0.185s
+ARITY: 35
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.938s
+user	0m25.717s
+sys	0m0.168s
+ARITY: 40
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m26.265s
+user	0m26.123s
+sys	0m0.151s
+ARITY: 45
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.805s
+user	0m25.636s
+sys	0m0.179s
+ARITY: 50
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.488s
+user	0m25.267s
+sys	0m0.168s
+ARITY: 55
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m24.886s
+user	0m24.636s
+sys	0m0.200s
+ARITY: 60
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.153s
+user	0m24.991s
+sys	0m0.172s
+ARITY: 65
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m24.437s
+user	0m24.205s
+sys	0m0.184s
+ARITY: 70
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m24.383s
+user	0m24.193s
+sys	0m0.164s
+ARITY: 75
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m26.648s
+user	0m26.438s
+sys	0m0.160s
+ARITY: 80
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.633s
+user	0m25.484s
+sys	0m0.160s
+ARITY: 85
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m26.304s
+user	0m26.130s
+sys	0m0.184s
+ARITY: 90
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.351s
+user	0m25.151s
+sys	0m0.208s
+ARITY: 95
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m24.530s
+user	0m24.338s
+sys	0m0.200s
+ARITY: 100
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.741s
+user	0m25.543s
+sys	0m0.204s
+ARITY: 105
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.147s
+user	0m24.981s
+sys	0m0.176s
+ARITY: 110
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.375s
+user	0m25.182s
+sys	0m0.176s
+ARITY: 115
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m26.096s
+user	0m25.967s
+sys	0m0.140s
+ARITY: 120
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.632s
+user	0m25.476s
+sys	0m0.164s
+ARITY: 125
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m26.007s
+user	0m25.846s
+sys	0m0.172s
+ARITY: 130
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.024s
+user	0m24.888s
+sys	0m0.144s
+ARITY: 135
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m24.787s
+user	0m24.603s
+sys	0m0.176s
+ARITY: 140
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m26.144s
+user	0m25.967s
+sys	0m0.168s
+ARITY: 145
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m24.963s
+user	0m24.748s
+sys	0m0.168s
+ARITY: 150
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.577s
+user	0m25.409s
+sys	0m0.152s
+ARITY: 155
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.136s
+user	0m26.961s
+sys	0m0.180s
+ARITY: 160
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m26.833s
+user	0m26.642s
+sys	0m0.200s
+ARITY: 165
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.124s
+user	0m26.935s
+sys	0m0.196s
+ARITY: 170
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m25.970s
+user	0m25.847s
+sys	0m0.132s
+ARITY: 175
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.908s
+user	0m27.713s
+sys	0m0.204s
+ARITY: 180
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m26.890s
+user	0m26.700s
+sys	0m0.200s
+ARITY: 185
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.557s
+user	0m27.411s
+sys	0m0.156s
+ARITY: 190
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.965s
+user	0m27.823s
+sys	0m0.152s
+ARITY: 195
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.344s
+user	0m27.196s
+sys	0m0.160s
+ARITY: 200
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.528s
+user	0m27.367s
+sys	0m0.172s
+ARITY: 205
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.691s
+user	0m27.447s
+sys	0m0.209s
+ARITY: 210
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.251s
+user	0m27.020s
+sys	0m0.204s
+ARITY: 215
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.308s
+user	0m27.084s
+sys	0m0.200s
+ARITY: 220
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.702s
+user	0m27.437s
+sys	0m0.240s
+ARITY: 225
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.373s
+user	0m27.161s
+sys	0m0.220s
+ARITY: 230
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.377s
+user	0m27.167s
+sys	0m0.212s
+ARITY: 235
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.597s
+user	0m27.448s
+sys	0m0.156s
+ARITY: 240
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.905s
+user	0m27.669s
+sys	0m0.244s
+ARITY: 245
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m27.402s
+user	0m27.243s
+sys	0m0.168s
+ARITY: 250
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m28.131s
+user	0m27.946s
+sys	0m0.192s
+ARITY: 255
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m28.452s
+user	0m28.285s
+sys	0m0.176s
+ARITY: 260
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m30.103s
+user	0m29.896s
+sys	0m0.208s
+ARITY: 265
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.853s
+user	0m29.670s
+sys	0m0.188s
+ARITY: 270
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.082s
+user	0m28.887s
+sys	0m0.204s
+ARITY: 275
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m28.844s
+user	0m28.697s
+sys	0m0.156s
+ARITY: 280
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m28.938s
+user	0m28.736s
+sys	0m0.212s
+ARITY: 285
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.316s
+user	0m29.145s
+sys	0m0.180s
+ARITY: 290
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.846s
+user	0m29.695s
+sys	0m0.160s
+ARITY: 295
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.727s
+user	0m29.543s
+sys	0m0.188s
+ARITY: 300
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.786s
+user	0m29.621s
+sys	0m0.168s
+ARITY: 305
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m28.664s
+user	0m28.497s
+sys	0m0.176s
+ARITY: 310
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.114s
+user	0m28.959s
+sys	0m0.164s
+ARITY: 315
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.073s
+user	0m28.904s
+sys	0m0.180s
+ARITY: 320
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.578s
+user	0m29.403s
+sys	0m0.184s
+ARITY: 325
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.032s
+user	0m28.863s
+sys	0m0.180s
+ARITY: 330
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.350s
+user	0m29.162s
+sys	0m0.200s
+ARITY: 335
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.956s
+user	0m29.795s
+sys	0m0.172s
+ARITY: 340
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.570s
+user	0m29.405s
+sys	0m0.176s
+ARITY: 345
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m30.033s
+user	0m29.895s
+sys	0m0.148s
+ARITY: 350
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.677s
+user	0m29.518s
+sys	0m0.168s
+ARITY: 355
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m29.579s
+user	0m29.387s
+sys	0m0.204s
+ARITY: 360
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m30.408s
+user	0m30.209s
+sys	0m0.208s
+ARITY: 365
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m31.120s
+user	0m30.954s
+sys	0m0.172s
+ARITY: 370
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m30.821s
+user	0m30.687s
+sys	0m0.144s
+ARITY: 375
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m30.845s
+user	0m30.694s
+sys	0m0.160s
+ARITY: 380
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m31.302s
+user	0m31.122s
+sys	0m0.188s
+ARITY: 385
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m30.475s
+user	0m30.348s
+sys	0m0.136s
+ARITY: 390
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m30.597s
+user	0m30.447s
+sys	0m0.160s
+ARITY: 395
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m31.082s
+user	0m30.951s
+sys	0m0.140s
+ARITY: 400
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m31.222s
+user	0m31.051s
+sys	0m0.180s
+ARITY: 405
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m30.501s
+user	0m30.362s
+sys	0m0.148s
+ARITY: 410
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m30.954s
+user	0m30.807s
+sys	0m0.156s
+ARITY: 415
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m30.919s
+user	0m30.740s
+sys	0m0.188s
+ARITY: 420
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m31.150s
+user	0m30.973s
+sys	0m0.188s
+ARITY: 425
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m31.358s
+user	0m31.226s
+sys	0m0.144s
+ARITY: 430
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m31.256s
+user	0m31.099s
+sys	0m0.168s
+ARITY: 435
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m31.764s
+user	0m31.579s
+sys	0m0.196s
+ARITY: 440
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m31.546s
+user	0m31.404s
+sys	0m0.152s
+ARITY: 445
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m31.789s
+user	0m31.681s
+sys	0m0.120s
+ARITY: 450
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m31.514s
+user	0m31.352s
+sys	0m0.172s
+ARITY: 455
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m32.349s
+user	0m32.151s
+sys	0m0.208s
+ARITY: 460
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m31.729s
+user	0m31.591s
+sys	0m0.148s
+ARITY: 465
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m32.731s
+user	0m32.521s
+sys	0m0.221s
+ARITY: 470
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m32.484s
+user	0m32.323s
+sys	0m0.172s
+ARITY: 475
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m32.765s
+user	0m32.596s
+sys	0m0.180s
+ARITY: 480
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m32.199s
+user	0m32.058s
+sys	0m0.152s
+ARITY: 485
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m32.918s
+user	0m32.688s
+sys	0m0.240s
+ARITY: 490
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m32.942s
+user	0m32.764s
+sys	0m0.188s
+ARITY: 495
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m32.588s
+user	0m32.431s
+sys	0m0.168s
+ARITY: 500
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m33.193s
+user	0m33.015s
+sys	0m0.188s
+ARITY: 505
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m32.972s
+user	0m32.795s
+sys	0m0.188s
+ARITY: 510
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m33.451s
+user	0m33.277s
+sys	0m0.184s
+ARITY: 515
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m33.530s
+user	0m33.325s
+sys	0m0.216s
+ARITY: 520
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m33.951s
+user	0m33.775s
+sys	0m0.188s
+ARITY: 525
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m33.759s
+user	0m33.586s
+sys	0m0.186s
+ARITY: 530
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m33.641s
+user	0m33.459s
+sys	0m0.192s
+ARITY: 535
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m33.494s
+user	0m33.350s
+sys	0m0.156s
+ARITY: 540
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m33.367s
+user	0m33.199s
+sys	0m0.180s
+ARITY: 545
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m33.770s
+user	0m33.592s
+sys	0m0.188s
+ARITY: 550
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m34.014s
+user	0m33.827s
+sys	0m0.200s
+ARITY: 555
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m34.312s
+user	0m34.136s
+sys	0m0.184s
+ARITY: 560
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m34.211s
+user	0m34.017s
+sys	0m0.204s
+ARITY: 565
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m34.422s
+user	0m34.234s
+sys	0m0.200s
+ARITY: 570
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m34.078s
+user	0m33.921s
+sys	0m0.168s
+ARITY: 575
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m34.437s
+user	0m34.303s
+sys	0m0.144s
+ARITY: 580
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m34.847s
+user	0m34.663s
+sys	0m0.196s
+ARITY: 585
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m34.946s
+user	0m34.786s
+sys	0m0.173s
+ARITY: 590
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m35.182s
+user	0m34.988s
+sys	0m0.204s
+ARITY: 595
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m35.492s
+user	0m35.315s
+sys	0m0.188s
+ARITY: 600
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m35.434s
+user	0m35.245s
+sys	0m0.200s
+ARITY: 605
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m35.314s
+user	0m35.126s
+sys	0m0.200s
+ARITY: 610
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m35.291s
+user	0m35.163s
+sys	0m0.140s
+ARITY: 615
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m35.521s
+user	0m35.349s
+sys	0m0.184s
+ARITY: 620
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m35.773s
+user	0m35.605s
+sys	0m0.180s
+ARITY: 625
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m36.160s
+user	0m35.920s
+sys	0m0.252s
+ARITY: 630
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m35.456s
+user	0m35.304s
+sys	0m0.164s
+ARITY: 635
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m36.184s
+user	0m36.005s
+sys	0m0.192s
+ARITY: 640
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m36.414s
+user	0m36.252s
+sys	0m0.172s
+ARITY: 645
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m36.678s
+user	0m36.482s
+sys	0m0.208s
+ARITY: 650
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m35.817s
+user	0m35.660s
+sys	0m0.168s
+ARITY: 655
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m36.182s
+user	0m36.026s
+sys	0m0.168s
+ARITY: 660
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m36.216s
+user	0m36.049s
+sys	0m0.180s
+ARITY: 665
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m36.851s
+user	0m36.676s
+sys	0m0.188s
+ARITY: 670
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m37.164s
+user	0m36.983s
+sys	0m0.192s
+ARITY: 675
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m37.413s
+user	0m37.167s
+sys	0m0.256s
+ARITY: 680
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m36.093s
+user	0m35.853s
+sys	0m0.252s
+ARITY: 685
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m37.363s
+user	0m37.168s
+sys	0m0.208s
+ARITY: 690
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m37.481s
+user	0m37.313s
+sys	0m0.180s
+ARITY: 695
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m37.460s
+user	0m37.276s
+sys	0m0.196s
+ARITY: 700
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m37.376s
+user	0m37.228s
+sys	0m0.160s
+ARITY: 705
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m37.649s
+user	0m37.474s
+sys	0m0.188s
+ARITY: 710
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m37.850s
+user	0m37.707s
+sys	0m0.156s
+ARITY: 715
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m38.361s
+user	0m38.163s
+sys	0m0.212s
+ARITY: 720
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m37.388s
+user	0m37.226s
+sys	0m0.176s
+ARITY: 725
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m37.732s
+user	0m37.597s
+sys	0m0.148s
+ARITY: 730
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m38.218s
+user	0m38.054s
+sys	0m0.172s
+ARITY: 735
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m37.519s
+user	0m37.378s
+sys	0m0.152s
+ARITY: 740
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m38.147s
+user	0m37.985s
+sys	0m0.176s
+ARITY: 745
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m38.386s
+user	0m38.222s
+sys	0m0.176s
+ARITY: 750
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m38.140s
+user	0m37.988s
+sys	0m0.164s
+ARITY: 755
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m38.521s
+user	0m38.353s
+sys	0m0.183s
+ARITY: 760
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m38.203s
+user	0m38.011s
+sys	0m0.204s
+ARITY: 765
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m38.488s
+user	0m38.314s
+sys	0m0.188s
+ARITY: 770
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m38.955s
+user	0m38.800s
+sys	0m0.168s
+ARITY: 775
+Begin BTree.h benchmark
+gets 20093205
+
+real	0m39.917s
+user	0m39.752s
+sys	0m0.176s
+ARITY: 780

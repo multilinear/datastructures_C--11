@@ -55,15 +55,14 @@ class TrivialDict {
       }
       ar[used++] = el;
     }
-    bool get(Val_T k, T *result) {
+    T* get(Val_T k) {
       size_t i;
       for (i=0; i<used; i++) {
         if (T::compare(ar[i].val(),k) == 0) {
-          *result = ar[i];
-          return true;
+          return &(ar[i]);
         }
       }
-      return false;
+      return nullptr;
     }
     bool remove(Val_T k) {
       size_t i;

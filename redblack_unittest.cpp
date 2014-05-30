@@ -80,8 +80,7 @@ int main(int argc, char* argv[]) {
         // Note, we did not initialize rand, this is purposeful
         r = rand();
         new_v = true;
-        TrivialDictDatum d;
-        new_v = !dict.get(r, &d);
+        new_v = !dict.get(r);
       }
       // put it in thet tree
       RedBlackNode *n = new RedBlackNode(r);

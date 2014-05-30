@@ -127,7 +127,7 @@ class BTreeNode {
     BTreeNode<T,Val_T,C,SIZE>() {
       used = 0;
     }
-    T get_data(size_t i) {
+    T& get_data(size_t i) {
       #ifdef BTREE_DEBUG
       if (i >= used) {
         printf("i = %ld, used = %ld\n", i, used);
@@ -306,7 +306,7 @@ class BTree {
   public:
     BTree();
     ~BTree();
-    bool get(Val_T val, T* result);
+    T* get(Val_T val);
     bool insert(T);
     bool remove(Val_T val, T* result);
     void check(void);
@@ -327,7 +327,7 @@ BTree<T,Val_T,C,SIZE>::~BTree() {
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-bool BTree<T,Val_T,C,SIZE>::get(Val_T val, T *result) {
+T* BTree<T,Val_T,C,SIZE>::get(Val_T val) {
   PRINT("BTree Get, begins\n");
   PRINT_TREE();
   CHECK();
@@ -336,18 +336,17 @@ bool BTree<T,Val_T,C,SIZE>::get(Val_T val, T *result) {
   while(n) {
     size_t i = n->find(val, &found);
     if (found) {
-      *result = n->get_data(i);
       PRINT("BTree Get, end found\n");
       PRINT_TREE();
       CHECK();
-      return true;
+      return &(n->get_data(i));
     }
     n = n->get_node(i);
   }
   PRINT("BTree Get, end not found\n");
   PRINT_TREE();
   CHECK();
-  return false;
+  return nullptr;
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>

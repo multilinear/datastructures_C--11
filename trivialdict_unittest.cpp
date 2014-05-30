@@ -33,8 +33,7 @@ int ints_end;
 void check(TrivialDict<TrivialDictDatum,int> *dict) {
   int i;
   for (i=ints_start; i<ints_end; i++) {
-    TrivialDictDatum d;
-    if(!dict->get(ints[i], &d)) {
+    if(!dict->get(ints[i])) {
       printf("problem with: %d\n", ints[i]);
       PANIC("Element not in dict anymore!");
     }

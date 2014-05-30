@@ -1,15 +1,11 @@
 #include <stdio.h>
-#include <time.h>
 #include "panic.h"
-#include "btree.h"
+#include "ts_btree.h"
 
-// This is so we can script sets of tests at different arities
-#ifndef ARITY
 #define ARITY 5
-#endif
 #define TEST_SIZE 20000000
 
-class BTreeComp {
+class TSBTreeComp {
   // For use with T=int, Val_T=int
   public:
     static const int val(const int T) {
@@ -32,12 +28,12 @@ int ints_start;
 int ints_end;
 
 int main(int argc, char* argv[]) {
-  BTree<int, int, BTreeComp, ARITY> tree;
+  TSBTree<int, int, TSBTreeComp, ARITY> tree;
 
   int i;
   int j;
   int gets=0;
-  printf("Begin BTree.h benchmark\n");
+  printf("Begin TSBTree.h benchmark\n");
   ints_end=0;
   ints_start=0;
   for (i=0; i<TEST_SIZE; i++) {
@@ -47,7 +43,8 @@ int main(int argc, char* argv[]) {
     while (!new_v) {
       // Note, we did not initialize rand, this is purposeful
       r = rand();
-      new_v = !tree.get(r); 
+      int junk;
+      new_v = !tree.get(r, &junk); 
       gets++;
     }
     // put it in thet tree
@@ -62,4 +59,3 @@ int main(int argc, char* argv[]) {
   }
   printf("gets %d\n", gets);
 }
-

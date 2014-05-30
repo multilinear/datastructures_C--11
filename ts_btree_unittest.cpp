@@ -52,7 +52,7 @@ void check(TSBTree<int,int,TSBTreeComp,ARITY> *tree, TrivialDict<TrivialDictDatu
   auto i = dict->begin();
   int d;
   for (; i != dict->end(); i++) {
-    if(!tree->get(i->val(), &d)) {
+    if(!tree->get(i->val())) {
       printf("%d\n", i->val());
       PANIC("Element not in tree anymore!");
     }
@@ -78,8 +78,7 @@ int main(int argc, char* argv[]) {
         // Note, we did not initialize rand, this is purposeful
         r = rand();
         new_v = true;
-        TrivialDictDatum d;
-        new_v = !dict.get(r, &d);
+        new_v = !dict.get(r);
       }
       tree.insert(r);
       dict.insert(r);
@@ -93,12 +92,12 @@ int main(int argc, char* argv[]) {
       int d;
       bool f;
       //printf("removing %d\n", i->val());
-      f = tree.get(i->val(), &d);
+      f = !!tree.get(i->val());
       if (!f) {
         PANIC("tree lacks element it should have");
       }
       tree.remove(i->val(), &d);
-      f = tree.get(i->val(), &d);
+      f = tree.get(i->val());
       if (f) {
         printf("Element %d\n", i->val());
         PANIC("tree has element it should not have");
