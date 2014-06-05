@@ -3,7 +3,8 @@
 #ifndef SET_H
 #define SET_H
 
-#define SET_ARITY 5
+// See experiments/btree_arity_test for details on this number
+#define SET_ARITY 55
 
 template<typename T>
 class Set {

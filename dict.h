@@ -3,7 +3,10 @@
 #ifndef DICT_H
 #define DICT_H
 
-#define DICT_ARITY 5
+// See experiments/btree_arity_test for details on this number
+#ifndef DICT_ARITY
+#define DICT_ARITY 30 
+#endif
 
 // TODO(mbrewer): should this be a storing pointers, not pairs?
 template<typename KT, typename VT>
@@ -22,7 +25,11 @@ class Dict {
   public:
     Dict():tree() {}
     VT* get(KT val) {
-      return &(tree.get(val)->second);
+      auto ptr = tree.get(val);
+      if (ptr) {
+        return &(ptr->second);
+      }
+      return nullptr;
     }
     void set(KT key, VT value) {
       auto *el = tree.get(key);

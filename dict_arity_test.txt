@@ -1,0 +1,560 @@
+ARITY: 5
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m45.513s
+user	0m45.230s
+sys	0m0.268s
+ARITY: 10
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m36.875s
+user	0m36.529s
+sys	0m0.316s
+ARITY: 15
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m32.154s
+user	0m31.925s
+sys	0m0.240s
+ARITY: 20
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m29.592s
+user	0m29.347s
+sys	0m0.256s
+ARITY: 25
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m33.535s
+user	0m33.264s
+sys	0m0.256s
+ARITY: 30
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m28.600s
+user	0m28.388s
+sys	0m0.220s
+ARITY: 35
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m28.536s
+user	0m28.353s
+sys	0m0.192s
+ARITY: 40
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m30.486s
+user	0m30.254s
+sys	0m0.240s
+ARITY: 45
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m33.146s
+user	0m32.757s
+sys	0m0.308s
+ARITY: 50
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m29.174s
+user	0m28.909s
+sys	0m0.276s
+ARITY: 55
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m29.812s
+user	0m29.604s
+sys	0m0.200s
+ARITY: 60
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m29.175s
+user	0m29.024s
+sys	0m0.160s
+ARITY: 65
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m26.316s
+user	0m26.120s
+sys	0m0.204s
+ARITY: 70
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m26.143s
+user	0m25.949s
+sys	0m0.204s
+ARITY: 75
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m26.162s
+user	0m25.989s
+sys	0m0.184s
+ARITY: 80
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m26.259s
+user	0m26.082s
+sys	0m0.188s
+ARITY: 85
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m26.091s
+user	0m25.865s
+sys	0m0.236s
+ARITY: 90
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m26.093s
+user	0m25.922s
+sys	0m0.180s
+ARITY: 95
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m27.632s
+user	0m27.415s
+sys	0m0.228s
+ARITY: 100
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m27.878s
+user	0m27.684s
+sys	0m0.200s
+ARITY: 105
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m26.918s
+user	0m26.754s
+sys	0m0.172s
+ARITY: 110
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m26.791s
+user	0m26.636s
+sys	0m0.164s
+ARITY: 115
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m26.613s
+user	0m26.438s
+sys	0m0.184s
+ARITY: 120
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m27.040s
+user	0m26.813s
+sys	0m0.236s
+ARITY: 125
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m27.008s
+user	0m26.802s
+sys	0m0.212s
+ARITY: 130
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m27.100s
+user	0m26.885s
+sys	0m0.224s
+ARITY: 135
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m26.904s
+user	0m26.728s
+sys	0m0.184s
+ARITY: 140
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m27.223s
+user	0m27.010s
+sys	0m0.224s
+ARITY: 145
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m27.221s
+user	0m27.040s
+sys	0m0.192s
+ARITY: 150
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m27.716s
+user	0m27.542s
+sys	0m0.184s
+ARITY: 155
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m27.541s
+user	0m27.355s
+sys	0m0.196s
+ARITY: 160
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m27.939s
+user	0m27.733s
+sys	0m0.216s
+ARITY: 165
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m28.235s
+user	0m27.995s
+sys	0m0.224s
+ARITY: 170
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m28.139s
+user	0m27.962s
+sys	0m0.180s
+ARITY: 175
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m28.592s
+user	0m28.375s
+sys	0m0.228s
+ARITY: 180
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m28.364s
+user	0m28.218s
+sys	0m0.156s
+ARITY: 185
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m28.510s
+user	0m28.294s
+sys	0m0.228s
+ARITY: 190
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m28.599s
+user	0m28.396s
+sys	0m0.208s
+ARITY: 195
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m28.641s
+user	0m28.467s
+sys	0m0.184s
+ARITY: 200
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m28.997s
+user	0m28.772s
+sys	0m0.236s
+ARITY: 205
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m29.125s
+user	0m28.891s
+sys	0m0.244s
+ARITY: 210
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m29.871s
+user	0m29.669s
+sys	0m0.214s
+ARITY: 215
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m31.255s
+user	0m30.998s
+sys	0m0.268s
+ARITY: 220
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m33.031s
+user	0m32.741s
+sys	0m0.288s
+ARITY: 225
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m32.995s
+user	0m32.757s
+sys	0m0.252s
+ARITY: 230
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m31.836s
+user	0m31.619s
+sys	0m0.228s
+ARITY: 235
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m31.912s
+user	0m31.769s
+sys	0m0.156s
+ARITY: 240
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m32.203s
+user	0m31.999s
+sys	0m0.216s
+ARITY: 245
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m32.337s
+user	0m32.144s
+sys	0m0.204s
+ARITY: 250
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m32.586s
+user	0m32.389s
+sys	0m0.208s
+ARITY: 255
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m32.677s
+user	0m32.501s
+sys	0m0.188s
+ARITY: 260
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m33.075s
+user	0m32.837s
+sys	0m0.248s
+ARITY: 265
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m33.098s
+user	0m32.880s
+sys	0m0.228s
+ARITY: 270
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m33.254s
+user	0m33.055s
+sys	0m0.212s
+ARITY: 275
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m33.419s
+user	0m33.124s
+sys	0m0.308s
+ARITY: 280
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m33.151s
+user	0m32.875s
+sys	0m0.260s
+ARITY: 285
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m31.837s
+user	0m31.643s
+sys	0m0.204s
+ARITY: 290
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m32.121s
+user	0m31.860s
+sys	0m0.188s
+ARITY: 295
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m32.049s
+user	0m31.740s
+sys	0m0.232s
+ARITY: 300
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m32.613s
+user	0m32.248s
+sys	0m0.284s
+ARITY: 305
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m34.100s
+user	0m33.859s
+sys	0m0.252s
+ARITY: 310
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m34.392s
+user	0m34.207s
+sys	0m0.196s
+ARITY: 315
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m34.263s
+user	0m34.065s
+sys	0m0.208s
+ARITY: 320
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m34.728s
+user	0m34.523s
+sys	0m0.216s
+ARITY: 325
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m34.947s
+user	0m34.752s
+sys	0m0.204s
+ARITY: 330
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m34.538s
+user	0m34.289s
+sys	0m0.256s
+ARITY: 335
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m34.907s
+user	0m34.670s
+sys	0m0.244s
+ARITY: 340
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m34.942s
+user	0m34.741s
+sys	0m0.208s
+ARITY: 345
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m35.195s
+user	0m34.956s
+sys	0m0.252s
+ARITY: 350
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m35.031s
+user	0m34.810s
+sys	0m0.232s
+ARITY: 355
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m35.676s
+user	0m35.433s
+sys	0m0.252s
+ARITY: 360
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m35.935s
+user	0m35.700s
+sys	0m0.244s
+ARITY: 365
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m35.722s
+user	0m35.586s
+sys	0m0.148s
+ARITY: 370
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m36.050s
+user	0m35.814s
+sys	0m0.244s
+ARITY: 375
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m35.839s
+user	0m35.633s
+sys	0m0.220s
+ARITY: 380
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m36.449s
+user	0m36.239s
+sys	0m0.220s
+ARITY: 385
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m36.908s
+user	0m36.665s
+sys	0m0.256s
+ARITY: 390
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m36.473s
+user	0m36.264s
+sys	0m0.224s
+ARITY: 395
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m37.316s
+user	0m37.117s
+sys	0m0.212s
+ARITY: 400
+Begin Dict.h benchmark
+gets 20093205
+
+real	0m36.702s
+user	0m36.505s
+sys	0m0.208s
