@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-O3 -std=c++11 -Wall -Werror
 CFLAGS_THREAD=-pthread
 
-SOURCES=avl_unittest.cpp boundedheap_unittest.cpp btree_unittest.cpp dict_unittest.cpp dlist_unittest.cpp heap_unittest.cpp list_unittest.cpp redblack_unittest.cpp rredblack_unittest.cpp ringbuffer_unittest.cpp set_unittest.cpp trivialdict_unittest.cpp ts_btree_unittest.cpp ts_ringbuffer_unittest.cpp ts_work_queue_unittest.cpp
+SOURCES=avl_unittest.cpp bheap_unittest.cpp boundedheap_unittest.cpp btree_unittest.cpp dict_unittest.cpp dlist_unittest.cpp heap_unittest.cpp list_unittest.cpp redblack_unittest.cpp rredblack_unittest.cpp ringbuffer_unittest.cpp set_unittest.cpp trivialdict_unittest.cpp ts_btree_unittest.cpp ts_ringbuffer_unittest.cpp ts_work_queue_unittest.cpp
 
 EXES=$(SOURCES:.cpp=) 
 
@@ -15,6 +15,8 @@ $(EXES):
 clean: ;rm $(EXES); true
 
 avl_unittest: *.h *.cpp ; $(CC) $(CFLAGS) avl_unittest.cpp -o avl_unittest
+
+bheap_unittest: *.h *.cpp ; $(CC) $(CFLAGS) bheap_unittest.cpp -o bheap_unittest
 
 boundedheap_unittest: *.h *.cpp ; $(CC) $(CFLAGS) boundedheap_unittest.cpp -o boundedheap_unittest
 

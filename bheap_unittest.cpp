@@ -4,7 +4,7 @@
 //#define BHEAP_DEBUG_VERBOSE
 #include "bheap.h"
 
-#define TEST_SIZE 70 
+#define TEST_SIZE 700 
 // TODO: Make sure this works with not *just* 2^x-1
 #define NODE_SIZE 3
 
@@ -24,39 +24,45 @@ int main(int argc, char **argv) {
   printf("Constructed \n");
   int i,j;
   int val=-1;
-  //for (j=TEST_SIZE-1;j<TEST_SIZE;j++) {
-  j=TEST_SIZE;
+  for (j=TEST_SIZE-1;j<TEST_SIZE;j++) {
+    j=TEST_SIZE;
     for (i=0;i<j;i++) {
       heap.push(i);
-      heap.print();
-      printf("\n");
     }
+    heap.print();
+    printf("\n");
     for (i=0;i<j;i++) {
       heap.pop(&val);
-      heap.print();
-      printf("\n");
     }
-/*    heap.print();
+    if (heap.pop(&val)) {
+      PANIC("Bheap didn't drain");
+    }
     for (i=j;i>0;i--) {
       heap.push(i);
     }
     heap.print();
+    printf("\n");
     for (i=j;i>0;i--) {
       heap.pop(&val);
     }
-    heap.print();*/
-  //}
-/*  for (j=0;j<TEST_SIZE;j++) {
+    if (heap.pop(&val)) {
+      PANIC("Bheap didn't drain");
+    }
+  }
+  for (j=0;j<TEST_SIZE;j++) {
     for (i=0;i<j;i++) {
       val = rand();
       heap.push(val);
     }
     heap.print();
+    printf("\n");
     for (i=0;i<j;i++) {
       heap.pop(&val);
     }
-    heap.print();
-  }*/
+    if (heap.pop(&val)) {
+      PANIC("Bheap didn't drain");
+    }
+  }
 
   printf("PASS\n");
   return 0;

@@ -445,7 +445,10 @@ class BHeap {
       while (true) {
         if (!n->parent) {
           going_left = false;
-          return tail;
+          // If we're going *left* only, we're still loading the subheaps array
+          // to the right, so in this case we need to start going right from the
+          // leftmost of this subheap when adding a new level
+          return tail->parent->subheaps[0];
         }
         if (n->parent_index > 0) {
           break;
@@ -492,6 +495,9 @@ class BHeap {
         while (true) {
           if (!n->parent) {
             going_left = true;
+            if (tail->parent->parent) {
+              return tail->parent->parent->subheaps.revi(1);
+            }
             return tail->parent;
           }
           if (n->parent_index > 0) {
@@ -512,6 +518,9 @@ class BHeap {
       while (true) {
         if (!n->parent) {
           going_left = false;
+          if (tail->parent->parent) {
+            return tail->parent->parent->subheaps.revi(1);
+          }
           return tail->parent;
         }
         if (n->parent_index < Size) {
@@ -519,13 +528,14 @@ class BHeap {
         }
         n = n->parent;
       }
-      // Take the branch just to the left
+      // Take the branch just to the right 
       n = n->parent->subheaps[n->parent_index+1];
-      // Descend to the right, until we find a node without children
+      // Descend to the left, until we find a node without children
       while (n->subheaps.used() > 0) {
         n = n->subheaps[0];
       }
-      return n;
+      // On the last level we want the *last* element, order is flipped here (ugh)
+      return n->parent->subheaps.revi(1);
     }
 
     void delete_tail() {
