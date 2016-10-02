@@ -4,9 +4,10 @@
 //#define BHEAP_DEBUG_VERBOSE
 #include "bheap.h"
 
-#define TEST_SIZE 700 
-// TODO: Make sure this works with not *just* 2^x-1
-#define NODE_SIZE 3
+// This needs a large test size, since we special case
+// some pretty large cases
+#define TEST_SIZE 1000 
+#define NODE_SIZE 4 
 
 class BHeapCompare {
   public:
@@ -21,7 +22,6 @@ class BHeapCompare {
 int main(int argc, char **argv) {
   printf("Begin BHeap.h/Array.h unittest\n");
   BHeap<int, int, BHeapCompare, NODE_SIZE> heap;
-  printf("Constructed \n");
   int i,j;
   int val=-1;
   for (j=TEST_SIZE-1;j<TEST_SIZE;j++) {
@@ -29,8 +29,6 @@ int main(int argc, char **argv) {
     for (i=0;i<j;i++) {
       heap.push(i);
     }
-    heap.print();
-    printf("\n");
     for (i=0;i<j;i++) {
       heap.pop(&val);
     }
@@ -40,8 +38,6 @@ int main(int argc, char **argv) {
     for (i=j;i>0;i--) {
       heap.push(i);
     }
-    heap.print();
-    printf("\n");
     for (i=j;i>0;i--) {
       heap.pop(&val);
     }
@@ -54,8 +50,6 @@ int main(int argc, char **argv) {
       val = rand();
       heap.push(val);
     }
-    heap.print();
-    printf("\n");
     for (i=0;i<j;i++) {
       heap.pop(&val);
     }

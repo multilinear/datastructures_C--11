@@ -105,13 +105,17 @@ class Heap {
       bubble_up();
       CHECK();
     }
-    T pop() {
+    bool pop(T *val) {
       CHECK();
-      T tmp = ar[0];
-      ar[0] = ar.pop();  
-      bubble_down();
+      if (ar.used() > 1) {
+        *val = ar[0];
+        ar.pop(&ar[0]);
+        bubble_down();
+        CHECK();
+        return true;
+      }
       CHECK();
-      return tmp;
+      return ar.pop(val);
     }
     void check() {
       _check(0);

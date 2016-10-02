@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     d.get(i);
   }
   for (i=0; i<100; i++) {
-    int ret;
+    int ret = -1;
     d.remove(i, &ret);
     if (ret != 998) {
       PANIC("Set is failing\n");
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     d.get(i);
   }
   for (i=0; i<100; i++) {
-    int ret;
+    int ret = -1;
     d.remove(i, &ret);
     if (ret != 999) {
       PANIC("Set is failing\n");

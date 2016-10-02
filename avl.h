@@ -632,7 +632,7 @@ size_t AVL<Node_T, Val_T>::_checkAll(Node_T *parent, Node_T *n) {
   // If this is outside of a 32 bit integer, something REALLY
   // exciting happened (it should be -2 to 2... always)
   int diff = size_l-size_r;
-  if (size_l - size_r != n->balance) {
+  if ((ssize_t) (size_l - size_r) != n->balance) {
     print();
     printf("node's balance is wrong: ");
     n->print();

@@ -13,16 +13,18 @@ class HeapCompare {
 };
 
 int main(int argc, char **argv) {
-  printf("Begin Heap.h/Array.h unittest\n");
+  printf("Begin Heap.h/Array.h benchmark\n");
   Heap<int, int, HeapCompare> heap;
   int i,j;
+  int val=-1;
 
   for (j=0;j<TEST_SIZE;j++) {
     heap.push(rand());
   }
   for (j=0;j<TEST_SIZE;j++) {
-    heap.pop();
+    heap.pop(&val);
   }
 
   printf("PASS\n");
+  return 0;
 }

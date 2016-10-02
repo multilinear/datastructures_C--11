@@ -17,28 +17,41 @@ int main(int argc, char **argv) {
   printf("Begin Heap.h/Array.h unittest\n");
   Heap<int, int, HeapCompare> heap;
   int i,j;
-  for (j=0;j<TEST_SIZE;j++) {
+  int val=-1;
+  for (j=TEST_SIZE-1;j<TEST_SIZE;j++) {
+    j=TEST_SIZE;
     for (i=0;i<j;i++) {
       heap.push(i);
     }
     for (i=0;i<j;i++) {
-      heap.pop();
+      heap.pop(&val);
+    }
+    if (heap.pop(&val)) {
+      PANIC("Bheap didn't drain");
     }
     for (i=j;i>0;i--) {
       heap.push(i);
     }
     for (i=j;i>0;i--) {
-      heap.pop();
+      heap.pop(&val);
+    }
+    if (heap.pop(&val)) {
+      PANIC("Bheap didn't drain");
     }
   }
   for (j=0;j<TEST_SIZE;j++) {
     for (i=0;i<j;i++) {
-      heap.push(rand());
+      val = rand();
+      heap.push(val);
     }
     for (i=0;i<j;i++) {
-      heap.pop();
+      heap.pop(&val);
+    }
+    if (heap.pop(&val)) {
+      PANIC("Bheap didn't drain");
     }
   }
 
   printf("PASS\n");
+  return 0;
 }
