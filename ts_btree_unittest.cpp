@@ -3,6 +3,7 @@
 #include "trivialdict.h"
 // This turns on rather expensive internal consistancy checking
 #define TSBTREE_DEBUG
+//#define TSBTREE_DEBUG_VERBOSE
 #include "ts_btree.h"
 
 #define TEST_SIZE 200
@@ -50,9 +51,9 @@ void print_tree(TSBTree<int,int,TSBTreeComp,ARITY> *t) {
 
 void check(TSBTree<int,int,TSBTreeComp,ARITY> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
   auto i = dict->begin();
-  int d;
+  int val;
   for (; i != dict->end(); i++) {
-    if(!tree->get(i->val())) {
+    if(!tree->get(i->val(), &val)) {
       printf("%d\n", i->val());
       PANIC("Element not in tree anymore!");
     }
@@ -63,10 +64,11 @@ int main(int argc, char* argv[]) {
   TrivialDict<TrivialDictDatum, int> dict(TEST_SIZE);
   TSBTree<int,int,TSBTreeComp,ARITY> tree;
 
-  int i;
   // insert in order, then remove
   printf("Begin TSBTree.h test\n");
+  int i;
   int k;
+  int val;
   for (k=1; k<TEST_SIZE; k++) {
     dict.reset(TEST_SIZE);
     //printf("**** Adding elements\n");
@@ -89,15 +91,13 @@ int main(int argc, char* argv[]) {
       // We're invalidating our iterator every round, by modifying the tree
       // but we removed the first element, so we just start over again
       auto i = dict.begin();
-      int d;
       bool f;
-      //printf("removing %d\n", i->val());
-      f = !!tree.get(i->val());
+      f = !!tree.get(i->val(), &val);
       if (!f) {
         PANIC("tree lacks element it should have");
       }
-      tree.remove(i->val(), &d);
-      f = tree.get(i->val());
+      tree.remove(i->val(), &val);
+      f = tree.get(i->val(), &val);
       if (f) {
         printf("Element %d\n", i->val());
         PANIC("tree has element it should not have");

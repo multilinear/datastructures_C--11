@@ -321,7 +321,7 @@ class TSBTree {
   public:
     TSBTree();
     ~TSBTree();
-    T* get(Val_T val);
+    bool get(Val_T val, T* result);
     bool insert(T);
     bool remove(Val_T val, T* result);
     void check(void);
@@ -342,11 +342,12 @@ TSBTree<T,Val_T,C,SIZE>::~TSBTree() {
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-T* TSBTree<T,Val_T,C,SIZE>::get(Val_T val) {
+bool TSBTree<T,Val_T,C,SIZE>::get(Val_T val, T* result) {
   PRINT("TSBTree Get, begins\n");
   PRINT_TREE();
   CHECK();
   m.lock();
+  PRINT("Root Mutex locked\n");
   auto *n = root;
   std::mutex *lastm = &m; // Note that we hold this until we lock root's *child*
   bool found;
@@ -356,7 +357,9 @@ T* TSBTree<T,Val_T,C,SIZE>::get(Val_T val) {
       PRINT("TSBTree Get, end found\n");
       PRINT_TREE();
       CHECK();
-      return &(n->get_data(i));
+      *result = n->get_data(i);
+      lastm->unlock();
+      return true;
     }
     n = n->get_node(i);
     if (n) {
@@ -369,7 +372,7 @@ T* TSBTree<T,Val_T,C,SIZE>::get(Val_T val) {
   PRINT("TSBTree Get, end not found\n");
   PRINT_TREE();
   CHECK();
-  return nullptr;
+  return false;
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
