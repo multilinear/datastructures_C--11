@@ -8,7 +8,7 @@
 #define DICT_ARITY 30 
 #endif
 
-// TODO(mbrewer): should this be a storing pointers, not pairs?
+// TODO(mbrewer): should this be storing pointers, not pairs?
 template<typename KT, typename VT>
 class Dict {
   private:

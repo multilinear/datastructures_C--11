@@ -5,11 +5,8 @@
 
 class HeapCompare {
   public:
-    static int val(int v) {
-      return v;
-    }
-    static int compare(int v1, int v2) {
-      return v1 - v2;
+    static int compare(int *v1, int *v2) {
+      return (*v1) - (*v2);
     }
 };
 

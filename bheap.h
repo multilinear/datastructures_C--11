@@ -144,7 +144,7 @@ class SubHeap {
     }
 
     int compare(SubHeap<T, Val_T, C, Size> *subheap1, size_t index1, SubHeap<T, Val_T, C, Size> *subheap2, size_t index2) {
-      return C::compare(C::val(subheap1->splits[index1]), C::val(subheap2->splits[index2]));
+      return C::compare(&subheap1->splits[index1], &subheap2->splits[index2]);
     }
 
     void bubble_down() {

@@ -29,14 +29,14 @@ class Heap {
     void _check(size_t i) {
       int c;
       if (2*i+1 < ar.used()) {
-        c = C::compare(C::val(ar[2*i+1]), C::val(ar[i]));
+        c = C::compare(&ar[2*i+1], &ar[i]);
         if (c < 0) {
           PANIC("heap is not in order\n");
         }
         _check(2*i+1);
       }
       if (2*i+2 < ar.used()) {
-        c = C::compare(C::val(ar[2*i+2]), C::val(ar[i]));
+        c = C::compare(&ar[2*i+2], &ar[i]);
         if (c < 0) {
           PANIC("heap is not in order\n");
         }
@@ -56,7 +56,7 @@ class Heap {
         size_t right = 2*i + 2;
         if (right < ar.used()) {
           // find the smaller value
-          int c = C::compare(C::val(ar[left]), C::val(ar[right]));
+          int c = C::compare(&ar[left], &ar[right]);
           if (c > 0) {
             j = right;
           } else {
@@ -69,7 +69,7 @@ class Heap {
         }
         // and if i is larger than j we need to swap
         // if not we're done
-        int c = C::compare(C::val(ar[i]), C::val(ar[j]));
+        int c = C::compare(&ar[i], &ar[j]);
         if (c > 0) {
           swap(i,j);
         } else {
@@ -84,7 +84,7 @@ class Heap {
       size_t parent;
       while(i != 0) {
         parent = (i-1)/2;
-        int c = C::compare(C::val(ar[parent]), C::val(ar[i]));
+        int c = C::compare(&ar[parent], &ar[i]);
         if (c>0) {
           swap(parent, i);
         } else {
