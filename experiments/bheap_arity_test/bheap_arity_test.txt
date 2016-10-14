@@ -1,0 +1,560 @@
+ARITY: 5
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m4.500s
+user	0m4.460s
+sys	0m0.040s
+ARITY: 10
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.987s
+user	0m3.920s
+sys	0m0.064s
+ARITY: 15
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.445s
+user	0m3.360s
+sys	0m0.080s
+ARITY: 20
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.469s
+user	0m3.396s
+sys	0m0.068s
+ARITY: 25
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.182s
+user	0m3.124s
+sys	0m0.052s
+ARITY: 30
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.242s
+user	0m3.176s
+sys	0m0.060s
+ARITY: 35
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.185s
+user	0m3.080s
+sys	0m0.100s
+ARITY: 40
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.277s
+user	0m3.208s
+sys	0m0.068s
+ARITY: 45
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.266s
+user	0m3.196s
+sys	0m0.064s
+ARITY: 50
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.265s
+user	0m3.196s
+sys	0m0.064s
+ARITY: 55
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.276s
+user	0m3.208s
+sys	0m0.064s
+ARITY: 60
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.201s
+user	0m3.124s
+sys	0m0.076s
+ARITY: 65
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.256s
+user	0m3.188s
+sys	0m0.064s
+ARITY: 70
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.309s
+user	0m3.256s
+sys	0m0.048s
+ARITY: 75
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.178s
+user	0m3.112s
+sys	0m0.064s
+ARITY: 80
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.272s
+user	0m3.220s
+sys	0m0.048s
+ARITY: 85
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.281s
+user	0m3.204s
+sys	0m0.072s
+ARITY: 90
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.267s
+user	0m3.204s
+sys	0m0.060s
+ARITY: 95
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.210s
+user	0m3.136s
+sys	0m0.068s
+ARITY: 100
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.369s
+user	0m3.320s
+sys	0m0.044s
+ARITY: 105
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.321s
+user	0m3.232s
+sys	0m0.084s
+ARITY: 110
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.221s
+user	0m3.176s
+sys	0m0.044s
+ARITY: 115
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.234s
+user	0m3.180s
+sys	0m0.044s
+ARITY: 120
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.324s
+user	0m3.240s
+sys	0m0.080s
+ARITY: 125
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.191s
+user	0m3.144s
+sys	0m0.044s
+ARITY: 130
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.326s
+user	0m3.256s
+sys	0m0.068s
+ARITY: 135
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.294s
+user	0m3.224s
+sys	0m0.064s
+ARITY: 140
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.322s
+user	0m3.240s
+sys	0m0.076s
+ARITY: 145
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.217s
+user	0m3.124s
+sys	0m0.092s
+ARITY: 150
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.324s
+user	0m3.276s
+sys	0m0.044s
+ARITY: 155
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.328s
+user	0m3.276s
+sys	0m0.048s
+ARITY: 160
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.316s
+user	0m3.236s
+sys	0m0.076s
+ARITY: 165
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.257s
+user	0m3.192s
+sys	0m0.064s
+ARITY: 170
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.299s
+user	0m3.232s
+sys	0m0.064s
+ARITY: 175
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.265s
+user	0m3.216s
+sys	0m0.044s
+ARITY: 180
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.255s
+user	0m3.196s
+sys	0m0.052s
+ARITY: 185
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.199s
+user	0m3.136s
+sys	0m0.064s
+ARITY: 190
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.266s
+user	0m3.172s
+sys	0m0.088s
+ARITY: 195
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.179s
+user	0m3.096s
+sys	0m0.080s
+ARITY: 200
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.232s
+user	0m3.168s
+sys	0m0.064s
+ARITY: 205
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.154s
+user	0m3.080s
+sys	0m0.072s
+ARITY: 210
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.154s
+user	0m3.084s
+sys	0m0.064s
+ARITY: 215
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.252s
+user	0m3.148s
+sys	0m0.100s
+ARITY: 220
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.315s
+user	0m3.268s
+sys	0m0.044s
+ARITY: 225
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.296s
+user	0m3.208s
+sys	0m0.084s
+ARITY: 230
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.284s
+user	0m3.236s
+sys	0m0.044s
+ARITY: 235
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.308s
+user	0m3.224s
+sys	0m0.080s
+ARITY: 240
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.422s
+user	0m3.368s
+sys	0m0.048s
+ARITY: 245
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.188s
+user	0m3.132s
+sys	0m0.052s
+ARITY: 250
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.236s
+user	0m3.156s
+sys	0m0.076s
+ARITY: 255
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.267s
+user	0m3.224s
+sys	0m0.040s
+ARITY: 260
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.185s
+user	0m3.096s
+sys	0m0.088s
+ARITY: 265
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.189s
+user	0m3.108s
+sys	0m0.076s
+ARITY: 270
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.288s
+user	0m3.224s
+sys	0m0.060s
+ARITY: 275
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.294s
+user	0m3.228s
+sys	0m0.064s
+ARITY: 280
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.252s
+user	0m3.156s
+sys	0m0.092s
+ARITY: 285
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.172s
+user	0m3.132s
+sys	0m0.036s
+ARITY: 290
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.177s
+user	0m3.088s
+sys	0m0.084s
+ARITY: 295
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.257s
+user	0m3.192s
+sys	0m0.060s
+ARITY: 300
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.203s
+user	0m3.148s
+sys	0m0.052s
+ARITY: 305
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.315s
+user	0m3.212s
+sys	0m0.100s
+ARITY: 310
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.217s
+user	0m3.168s
+sys	0m0.048s
+ARITY: 315
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.359s
+user	0m3.300s
+sys	0m0.056s
+ARITY: 320
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.263s
+user	0m3.172s
+sys	0m0.088s
+ARITY: 325
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.261s
+user	0m3.204s
+sys	0m0.052s
+ARITY: 330
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.256s
+user	0m3.200s
+sys	0m0.056s
+ARITY: 335
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.265s
+user	0m3.196s
+sys	0m0.064s
+ARITY: 340
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.271s
+user	0m3.204s
+sys	0m0.064s
+ARITY: 345
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.181s
+user	0m3.124s
+sys	0m0.056s
+ARITY: 350
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.192s
+user	0m3.152s
+sys	0m0.036s
+ARITY: 355
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.263s
+user	0m3.192s
+sys	0m0.068s
+ARITY: 360
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.143s
+user	0m3.060s
+sys	0m0.084s
+ARITY: 365
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.216s
+user	0m3.168s
+sys	0m0.044s
+ARITY: 370
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.255s
+user	0m3.188s
+sys	0m0.060s
+ARITY: 375
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.238s
+user	0m3.144s
+sys	0m0.088s
+ARITY: 380
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.509s
+user	0m3.424s
+sys	0m0.084s
+ARITY: 385
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.291s
+user	0m3.208s
+sys	0m0.080s
+ARITY: 390
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.233s
+user	0m3.172s
+sys	0m0.056s
+ARITY: 395
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.231s
+user	0m3.172s
+sys	0m0.056s
+ARITY: 400
+Begin BHeap.h/Array.h benchmark
+PASS
+
+real	0m3.174s
+user	0m3.112s
+sys	0m0.056s

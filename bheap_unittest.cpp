@@ -7,7 +7,9 @@
 // This needs a large test size, since we special case
 // some pretty large cases
 #define TEST_SIZE 1000 
+#ifndef NODE_SIZE
 #define NODE_SIZE 4 
+#endif
 
 class BHeapCompare {
   public:

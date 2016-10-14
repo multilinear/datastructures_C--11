@@ -1,14 +1,14 @@
 #include "heap.h"
 
-#define TEST_SIZE 100000000
+#define TEST_SIZE 10000000
 
 class HeapCompare {
   public:
     static int val(int v) {
       return v;
     }
-    static int compare(int v1, int v2) {
-      return v1 - v2;
+    static int compare(int *v1, int *v2) {
+      return *v1 - *v2;
     }
 };
 

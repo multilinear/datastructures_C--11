@@ -17,9 +17,9 @@
 // for debugging code that uses the tree as well.
 // This checks all of the AVL invariants before and after ever oparation.
 #ifdef HEAP_DEBUG
-#define CHECK() check()
+#define HEAP_CHECK() check()
 #else
-#define CHECK()
+#define HEAP_CHECK()
 #endif
  
 template<typename T, typename Val_T, typename C>
@@ -100,21 +100,21 @@ class Heap {
     ~Heap() {
     }
     void push(T data) {
-      CHECK();
+      HEAP_CHECK();
       ar.append(data);
       bubble_up();
-      CHECK();
+      HEAP_CHECK();
     }
     bool pop(T *val) {
-      CHECK();
+      HEAP_CHECK();
       if (ar.used() > 1) {
         *val = ar[0];
         ar.pop(&ar[0]);
         bubble_down();
-        CHECK();
+        HEAP_CHECK();
         return true;
       }
-      CHECK();
+      HEAP_CHECK();
       return ar.pop(val);
     }
     void check() {

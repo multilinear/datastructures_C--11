@@ -11,13 +11,17 @@
  * but in large trees they are not, so all comparisons are non-local, blowing
  * cachelines with every operation.
  *
- * A BHeap in contrast is a sort of like a Heap of Heaps. The bottom level of each subheap
+ * A BHeap in contrast is sort of like a Heap of Heaps. The bottom level of each subheap
  * Points to more subheaps, rather than storing the data locally.
  * This makes *most* operations local (within a subheap) as we push data down through the heap
  * With occasional non-local comparisons as we cross between levels. Conceptually this
  * should make the "bubble-up" and "bubble-down" operations faster on very large datasets
- * The purpose of thise code is to 1) find out if this is true 2) provide a usable
+ * The purpose of this code is to 1) find out if this is true 2) provide a usable
  * implementation if it is
+ *
+ * RESULTS: So far this appears to be ~20% slower than a normal heap, even on
+ * very large datasets. Tests were run by pushing and then popping 10,000,000
+ * elements. 
  * 
  * Algorithm:
  * See the BoundedHeap and Heap implementations first, we re-use some of the
