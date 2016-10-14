@@ -3,9 +3,20 @@
  * A BHeap is a datastructure invented by Myself (Matthew Brewer), which
  * combines the concepts of a B-tree and a Heap.
  *
+ * THIS IMPLEMENTATION IS SLOW (but faster than boundedheap.h)
+ * For better speed use heap.h
+ *
+ * Reasons to use this:
+ * 1) Much Faster than Bounded Heap
+ * 2) Gives a bound on worst-case run-time without concern for realloc implementation
+ * A good realloc should avoid copying all data on an array resize for for a
+ * Normal heap, but your depending on it to do that. With this impl, it doesn't matter
+ * Cost relative to heap.h is ~30%
+ *
  * Originally I had hoped it would have a better average case runtime than
  * a normal heap... It does not.
  * BUT... it still has a *bounded* worst-case runtime! at ~20% average case cost
+ * That said... a good re-alloc makes this irrelevent.
  *
  * Concept:
  * A standard Heap implementation is flat in memory, comparisons (jumps) are

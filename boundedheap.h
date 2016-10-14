@@ -2,6 +2,13 @@
  *
  * This is a Minheap, implemented as a Tree.
  *
+ * THIS IMPLEMENTATION IS SLOW 
+ * For better speed use Heap.h or Bheap.h
+ *
+ * Reasons to use this:
+ * 1) external allocation, this 
+ * 2) tight bounds on worst-case runtime... without concerns for how realloc works
+ *
  * A tree implementation of a heap is undoubtably slower than an array
  * implementation. This was implemented to find out how much slower.
  *
