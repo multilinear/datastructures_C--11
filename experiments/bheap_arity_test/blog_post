@@ -1,0 +1,48 @@
+I started a personal cruisade some time ago against selecting algorithms based on average time while ignoring worst case runtimes. I've posted about this here before:
+
+Several years ago I was toying with Heaps. The normal model for a heap is that the average run-time is O(log(n)) per operation, and the worst-case is the same. While theoretically true, in practice you rarely know the size of the data you are working with before-hand, and if you are ever wrong you have to allocate more space. Since heaps are by default stored flat in an array this means *copying* the entire heap in to thhe new larger array. This operatin is in fact O(n). Thus, in practice most uses of Heaps are actually worst-case O(n).
+
+Well... that's kind of horrible. So, I tried implementing one as a literal in-memory tree structure instead of an array. I called this a "bounded" heap (since it has a stricter bound). This gets a true worst-case O(log(n)) (assuming allocation time for new nodes is bounded). Unfortunately the performance is abysmal. We're talking 5 or 6 times worse average case, making it a pretty hard sell to convince anyone to use such an algorithm.
+
+
+So, I got an idea. What if we use the ideas of a Btree in a Heap. That is, allocate chunks of memory and store pieces of the heap in them. A the time I got an outline for an algorithm I call a Bheap (creatively), but I never got around to implementing it.
+
+I finally got it working and benchmarked it recently. Here's an outline for the Bheap algorithm. If you want full details you can just read my implementation, linked at the bottom:
+
+Bheap algorithm:
+
+Lets define a "Node". Each node contains an array. The first half of the array is a heap of data, exactly as normal. The second half is still layed out like a heap, but it's an indirect to other "Nodes", that is heaps. So, in principle it's just one big heap, but broken up in to chunks.
+
+But, there's one catch. If we did this naively we would fill the first node with a bunc hof elements, then we'd allocate it's first child node and put one element there, then we'd allocate the second and put one element there. That's a total waste of memory (wasting approximately 1/arity the memory it uses). So, we modify things to fill the allocated node before it creates a new one... Heaps don't depend on much more than the heap ordering, so nothing is significantly changed.
+
+There's only one more catch. Once we fill the last node we can allocate at a given level, we need to start filling the next level. As an optimization instead off walking down from the root we simply start making a our next child below the current tail. This is an idea I took from my first bounded heap algorithm. To make this work we fill nodes going left, then going right. There's some intracacies to making that work in practice, see the code for details.
+
+Predicted Performance:
+
+This algorithm has 2 neat advantages over a normal heap
+1) It does exactly what I planned, allocating a small chunk of data at once, and never having to do a linear time operation... yet it's quite memory efficient. It uses ~2x the memory of a normal heap, due to the pointer indirects, and wastes at worst 1 nodes worth of space... not bad.
+2) It should get better locality than a normal heap. Once downside of a normal heap is that a nodes children are located at 2i+1 and 2i+2. That means that after the first few elements all operations are non-local as far as caching goes. This algorithm keeps resetting that every time we go to a new node, so it should peform better cache-wise.
+
+Actual Performance:
+
+Here comes the charts and graphs... but long story short. On my benchmark, with the best possible node-size the Bheap is ~30% slower than a normal heap, and ~4 times faster than the bounded heap. This is actually pretty cool. We've brought the *worst* case down to O(log(n)) with only a 30% loss in practical average case runtime.
+
+
+So, final roundup looks like:
+BoundedHeap: ~14.0s
+Bheap: 3.2s
+Heap: 2.4s
+
+Analyzing this a bit more. It seems that the caching gains aren't worth all the extra conditionals necessary for the extra logic. That's not too surprising, we still miss cache pretty frequently, just not quite as often.
+
+Also fascinating even at a node-size of 2 this algorithm is outperforming the bounded-heap by ~3.2... That seems wrong. After digging in to the code though I realized that the bounded-heap implementation moves around NODES, while the BHeap implentation moves around DATA. These tests were done using an "int" as the data, on a 64 bit X86 arch under linus... e.g. 32 bit ints and 64 bit pointers. Unsurprisingly when you think about it, swapping two 4 byte ints is faster than swapping the 2 64 bit  child pointers and 1 64 bit parent pointer around. That's an interesting lesson in my mind.
+
+If anyone is aware of an algorithm like my Bheap that predates my implementation I'd love to know about it. Given the average runtime is still worse than a normal heap I don't expect anyone to adopt this algorithm anytime soon... but being only 30% worse, it probably would be worth it for a lot of applications. Heaps are usually used for maintaining a "small" list of items.
+
+Note that this work is completely obviated by careful memory management. The dumb solution is to leave space after your array and allocate a page there if needed, but this is quite annoying to implement and gets in the way. Approach #2 though is more practica. A modern malloc will allocate entire pages for large memory requests, thus realloc and the kernel can intelligently re-use those pages, even if they must move the allocation. This means that in practice the Bheap algorithm is likely never worth using in the presense of a paging system, large virtual memory space, and good libraries.
+
+Final notes:
+- My Heap implementation uses a standard doubling algorithm. So, if you store pointers in your heap (as is common) the worst-case memory overhead is basically identical to the Bheap.
+- I know skiplists are sometimes used in place of heaps in speed-critical applications. I've yet to implement one, or analyze it's theoretical or real-world runtimes. I understand most operations are log(n) bounded, but I'm unclear on the advantages over a heap.
+- One other approach to get similar theoretical bounds is to use a normal heap implementation on top of an array-list implementation. Comparing such an approach seems like a good direction for continuing research.
+- My implementations and test harness can be found in my git repo here:

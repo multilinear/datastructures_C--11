@@ -1,7 +1,7 @@
 //#define BOUNDEDHEAP_DEBUG
 #include "boundedheap.h"
 
-#define TEST_SIZE 100000000
+#define TEST_SIZE 10000000
 
 class HeapNode: public BoundedHeapNode_base<HeapNode, int>{
   public:

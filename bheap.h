@@ -1,9 +1,11 @@
-// WARNING: NOT FUNCTIONAL YET!
-
 /*
  * This is an implementation of a BHeap.
  * A BHeap is a datastructure invented by Myself (Matthew Brewer), which
  * combines the concepts of a B-tree and a Heap.
+ *
+ * Originally I had hoped it would have a better average case runtime than
+ * a normal heap... It does not.
+ * BUT... it still has a *bounded* worst-case runtime! at ~20% average case cost
  *
  * Concept:
  * A standard Heap implementation is flat in memory, comparisons (jumps) are
@@ -22,6 +24,8 @@
  * RESULTS: So far this appears to be ~20% slower than a normal heap, even on
  * very large datasets. Tests were run by pushing and then popping 10,000,000
  * elements. 
+ * BUT it has a true runtime bounded to O(log(n)) since it never needs to copy
+ * the array over to a new location.
  * 
  * Algorithm:
  * See the BoundedHeap and Heap implementations first, we re-use some of the
