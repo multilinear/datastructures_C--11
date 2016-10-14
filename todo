@@ -1,0 +1,7 @@
+Finish testing bheap
+Finish writing/testing sorts
+Replace class template arguments with function template arguments where possible
+Continue API development
+
+Rigorously tested so far:
+  - sorts

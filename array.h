@@ -28,6 +28,14 @@ class Array {
         ar[i] = input[i];
       }
     }
+    Array(Array<T>* input) {
+      ar = nullptr;
+      resize(input->len());
+      // TODO: This should use memcpy
+      for (size_t i=0; i<input->len(); i++) {
+        ar[i] = (*input)[i];
+      }
+    }
 
     ~Array() {
       free(ar);
