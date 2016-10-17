@@ -1,3 +1,5 @@
+#define ARRAY_DEBUG
+
 #include <stdio.h>
 #include "panic.h"
 #include "array.h"
@@ -20,6 +22,7 @@ void print_array(Array<int> *a) {
 
 void run(Array<int>* input, void* _unused){
   bool bad = false;
+  //printf("Run\n");
   Array<int> s_a(input);  
   Array<int> b_a(input);  
   Array<int> q_a(input);  
@@ -45,11 +48,12 @@ void run(Array<int>* input, void* _unused){
   if (bad) {
     PANIC("Nonmatching values");
   }
+  //printf("Done run\n");
 }
 
 
 template<typename ArrayType, typename DataType>
-void permutation_helper(ArrayType* a, void (*callback)(ArrayType* const, DataType), size_t p, DataType opaque_data) {
+void permutation_helper(ArrayType* a, void (*callback)(ArrayType*, DataType), size_t p, DataType opaque_data) {
   size_t i;
   // When we reach the end, we're done
   if (p+1 >= a->len()) {
@@ -67,12 +71,12 @@ void permutation_helper(ArrayType* a, void (*callback)(ArrayType* const, DataTyp
 }
 
 template<typename ArrayType, typename DataType>
-void permutations(Array<int>* a, void (*callback)(ArrayType* const, void*), DataType opaque_data) {
+void permutations(Array<int>* a, void (*callback)(ArrayType*, void*), DataType opaque_data) {
   permutation_helper<ArrayType>(a, callback, 0, opaque_data);
 }
 
 int main(){
-  printf("Sort unittest\n");
+  printf("Begin sort.h unittest\n");
   Array<int> testdata; 
   // Exhaustive testing of up to 9 elements
   for (int x=0; x<10; x++) {

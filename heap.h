@@ -22,20 +22,20 @@
 #define HEAP_CHECK()
 #endif
  
-template<typename T, typename Val_T, typename C>
+template<typename T, typename C>
 class Heap {
   private:
     UsedArray<T> ar;
     void _check(size_t i) {
       int c;
-      if (2*i+1 < ar.used()) {
+      if (2*i+1 < ar.len()) {
         c = C::compare(&ar[2*i+1], &ar[i]);
         if (c < 0) {
           PANIC("heap is not in order\n");
         }
         _check(2*i+1);
       }
-      if (2*i+2 < ar.used()) {
+      if (2*i+2 < ar.len()) {
         c = C::compare(&ar[2*i+2], &ar[i]);
         if (c < 0) {
           PANIC("heap is not in order\n");
@@ -54,7 +54,7 @@ class Heap {
       while(true) {
         size_t left = 2*i + 1;
         size_t right = 2*i + 2;
-        if (right < ar.used()) {
+        if (right < ar.len()) {
           // find the smaller value
           int c = C::compare(&ar[left], &ar[right]);
           if (c > 0) {
@@ -62,7 +62,7 @@ class Heap {
           } else {
             j = left; 
           }
-        } else if (left < ar.used()) {
+        } else if (left < ar.len()) {
           j = left;
         } else {
           return;
@@ -80,7 +80,7 @@ class Heap {
       }
     }
     void bubble_up() {
-      size_t i = ar.used()-1;
+      size_t i = ar.len()-1;
       size_t parent;
       while(i != 0) {
         parent = (i-1)/2;
@@ -107,7 +107,7 @@ class Heap {
     }
     bool pop(T *val) {
       HEAP_CHECK();
-      if (ar.used() > 1) {
+      if (ar.len() > 1) {
         *val = ar[0];
         ar.pop(&ar[0]);
         bubble_down();

@@ -20,7 +20,7 @@ class BHeapCompare {
 
 int main(int argc, char **argv) {
   printf("Begin BHeap.h/Array.h unittest\n");
-  BHeap<int, int, BHeapCompare, NODE_SIZE> heap;
+  BHeap<int, BHeapCompare, NODE_SIZE> heap;
   int i,j;
   int val=-1;
   for (j=TEST_SIZE-1;j<TEST_SIZE;j++) {

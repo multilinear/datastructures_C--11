@@ -1,4 +1,5 @@
 #define HEAP_DEBUG
+#define ARRAY_DEBUG
 #include "heap.h"
 
 #define TEST_SIZE 200
@@ -12,7 +13,7 @@ class HeapCompare {
 
 int main(int argc, char **argv) {
   printf("Begin Heap.h/Array.h unittest\n");
-  Heap<int, int, HeapCompare> heap;
+  Heap<int, HeapCompare> heap;
   int i,j;
   int val=-1;
   for (j=TEST_SIZE-1;j<TEST_SIZE;j++) {

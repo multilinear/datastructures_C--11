@@ -40,26 +40,24 @@ void bubble_sort(AT *a) {
 }
 
 // This sort is not stable, but is in place
-// TODO: Can this be made stable?
 template <typename AT, typename C>
 void quick_sort_helper(AT *a, size_t bottom, size_t top) {
   if (bottom >= top) {
     return;
   }
-  /*if (bottom + 1 == top) {
-    printf("just 2 elements");
-    if (C::compare(bottom, top) > 0) {
+  if (bottom + 1 == top) {
+    if (C::compare((*a)[bottom], (*a)[top]) > 0) {
       a->swap(bottom, top);
     }
     return;
-  }*/
+  }
   size_t left = bottom+1;
   size_t right = top;
-  while (left <= right) {
-    while ((*a)[left] <= (*a)[bottom] && left <= right) {
+  while (left < right) {
+    while (C::compare((*a)[left], (*a)[bottom]) <= 0 && left < right) {
       left++;
     }
-    while ((*a)[right] > (*a)[bottom] && left <= right) {
+    while (C::compare((*a)[right], (*a)[bottom]) > 0) {
       right--;
     }
     if (left < right) {
@@ -83,4 +81,14 @@ void quick_sort(AT *a) {
   quick_sort_helper<AT, C>(a, 0, a->len()-1);
 }
 
+/*template <typename AT, typename C>
+void merge_sort_helper(AT *a, AT *b) {
+  for 
+}
+
+template <typename AT, typename C>
+void merge_sort(AT *a) {
+  Array tmp; 
+  AT *b;
+}*/
   
