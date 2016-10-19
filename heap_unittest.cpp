@@ -12,7 +12,7 @@ class HeapCompare {
 };
 
 int main(int argc, char **argv) {
-  printf("Begin Heap.h/Array.h unittest\n");
+  printf("Begin Heap.h unittest\n");
   Heap<int, HeapCompare> heap;
   int i,j;
   int val=-1;

@@ -12,7 +12,7 @@ class Node: public DListNode_base<Node> {
 };
 
 int main(int argc, char* argv[]) {
-  printf("Begin dlist.h test\n");
+  printf("Begin DList.h test\n");
   DList<Node> L;
   int i;
   int j;
