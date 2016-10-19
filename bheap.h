@@ -149,7 +149,7 @@ class SubHeap {
     }
 
     bool is_empty() {
-      return splits.is_empty();
+      return splits.len() == 0;
     }
     
     bool is_leaf() {

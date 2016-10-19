@@ -76,7 +76,7 @@ void permutations(Array<int>* a, void (*callback)(ArrayType*, void*), DataType o
 }
 
 int main(){
-  printf("Begin sort.h unittest\n");
+  printf("Begin Sort.h unittest\n");
   Array<int> testdata; 
   // Exhaustive testing of up to 9 elements
   for (int x=0; x<10; x++) {

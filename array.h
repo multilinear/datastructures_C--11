@@ -100,14 +100,14 @@ class UsedArray {
       _used = 0;
       array_copy<UsedArray<T>, UsedArray<T>>(this, input);
     }
-    void append(T& data) {
+    void append(T data) {
       size_t length = ar.len();
       if (_used == length) {
         ar.resize(length == 0 ? 1 : length * 2);
       }
       ar[_used++] = data;
     }
-    void push (T& data) {
+    void push(T data) {
       append(data);
     }
     bool pop(T *val) {
@@ -115,7 +115,7 @@ class UsedArray {
         _used--;
         *val = ar[_used];
         // Reclaim memory if the amount used gets small
-        if (_used < ar.len()/2-1) {
+        if (_used < ar.len()/2) {
           resize(_used);
         }
         return true;
@@ -123,7 +123,7 @@ class UsedArray {
       return false;
     }
     void resize(size_t size) {
-      if (size > ar.len() || size < ar.len()/2-1) {
+      if (size > ar.len() || size < ar.len()/2) {
         ar.resize(size);
       }
       _used = size;
@@ -132,7 +132,7 @@ class UsedArray {
       if (_used > 0) {
         _used--;
         // Reclaim memory if the amount used gets small
-        if (_used < ar.len()/2-1) {
+        if (_used < ar.len()/2) {
           resize(_used);
         }
       }
@@ -149,11 +149,11 @@ class UsedArray {
     size_t len() {
       return _used;
     }
+    bool is_full() {
+      return false;
+    }
     size_t size() {
       return ar.len();
-    }
-    size_t is_empty() {
-      return _used == 0;
     }
     void swap(size_t i, size_t j) {
       ARRAY_CHECK(i);
@@ -186,7 +186,6 @@ class StaticArray {
       _used = 0;
     }
     StaticArray(T input[], size_t input_l) {
-      ar = nullptr;
       if (input_l > Size) {
         PANIC("Static Array initializer is too long");
       }
@@ -199,10 +198,10 @@ class StaticArray {
     StaticArray(StaticArray<T, Size>* input) {
       array_copy<StaticArray<T, Size>, StaticArray<T, Size>>(this, input);
     }
-    void append(T& data) {
+    void append(T data) {
       ar[_used++] = data;
     }
-    void push(T& data) {
+    void push(T data) {
       append(data);
     }
     bool pop(T *val) {
@@ -214,8 +213,9 @@ class StaticArray {
       return false;
     }
     void drop() {
-      ARRAY_CHECK(_used-1);
-      _used--;
+      if (_used > 0) {
+        _used--;
+      }
     }
     void resize(size_t size) {
       if (size > Size) {
@@ -237,9 +237,6 @@ class StaticArray {
     }
     bool is_full() {
       return _used >= Size;
-    }
-    bool is_empty() {
-      return _used == 0;
     }
     size_t size() {
       return Size;

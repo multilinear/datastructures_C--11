@@ -98,5 +98,33 @@ int main(int argc, char* argv[]) {
       PANIC("Tree should be empty here, but isn't");
     }
   }
+  
+  // Check non-existant element
+  AVLNode *n = tree.get(1); 
+  if (n != nullptr) {
+    PANIC("Underflow returned a value!");
+  }
+
+  // Check duplicate element behavior
+  n = new AVLNode(1);
+  bool inserted = tree.insert(n);
+  if (!inserted) {
+    PANIC("Insertion failed");
+  }
+  n = new AVLNode(1);
+  inserted = tree.insert(n);
+  if (inserted) {
+    PANIC("Double insertion succeeded");
+  }
+  n = tree.get(1);
+  if (n == nullptr) {
+    PANIC("Attempted insertion removed existing data");
+  }
+  delete tree.remove(tree.get(1));
+  n = tree.get(1);
+  if (n != nullptr) {
+    PANIC("underflow returned a value after duplicate insert");
+  }
+
   printf("PASS\n");
 }

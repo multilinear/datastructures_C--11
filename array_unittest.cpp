@@ -11,7 +11,7 @@ void base_test(void) {
   if (a.len() != 4) {
     PANIC("Size is wrong");
   }
-  for (i=0;i<4;i++) {
+  for (int i=0;i<4;i++) {
     if (test_data[i] != a[i]) {
       PANIC("data is wrong");
     }
@@ -22,16 +22,85 @@ void base_test(void) {
     PANIC("Swap doesn't work");
   }
   // Testing revi
-  if (a.revi(0) != a[a.len()-1] || a.revi(1) != a[a.len()-2]) {
+  if (a.revi(1) != a[a.len()-1]) {
     PANIC("Revi doesn't work");
+  }
+  if (a.revi(2) != a[a.len()-2]) {
+    PANIC("Revi doesn't work");
+  }
+  // Testing resize (to smaller only)
+  a.resize(3);
+  if (a.len() != 3) {
+    PANIC("Resize failed");
+  }
+  if (a.revi(1) != 3) {
+    PANIC("Resize revi semantics are wrong");
+  }
+}
+
+template<typename AT>
+void used_test(void) {
+  int test_data[] = {1};
+  AT ua(test_data, 1);
+  // push
+  ua.push(6);
+  if (ua.len() != 2 && ua.revi(1) != 6) {
+    PANIC("UA push is broken");
+  }
+  // pop
+  int res;
+  bool b;
+  b = ua.pop(&res);
+  if (b != true && res != 6) {
+    PANIC("UA pop is broken");
+  }
+  ua.pop(&res);
+  b = ua.pop(&res);
+  if (b != false) {
+    PANIC("UA pop underflow is broken");
+  }
+  // drop
+  ua.push(1);
+  ua.drop();
+  if (ua.len() != 0) {
+    PANIC("UA drop is broken");
+  }
+  ua.drop();
+  if (ua.len() != 0) {
+    PANIC("UA drop underflow is broken");
+  }
+  // full
+  if (ua.is_full()) {
+    PANIC("UA is full when it's empty!");
+  }
+  ua.push(1);
+  if (ua.is_full()) {
+    PANIC("UA is full with only one element!");
   }
 }
 
 int main(void) {
-  printf("Array unittest");
+  printf("Begin Array.h unittest\n");
   base_test<Array<int>>();
   base_test<UsedArray<int>>();
   base_test<StaticArray<int,4>>();
-  printf("PASS");
+  used_test<UsedArray<int>>();
+  used_test<StaticArray<int,4>>();
+  int test_data[] = {1};
+  // Static array specific tests
+  StaticArray<int,1> sa(test_data, 1);
+  if (!sa.is_full()) {
+    PANIC("StaticArray should be full");
+  }
+  // used array specific tests
+  UsedArray<int> ua(test_data, 1);
+  if (ua.is_full()) {
+    PANIC("UsedArray should not be full");
+  }
+  ua.resize(10);
+  if (ua.len() != 10) {
+    PANIC("Used array resize up failed");
+  }
+  printf("PASS\n");
   return 0;
 }
