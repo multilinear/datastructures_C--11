@@ -103,5 +103,20 @@ int main(int argc, char* argv[]) {
       PANIC("Dict should be empty here, but isn't");
     }
   }
+  // Check duplicate behavior
+  if (!dict.insert(1)) {
+    PANIC("Dictionary insert failed");
+  }
+  // Note, changing this behavior might be good
+  // If you change it, fix the comments in the headerfile
+  if (!dict.insert(1)) {
+    PANIC("Dictionary duplicate insert failed");
+  }
+  if (!dict.remove(1)) {
+    PANIC("Dictionary duplicate first remove failed");
+  }
+  if (!dict.remove(1)) {
+    PANIC("Dictionary duplicate second remove failed");
+  }
   printf("PASS\n");
 }

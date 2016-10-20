@@ -381,7 +381,7 @@ bool TSBTree<T,Val_T,C,SIZE>::isempty(void) {
   // it'll resolve as soon as we run a remove or something, but
   // it means we have to check it's child for nullptr
   m.lock();
-  bool result = root == nullptr || root->get_node(0) == nullptr;
+  bool result = root == nullptr || root->get_used() == 0;
   m.unlock();
   return result;
 }

@@ -90,6 +90,32 @@ int main(int argc, char* argv[]) {
   producer_thread.join();
   consumer_thread.join();
 
+  //Test underflow
+  if(rbuf.dequeue(&el)) {
+    PANIC("underflow returned true");
+  }
+
+  //Test overflow
+  for (int x=0;x<149;x++) {
+    if(!rbuf.enqueue(x)) {
+      PANIC("elements overflowing early");
+    }
+  }
+  if(rbuf.enqueue(1)) {
+    PANIC("overflow case enqueued anyway?");
+  }
+  for (int x=0;x<149;x++) {
+    if(!rbuf.dequeue(&el)) {
+      PANIC("some elements missing");
+    }
+    if (el!=x) {
+      PANIC("data corruption");
+    }
+  }
+  if(rbuf.dequeue(&el)) {
+    PANIC("empty list returned sometihng anyway");
+  }
+
   printf("PASS\n");
   // And test destructor here
   return 0;

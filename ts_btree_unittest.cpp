@@ -111,6 +111,27 @@ int main(int argc, char* argv[]) {
     }
     //printf("************ size %d complete\n", k);
   }
+  // Check duplicate behavior
+  if (!tree.insert(1))  {
+    PANIC("Tree insert of single value failed");
+  }
+  if (tree.insert(1)) {
+    PANIC("Tree insert of duplicate succeeded");
+  }
+  if (tree.isempty()) {
+    PANIC("Tree thinks it's empty");
+  }
+  int v;
+  if (!tree.remove(1, &v)) {
+    PANIC("Tree remove of first after duplicate insert failed");
+  }
+  if (tree.remove(1, &v)) {
+    PANIC("Tree remove of first after duplicate insert failed");
+  }
+  if (!tree.isempty()) {
+    PANIC("Tree thinks it's not empty");
+  }
+
   printf("PASS\n");
   return 0;
 }

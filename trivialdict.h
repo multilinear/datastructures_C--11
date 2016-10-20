@@ -12,6 +12,10 @@
  * require as large of tests (like AVL). Then use that to test more complex code
  * like a BTree, where you need many nodes to hit some of the edge-cases.
  *
+ * WARNING! This implements a multiset style dict! Multiple entries can be added
+ * The first one found is the first returned/removed/etc. This differs from most
+ * of the dictionary implementations in this library!
+ *
  * !!!!Please, please, don't ever use this in production code!!!!
  *
  */
@@ -48,12 +52,13 @@ class TrivialDict {
     bool isempty() {
       return used==0;
     }
-    void insert(T el) {
+    bool insert(T el) {
       if (used == size) {
         printf("TrivialDict, used=%ld, size=%ld\n", used, size);
         PANIC("TrivialDict overflow!");
       }
       ar[used++] = el;
+      return true;
     }
     T* get(Val_T k) {
       size_t i;

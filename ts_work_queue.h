@@ -14,7 +14,7 @@
  *
  * Priority Inversions:
  *   This structure is NOT safe if priority inversions between producers and
- *   consumers are not safe. Mutices are shared between producres and
+ *   consumers are not safe. Mutices are shared between producurs and
  *   consumers.
  */
 
@@ -38,8 +38,12 @@ class WorkQueueNode: public ListNode_base<WorkQueueNode<T>> {
 template <typename T>
 class WorkQueue {
   private:
-    unsigned int waiters;
-    unsigned int datum;
+    // These must be atomics because we may *read* them without a lock
+    // In particular, we would read these to decide when to terminate circular
+    // Work... If these are not atomics it's difficult to safely terminate a
+    // threadpool using this queue
+    std::atomic<unsigned int> waiters;
+    std::atomic<unsigned int> datum;
     std::mutex m;
     std::condition_variable convar;
     List<WorkQueueNode<T>> list;

@@ -21,10 +21,10 @@ class Set {
     BTree<T, T, SetComp, SET_ARITY> tree;
   public:
     Set():tree() {}
-    T* get(T val) {
-      return tree.get(val);
+    bool contains(T val) {
+      return !!tree.get(val);
     }
-    bool insert(T val) {
+    bool add(T val) {
       return tree.insert(val);
     }
     bool remove(T val) {

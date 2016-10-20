@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-O3 -std=c++11 -Wall -Werror
 CFLAGS_THREAD=-pthread
 
-SOURCES=array_unittest.cpp avl_unittest.cpp bheap_unittest.cpp boundedheap_unittest.cpp btree_unittest.cpp dict_unittest.cpp dlist_unittest.cpp heap_unittest.cpp list_unittest.cpp redblack_unittest.cpp rredblack_unittest.cpp ringbuffer_unittest.cpp set_unittest.cpp sort_unittest.cpp trivialdict_unittest.cpp ts_btree_unittest.cpp ts_ringbuffer_unittest.cpp ts_work_queue_unittest.cpp
+SOURCES=array_unittest.cpp avl_unittest.cpp bheap_unittest.cpp boundedheap_unittest.cpp btree_unittest.cpp dict_unittest.cpp dlist_unittest.cpp heap_unittest.cpp list_unittest.cpp redblack_unittest.cpp ringbuffer_unittest.cpp rredblack_unittest.cpp set_unittest.cpp sort_unittest.cpp trivialdict_unittest.cpp ts_btree_unittest.cpp ts_ringbuffer_unittest.cpp ts_work_queue_unittest.cpp
 
 EXES=$(SOURCES:.cpp=) 
 
@@ -35,9 +35,9 @@ list_unittest: *.h *.cpp ; $(CC) $(CFLAGS) list_unittest.cpp -o list_unittest
 
 redblack_unittest: *.h *.cpp ; $(CC) $(CFLAGS) redblack_unittest.cpp -o redblack_unittest
 
-rredblack_unittest: *.h *.cpp ; $(CC) $(CFLAGS) rredblack_unittest.cpp -o rredblack_unittest
-
 ringbuffer_unittest: *.h *.cpp ; $(CC) $(CFLAGS) ringbuffer_unittest.cpp -o ringbuffer_unittest
+
+rredblack_unittest: *.h *.cpp ; $(CC) $(CFLAGS) rredblack_unittest.cpp -o rredblack_unittest
 
 trivialdict_unittest: *.h *.cpp ; $(CC) $(CFLAGS) trivialdict_unittest.cpp -o trivialdict_unittest
 
