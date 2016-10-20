@@ -47,5 +47,21 @@ int main(int argc, char **argv) {
     }
   }
 
+  // Testing duplicate
+  for (i=0; i<10; i++) {
+    heap.push(new HeapNode(1));
+  }
+  for (i=0; i<10; i++) {
+    auto n = heap.pop();
+		if (!n) {
+      PANIC("duplicate handling broken"); 
+    }
+		delete n;
+  }
+  if (heap.pop()) {
+    PANIC("Bheap didn't drain");
+  } 
+
+
   printf("PASS\n");
 }

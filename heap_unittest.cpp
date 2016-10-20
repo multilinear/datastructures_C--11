@@ -50,6 +50,20 @@ int main(int argc, char **argv) {
     }
   }
 
+  // Testing duplicate
+  for (i=0; i<10; i++) {
+    heap.push(1);
+  }
+  for (i=0; i<10; i++) {
+    if (!heap.pop(&val)) {
+      PANIC("duplicate handling broken"); 
+    }
+  }
+  if (heap.pop(&val)) {
+    PANIC("Bheap didn't drain");
+  }
+
+
   printf("PASS\n");
   return 0;
 }

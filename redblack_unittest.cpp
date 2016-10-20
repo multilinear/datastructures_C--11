@@ -102,5 +102,27 @@ int main(int argc, char* argv[]) {
       PANIC("Tree should be empty here, but isn't");
     }
   }
+  if (!tree.insert(new RedBlackNode(1)))  {
+    PANIC("Tree insert of single value failed");
+  }
+  if (tree.insert(new RedBlackNode(1))) {
+    PANIC("Tree insert of duplicate succeeded");
+  }
+  if (tree.isempty()) {
+    PANIC("Tree thinks it's empty");
+  }
+	auto n = tree.remove(tree.get(1));
+  if (!n) {
+    PANIC("Tree remove of first after duplicate insert failed");
+  }
+	delete n;
+	n = tree.get(1);
+  if (n) {
+    PANIC("Tree still has element after duplicate insert failed");
+  }
+  if (!tree.isempty()) {
+    PANIC("Tree thinks it's not empty");
+  }
+
   printf("PASS\n");
 }

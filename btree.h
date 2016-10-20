@@ -63,11 +63,6 @@
 #define CHECK()
 #endif
 
-// T is intended to be something *very* simple. It must be a class but it's
-// expected to contain a pointer, an integer, or maybe 2 or 3 items at most
-// If you need to store something more complex, make T a class that contains
-// just a pointer to your more complex object
-
 // Below are the requirements for T, Val_T, C, and SIZE
 
 // T must have a valid, trivial, Copy() constructor:
@@ -77,7 +72,7 @@
 //
 // T must have a print method on it like so:
 // void print(void)
-// which prints something for the element ("?" is find, but will make debugging harder)
+// which prints something for the element ("?" is fine, but will make debugging harder)
 // I also suggest it be small and have no newlines
 
 // Val_T is simply whatever is returned by "Val_T C::val(T)", the point is for it to be easilly
@@ -354,7 +349,7 @@ bool BTree<T,Val_T,C,SIZE>::isempty(void) {
   // it is possible for root to have only one child
   // it'll resolve as soon as we run a remove or something, but
   // it means we have to check it's child for nullptr
-  return root == nullptr || root->get_node(0) == nullptr;
+  return root == nullptr || root->get_used() == 0;
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>

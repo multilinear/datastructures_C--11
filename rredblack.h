@@ -1,6 +1,9 @@
 /*
  * Copyright: Matthew Brewer 2014-04-14 
  *
+ * Don't use this, use btree.h or avl.h instead :).
+ * Leaving this code here for comparison/demonstration purposes
+ *
  * How to use this library:
  *  You can look at the unittest for an example.
  *  Basically, include this file, write a new "node" class that inherits
@@ -12,8 +15,14 @@
  *  You may also want to supply a "print" method to aid in debugging
  *  of your class... yeah we should probably sprintf, but I didn't feel like it
  *
- *  In case it's not obvious, you allocate you're own memory for use in this
+ *  In case it's not obvious, you allocate your own memory for use in this
  *  class.
+ *
+ *  Note that duplicates simply panic this implementation, propogating failure
+ *  to insert is a bit awkward without really efficient native pairs. If you
+ *  we're to actually use this implementation that would want to be added.
+ *  I'm leaving this here for demonstration purposes though, btree or
+ *  AVL are better in basically all cases.
  * 
  * Invariants:
  * - Root is always black

@@ -6,4 +6,14 @@ Continue API development
 Rigorously tested so far:
   - array.h
   - avl.h
+  - Bheap.h
+  - BoundedHeap.h
+  - Btree.h
+  - Dict.h
+  - Dlist.h
+  - Heap.h
+  - List.h
+  - RedBlack.h
+  - RRedBlack.h
+  - RingBuffer.h
   - sort.h

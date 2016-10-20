@@ -102,5 +102,7 @@ int main(int argc, char* argv[]) {
       PANIC("Tree should be empty here, but isn't");
     }
   }
+  // We do no duplicate testcase, because RRedBlack doesn't currently support it
+  // It simply panics if it hits a duplicate
   printf("PASS\n");
 }

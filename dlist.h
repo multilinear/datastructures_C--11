@@ -49,6 +49,7 @@ template<typename Node_T> class DList {
     void enqueue(Node_T*);
     Node_T* dequeue(void);
     void remove(Node_T*);
+    bool isempty();
     void check(void);
 };
 
@@ -115,9 +116,24 @@ void DList<Node_T>::remove(Node_T *n) {
     PANIC("removing node from list that it is not a part of");
   }
   #endif
-  n->prev->next = n->next;
-  n->next->prev = n->prev;
+  if (n == head) {
+    head = n->next;
+  }
+  if (n == tail) {
+    tail = n->prev;
+  }
+  if (n->prev) {
+    n->prev->next = n->next;
+  }
+  if (n->next) {
+    n->next->prev = n->prev;
+  }
   CHECK();
+}
+
+template<typename Node_T>
+bool DList<Node_T>::isempty() {
+  return head == nullptr;
 }
 
 template<typename Node_T>
@@ -131,5 +147,6 @@ void DList<Node_T>::check(void) {
     last_n = n;
   }
 }
+
 
 #endif
