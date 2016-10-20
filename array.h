@@ -81,24 +81,24 @@ class Array {
 };
 
 template<typename T>
-class UsedArray {
+class DynArray {
   private:
     Array<T> ar;
     size_t _used;
   public:
-    UsedArray() {
+    DynArray() {
       _used = 0;
     }
-    UsedArray(size_t size) {
+    DynArray(size_t size) {
       ar.resize(size);
       _used = size;
     }
-    UsedArray(T input[], size_t input_l): ar(input, input_l) {
+    DynArray(T input[], size_t input_l): ar(input, input_l) {
       _used = input_l;
     }
-    UsedArray(UsedArray<T>* input): ar(input->len()) {
+    DynArray(DynArray<T>* input): ar(input->len()) {
       _used = 0;
-      array_copy<UsedArray<T>, UsedArray<T>>(this, input);
+      array_copy<DynArray<T>, DynArray<T>>(this, input);
     }
     void append(T data) {
       size_t length = ar.len();

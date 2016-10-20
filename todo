@@ -1,6 +1,5 @@
 Replace class template arguments with function template arguments where possible
 Add iterators to dict/set type structures
-Rename UsedArray to DynArray
 Write DynArrayList and DynArrayTree
 Write a mergesort
 Write a skiplist
@@ -10,3 +9,4 @@ Write translations from dict -> Array Set -> Array and back again (python style)
 Add Set operations to set
 Add Array operator to Set and Dict
 Make initializers work for all arrays, set, and dict
+Make a thread-pool using the ts_work_queue

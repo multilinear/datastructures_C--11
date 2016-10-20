@@ -82,9 +82,9 @@ void used_test(void) {
 int main(void) {
   printf("Begin Array.h unittest\n");
   base_test<Array<int>>();
-  base_test<UsedArray<int>>();
+  base_test<DynArray<int>>();
   base_test<StaticArray<int,4>>();
-  used_test<UsedArray<int>>();
+  used_test<DynArray<int>>();
   used_test<StaticArray<int,4>>();
   int test_data[] = {1};
   // Static array specific tests
@@ -93,9 +93,9 @@ int main(void) {
     PANIC("StaticArray should be full");
   }
   // used array specific tests
-  UsedArray<int> ua(test_data, 1);
+  DynArray<int> ua(test_data, 1);
   if (ua.is_full()) {
-    PANIC("UsedArray should not be full");
+    PANIC("DynArray should not be full");
   }
   ua.resize(10);
   if (ua.len() != 10) {

@@ -25,7 +25,7 @@
 template<typename T, typename C>
 class Heap {
   private:
-    UsedArray<T> ar;
+    DynArray<T> ar;
     void _check(size_t i) {
       int c;
       if (2*i+1 < ar.len()) {
