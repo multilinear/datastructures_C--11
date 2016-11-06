@@ -28,6 +28,13 @@ void base_test(void) {
   if (a.revi(2) != a[a.len()-2]) {
     PANIC("Revi doesn't work");
   }
+}
+
+template<typename AT>
+void resizable_test(void) {
+  int test_data[] = {1,2,3,4};
+  // Testing array initialization
+  AT a(test_data, 4);
   // Testing resize (to smaller only)
   a.resize(3);
   if (a.len() != 3) {
@@ -81,21 +88,25 @@ void used_test(void) {
 
 int main(void) {
   printf("Begin Array.h unittest\n");
-  base_test<Array<int>>();
-  base_test<DynArray<int>>();
   base_test<StaticArray<int,4>>();
-  used_test<DynArray<int>>();
-  used_test<StaticArray<int,4>>();
+  base_test<StaticUArray<int,4>>();
+  base_test<Array<int>>();
+  base_test<UArray<int>>();
+  resizable_test<StaticUArray<int,4>>();
+  resizable_test<Array<int>>();
+  resizable_test<UArray<int>>();
+  used_test<StaticUArray<int,4>>();
+  used_test<UArray<int>>();
   int test_data[] = {1};
-  // Static array specific tests
-  StaticArray<int,1> sa(test_data, 1);
+  // Static used array specific tests
+  StaticUArray<int,1> sa(test_data, 1);
   if (!sa.is_full()) {
-    PANIC("StaticArray should be full");
+    PANIC("StaticUArray should be full");
   }
-  // used array specific tests
-  DynArray<int> ua(test_data, 1);
+  // Used Array specific tests
+  UArray<int> ua(test_data, 1);
   if (ua.is_full()) {
-    PANIC("DynArray should not be full");
+    PANIC("UArray should not be full");
   }
   ua.resize(10);
   if (ua.len() != 10) {

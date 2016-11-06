@@ -135,9 +135,9 @@ template<typename T, typename C, size_t Size>
 class SubHeap {
   public:
     // Stores the split nodes
-    StaticArray<T, Size> splits;
+    StaticUArray<T, Size> splits;
     // Stores the last level, which is more BHeaps
-    StaticArray<SubHeap<T, C, Size> *, Size+1> subheaps;
+    StaticUArray<SubHeap<T, C, Size> *, Size+1> subheaps;
     SubHeap<T, C, Size> *parent;
     // Note that subheaps never move, they are only created and destroyed
     // only data moves, so this index is persistant from creation on 
