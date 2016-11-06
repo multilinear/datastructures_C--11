@@ -101,7 +101,7 @@ class Heap {
     }
     void push(T data) {
       HEAP_CHECK();
-      ar.append(data);
+      ar.push(data);
       bubble_up();
       HEAP_CHECK();
     }

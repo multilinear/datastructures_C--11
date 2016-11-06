@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include "array.h"
+#include "arraytree.h"
 
 template<typename AT>
 void base_test(void) {
@@ -9,6 +10,7 @@ void base_test(void) {
   // Testing array initialization
   AT a(test_data, 4);
   if (a.len() != 4) {
+    printf("a.len() = %lu\n", a.len());
     PANIC("Size is wrong");
   }
   for (int i=0;i<4;i++) {
@@ -87,14 +89,16 @@ void used_test(void) {
 }
 
 int main(void) {
-  printf("Begin Array.h unittest\n");
+  printf("Begin Array.h ArrayTree.h unittest\n");
   base_test<StaticArray<int,4>>();
   base_test<StaticUArray<int,4>>();
   base_test<Array<int>>();
   base_test<UArray<int>>();
+  base_test<ArrayTree<int,1>>();
   resizable_test<StaticUArray<int,4>>();
   resizable_test<Array<int>>();
   resizable_test<UArray<int>>();
+  resizable_test<ArrayTree<int,1>>();
   used_test<StaticUArray<int,4>>();
   used_test<UArray<int>>();
   int test_data[] = {1};
@@ -111,6 +115,32 @@ int main(void) {
   ua.resize(10);
   if (ua.len() != 10) {
     PANIC("Used array resize up failed");
+  }
+  // ArrayTree specific tests
+  ArrayTree<int,2> at(10);
+  at.resize(100);
+  for (int i=0;i<100;i++) {
+    at[i] = i;
+  }
+  for (int i=0;i<100;i++) {
+    if (at[i] != i) {
+      PANIC("ArrayTree is corrupt");
+    }
+  }
+  at.resize(20);
+  for (int i=0;i<20;i++) {
+    if (at[i] != i) {
+      PANIC("ArrayTree is corrupt");
+    }
+  }
+  at.resize(10000);
+  for (int i=0;i<10000;i++) {
+    at[i] = i;
+  }
+  for (int i=0;i<10000;i++) {
+    if (at[i] != i) {
+      PANIC("ArrayTree is corrupt");
+    }
   }
   printf("PASS\n");
   return 0;

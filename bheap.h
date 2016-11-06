@@ -596,7 +596,7 @@ class BHeap {
       if (tail->splits.is_full()) {
         make_new_tail();
       }
-      tail->splits.append(data);
+      tail->splits.push(data);
       tail->bubble_up();
       //printf("Done Pushing\n"); print();
       BHEAP_CHECK();

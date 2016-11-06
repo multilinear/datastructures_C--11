@@ -14,6 +14,10 @@ class AVLNode: public AVLNode_base<AVLNode, int> {
     static const int compare(const int val1, const int val2) {
       return val1-val2;
     }
+    AVLNode() {}
+    void set(int v) {
+      value = v;
+    }
     AVLNode(int v) {
       value = v;
     }
@@ -23,18 +27,17 @@ class AVLNode: public AVLNode_base<AVLNode, int> {
 
 
 int ints[TEST_SIZE];
-int ints_start;
 int ints_end;
 
 int main(int argc, char* argv[]) {
   AVL<AVLNode, int> tree;
 
   int i;
-  int j;
   int gets=0;
   printf("Begin AVL.h benchmark\n");
   ints_end=0;
-  ints_start=0;
+  AVLNode *nodes = new AVLNode[TEST_SIZE];
+  int ni=0;
   for (i=0; i<TEST_SIZE; i++) {
     bool new_v = false;
     int r;
@@ -46,14 +49,16 @@ int main(int argc, char* argv[]) {
       gets++;
     }
     // put it in thet tree
-    AVLNode *n = new AVLNode(r);
+    AVLNode *n = &(nodes[ni++]); 
+    n->set(r);
     tree.insert(n);
     // and in the list
     ints[ints_end++] = r;
   }
   for(i=0; i<ints_end; i++) {
-    delete tree.remove(tree.get(ints[i]));
-    ints_start += 1;
+    int v = ints[i];
+    auto n = tree.get(v);
+    tree.remove(n);
   }
   printf("gets %d\n", gets);
 }

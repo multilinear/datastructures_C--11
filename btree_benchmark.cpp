@@ -35,7 +35,6 @@ int main(int argc, char* argv[]) {
   BTree<int, int, BTreeComp, ARITY> tree;
 
   int i;
-  int j;
   int gets=0;
   printf("Begin BTree.h benchmark\n");
   ints_end=0;
