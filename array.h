@@ -1,5 +1,8 @@
 #include "panic.h"
 
+#ifndef ARRAY_H
+#define ARRAY_H
+
 /*
 These are various length-encoding array implementations.
 
@@ -358,4 +361,4 @@ class UArray {
     }
 };
 
-
+#endif

@@ -1,5 +1,8 @@
 #include "panic.h"
 
+#ifndef ARRAYTREE_H
+#define ARRAYTREE_H
+
 // Define "ARRAYTREE_DEBUG" to enable bounds-checking
 // If enabled this makes these arrays far more expensive than C-style
 #ifdef ARRAYTREE_DEBUG
@@ -169,6 +172,11 @@ class ArrayTree {
       return ((ArrayTreeLeaf<T,SizeBits>*)n)->ar[i];
     }
 
+    ssize_t needs_resize(size_t new_length) {
+      size_t existing_nodes = (length + (1<<SizeBits) - 1) >> SizeBits;
+      size_t new_nodes = (new_length + (1<<SizeBits) - 1) >> SizeBits;
+      return existing_nodes - new_nodes;
+    }
   public:
     ArrayTree() {
       root = nullptr; 
@@ -196,6 +204,7 @@ class ArrayTree {
     ~ArrayTree() {
       resize(0);
     }
+
     void resize(size_t new_length) {
       // Number of nodes needed
       size_t existing_nodes = (length + (1<<SizeBits) - 1) >> SizeBits;
@@ -252,3 +261,79 @@ class ArrayTree {
     }
 };
 
+// This is an array that's designed to change in size a lot
+// This is for use in queues and stacks and that sort of thing
+// It's a doubling array, including memory reclamation on downsizing
+// "len()" returns the actively used portion of the array, not the
+// Total available size
+template<typename T, size_t SizeBits> 
+class UArrayTree {
+  private:
+    ArrayTree<T, SizeBits> ar;
+  public:
+    UArrayTree() { }
+    UArrayTree(size_t size): ar(size) { }
+    UArrayTree(T input[], size_t input_l): ar(input, input_l) { }
+    UArrayTree(UArrayTree<T,SizeBits>* input): ar(input->len()) {
+      array_copy<UArrayTree<T,SizeBits>, UArrayTree<T,SizeBits>>(this, input);
+    }
+    void push(T data) {
+      size_t len = ar.len();
+      if (needs_resize(len+)) {
+        ar.resize(len+1);
+      } else {
+        length = len+1;
+      }
+      ar[len] = data;
+    }
+    bool pop(T *val) {
+      size_t len = ar.len();
+      if (len > 0) {
+        *val = ar[len-1];
+        ar.resize(len-1);
+        return true;
+      }
+      return false;
+    }
+    void resize(size_t size) {
+      ar.resize(size);
+    }
+    void drop() {
+      size_t len = ar.len();
+      if (len > 0) {
+        ar.resize(len-1);
+      }
+    }
+    T& operator[](size_t index) {
+      ARRAY_CHECK(index);
+      return ar[index];
+    }
+    // Works like negative indices in python (1 is last element)
+    T& revi(size_t index) {
+      ARRAY_CHECK(ar.len()-index);
+      return ar[ar.len()-index];
+    }
+    size_t len() {
+      return ar.len();
+    }
+    bool is_full() {
+      return false;
+    }
+    size_t size() {
+      return ar.len();
+    }
+    void swap(size_t i, size_t j) {
+      ARRAY_CHECK(i);
+      ARRAY_CHECK(j);
+      T tmp = ar[i];
+      ar[i] = ar[j];
+      ar[j] = tmp;
+    }
+    void check(size_t index) {
+      size_t length = ar.len();
+      if (index >= length) {
+        PANIC("Array access out of bounds\n");
+      }
+    }
+};
+#endif

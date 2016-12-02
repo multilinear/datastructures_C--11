@@ -1,4 +1,6 @@
 #include "heap.h"
+#include "array.h"
+#include "arraytree.h"
 
 #define TEST_SIZE 10000000
 
@@ -14,8 +16,9 @@ class HeapCompare {
 
 int main(int argc, char **argv) {
   printf("Begin Heap.h/Array.h benchmark\n");
-  Heap<int, int, HeapCompare> heap;
-  int i,j;
+  Heap<UArrayTree<int, 12>, int, HeapCompare> heap;
+  //Heap<UArray<int>, int, HeapCompare> heap;
+  int j;
   int val=-1;
 
   for (j=0;j<TEST_SIZE;j++) {

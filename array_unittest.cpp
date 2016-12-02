@@ -57,7 +57,7 @@ void used_test(void) {
     PANIC("UA push is broken");
   }
   // pop
-  int res;
+  int res=0;
   bool b;
   b = ua.pop(&res);
   if (b != true && res != 6) {
@@ -95,12 +95,15 @@ int main(void) {
   base_test<Array<int>>();
   base_test<UArray<int>>();
   base_test<ArrayTree<int,1>>();
+  base_test<UArrayTree<int,1>>();
   resizable_test<StaticUArray<int,4>>();
   resizable_test<Array<int>>();
   resizable_test<UArray<int>>();
   resizable_test<ArrayTree<int,1>>();
+  resizable_test<UArrayTree<int,1>>();
   used_test<StaticUArray<int,4>>();
   used_test<UArray<int>>();
+  used_test<UArrayTree<int,1>>();
   int test_data[] = {1};
   // Static used array specific tests
   StaticUArray<int,1> sa(test_data, 1);

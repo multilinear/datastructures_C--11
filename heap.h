@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "array.h"
 #include "panic.h"
 
 #ifndef HEAP_H
@@ -22,10 +21,10 @@
 #define HEAP_CHECK()
 #endif
  
-template<typename T, typename C>
+template<typename ArrayT, typename T, typename C>
 class Heap {
   private:
-    UArray<T> ar;
+    ArrayT ar;
     void _check(size_t i) {
       int c;
       if (2*i+1 < ar.len()) {
