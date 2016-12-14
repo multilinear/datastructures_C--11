@@ -3,6 +3,8 @@
 #include "trivialdict.h"
 // This turns on rather expensive internal consistancy checking
 #define BTREE_DEBUG
+// This turns on the iterator (adding a parent pointer)
+#define BTREE_ITERATOR
 #include "btree.h"
 
 #define TEST_SIZE 200
@@ -131,6 +133,18 @@ int main(int argc, char* argv[]) {
   if (!tree.isempty()) {
     PANIC("Tree thinks it's not empty");
   }
-
+  // Test iterator
+  for (size_t i=0; i<100; i++) {
+    tree.insert(i);
+  }
+  i = 0;
+  tree.print();
+  for (auto i2 = tree.begin(); i2 != tree.end(); ++i2) {
+    printf("value=%d\n", *i2);
+    if (*i2 != i) {
+      PANIC("Tree iterator broken");
+    }
+    ++i;
+  }
   printf("PASS\n");
 }

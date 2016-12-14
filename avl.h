@@ -93,9 +93,9 @@ class AVL{
   static_assert(std::is_same<decltype(Node_T::compare(std::declval<Val_T>(), std::declval<Val_T>())), int>(), "Please define a static method int compare(Val_T, Val_T) method on Node_T class");
   private:
     Node_T *root;
-    void _check(Node_T *parent, Node_T *n);
-    size_t _checkAll(Node_T *parent, Node_T *n);
-    void _print(Node_T *n);
+    void _check(Node_T *parent, Node_T *n) const;
+    size_t _checkAll(Node_T *parent, Node_T *n) const;
+    void _print(Node_T *n) const;
     int _rotate_left(Node_T *a);
     int _rotate_right(Node_T *a);
   public:
@@ -106,11 +106,11 @@ class AVL{
     // Assumes the node is in the tree
     //   if it's not you're going to have a bad time.
     Node_T* remove(Node_T *n);
-    bool isempty();
+    bool isempty() const;
     // These are mostly for debugging
-    void check(void);
-    void checkAll(void);
-    void print(void);
+    void check(void) const;
+    void checkAll(void) const;
+    void print(void) const;
 };
 
 template <typename Node_T, typename Val_T>
@@ -137,7 +137,7 @@ Node_T *AVL<Node_T, Val_T>::get(Val_T v) {
 }
 
 template<typename Node_T, typename Val_T>
-bool AVL<Node_T, Val_T>::isempty(void) {
+bool AVL<Node_T, Val_T>::isempty(void) const {
   return !root;
 }
 
@@ -596,12 +596,12 @@ Node_T *AVL<Node_T, Val_T>::remove(Node_T *n)  {
 }
 
 template<typename Node_T, typename Val_T>
-void AVL<Node_T, Val_T>::check(void) {
+void AVL<Node_T, Val_T>::check(void) const {
   _check(nullptr, root);
 }
 
 template<typename Node_T, typename Val_T>
-void AVL<Node_T, Val_T>::_check(Node_T *parent, Node_T *n) {
+void AVL<Node_T, Val_T>::_check(Node_T *parent, Node_T *n) const {
   if (!n) {
     return;
   }
@@ -618,12 +618,12 @@ void AVL<Node_T, Val_T>::_check(Node_T *parent, Node_T *n) {
 }
 
 template<typename Node_T, typename Val_T>
-void AVL<Node_T, Val_T>::checkAll(void) {
+void AVL<Node_T, Val_T>::checkAll(void) const {
   _checkAll(nullptr, root);
 }
 
 template<typename Node_T, typename Val_T>
-size_t AVL<Node_T, Val_T>::_checkAll(Node_T *parent, Node_T *n) {
+size_t AVL<Node_T, Val_T>::_checkAll(Node_T *parent, Node_T *n) const {
   if (!n) {
     return 0;
   } 
@@ -661,13 +661,13 @@ size_t AVL<Node_T, Val_T>::_checkAll(Node_T *parent, Node_T *n) {
 }
 
 template<typename Node_T, typename Val_T>
-void AVL<Node_T, Val_T>::print() {
+void AVL<Node_T, Val_T>::print() const {
   _print(root);
   printf("\n");
 }
 
 template<typename Node_T, typename Val_T>
-void AVL<Node_T, Val_T>::_print(Node_T *n) {
+void AVL<Node_T, Val_T>::_print(Node_T *n) const {
   if (!n) {
     printf("n");
     return;

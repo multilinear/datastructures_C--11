@@ -42,11 +42,6 @@ class Heap {
         _check(2*i+2);
       }
     }
-    void swap(size_t index1, size_t index2) {
-      T tmp = ar[index1];
-      ar[index1] = ar[index2];
-      ar[index2] = tmp;
-    }
     void bubble_down() {
       size_t i = 0;
       size_t j;
@@ -70,7 +65,7 @@ class Heap {
         // if not we're done
         int c = C::compare(&ar[i], &ar[j]);
         if (c > 0) {
-          swap(i,j);
+          ar.swap(i,j);
         } else {
           return;
         }
@@ -85,7 +80,7 @@ class Heap {
         parent = (i-1)/2;
         int c = C::compare(&ar[parent], &ar[i]);
         if (c>0) {
-          swap(parent, i);
+          ar.swap(parent, i);
         } else {
           return;
         }

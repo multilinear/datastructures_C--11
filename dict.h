@@ -14,7 +14,7 @@ class Dict {
   private:
     class DictComp {
       public:
-        static KT val(std::pair<KT,VT> el) {
+        static KT val(const std::pair<KT,VT> &el) {
           return el.first;
         }
         static int compare(KT v1, KT v2) {

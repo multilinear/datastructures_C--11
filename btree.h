@@ -70,11 +70,6 @@
 // so pointers to T cannot be used
 // also we will move it in memory *without* the copy constructor using memmove/memcpy
 //
-// T must have a print method on it like so:
-// void print(void)
-// which prints something for the element ("?" is fine, but will make debugging harder)
-// I also suggest it be small and have no newlines
-
 // Val_T is simply whatever is returned by "Val_T C::val(T)", the point is for it to be easilly
 // comparable, and small/cheap to toss around. An integral type of appropriate size for
 // your problem is probably what you want, though it can be anything.
@@ -99,6 +94,10 @@ class BTreeNode {
     T data[SIZE];
     BTreeNode<T,Val_T,C,SIZE> *children[SIZE+1];
     size_t used;
+    #ifdef BTREE_ITERATOR
+    BTreeNode* parent;
+    size_t parent_index;
+    #endif
   public:
     void print(void) {
       printf("[");
@@ -121,6 +120,10 @@ class BTreeNode {
     }
     BTreeNode<T,Val_T,C,SIZE>() {
       used = 0;
+      #ifdef BTREE_ITERATOR
+      parent = nullptr;
+      parent_index = 0;
+      #endif
     }
     T& get_data(size_t i) {
       #ifdef BTREE_DEBUG
@@ -156,11 +159,25 @@ class BTreeNode {
         PANIC("Bad Index, child is empty");
       }
       #endif
+      #ifdef BTREE_ITERATOR
+      if (n) {
+        n->parent = this;
+        n->parent_index = i;
+      }
+      #endif
       children[i] = n;
     }
     size_t get_used() {
       return used;
     }
+    #ifdef BTREE_ITERATOR
+    BTreeNode<T, Val_T, C, SIZE>* get_parent() {
+      return parent;
+    }
+    size_t get_parent_index() {
+      return parent_index;
+    }
+    #endif
     // Returns indices as if data and children were interlaced.
     // So 0 is children[0], 1 is data[0], 2 is children[1], etc.
     size_t find(Val_T v, bool *found) {
@@ -222,6 +239,12 @@ class BTreeNode {
       // shift the array
       memmove(&(data[i+1]), &(data[i]), (used-i) * sizeof(T));
       memmove(&(children[i+2]), &(children[i+1]), (used-i) * sizeof(child));
+      #ifndef BTREE_ITERATOR
+      // Fix parent pointers
+      for (size_t j = i+2; j<used+2; ++j) {
+        children[j]->parent_index++;
+      }
+      #endif
       used += 1;
       // and set my element
       set_data(i, datum);
@@ -240,6 +263,12 @@ class BTreeNode {
       // shift the array
       memmove(&(data[i+1]), &(data[i]), (used-i) * sizeof(T));
       memmove(&(children[i+1]), &(children[i]), (used-i+1) * sizeof(child));
+      #ifndef BTREE_ITERATOR
+      // Fix parent pointers
+      for (size_t j = i+1; j<used+2; ++j) {
+        children[j]->parent_index++;
+      }
+      #endif
       used += 1;
       // and set my element
       set_data(i, datum);
@@ -253,6 +282,12 @@ class BTreeNode {
       // shift the array
       memmove(&(data[i]), &(data[i+1]), (used-i-1) * sizeof(T));
       memmove(&(children[i+1]), &(children[i+2]), (used-i-1) * sizeof(pivot_child));
+      #ifndef BTREE_ITERATOR
+      // Fix parent pointers
+      for (size_t j = i+1; j<used; ++j) {
+        children[j]->parent_index--;
+      }
+      #endif
       used--;
       return pivot;
     }
@@ -264,6 +299,12 @@ class BTreeNode {
       // shift the array
       memmove(&(data[i]), &(data[i+1]), (used-i-1) * sizeof(T));
       memmove(&(children[i]), &(children[i+1]), (used-i) * sizeof(pivot_child));
+      #ifndef BTREE_ITERATOR
+      // Fix parent pointers
+      for (size_t j = i; j<used; ++j) {
+        children[j]->parent_index--;
+      }
+      #endif
       used--;
       return pivot;
     }
@@ -273,6 +314,7 @@ class BTreeNode {
       size_t pivot_i = (used-1)/2; // middle element for odd "used", lower of 2 middle for even "used"
       memcpy(right_n->data, &(data[pivot_i+1]), (used - pivot_i-1) * sizeof(T));
       memcpy(right_n->children, &(children[pivot_i+1]), (used - pivot_i) * sizeof(right_n));
+      // TODO: Need to fix parent pointers and indices
       right_n->used = used - pivot_i-1;
       used = pivot_i;
       return data[pivot_i];
@@ -284,6 +326,7 @@ class BTreeNode {
       set_data(old_used, pivot);
       memcpy(&(data[old_used+1]), right_n->data, right_n->used * sizeof(T));
       memcpy(&(children[old_used+1]), right_n->children, (right_n->used+1) * sizeof(right_n));
+      // TODO: Need to fix parent pointers and indices
     }
 };
 
@@ -299,6 +342,12 @@ class BTree {
     std::pair<Val_T,Val_T> _check(BTreeNode<T,Val_T,C,SIZE> *n);
     void _print(BTreeNode<T,Val_T,C,SIZE> *n);
   public:
+    #ifdef BTREE_ITERATOR
+    class Iterator;
+    Iterator begin();
+    Iterator end();
+    #endif
+
     BTree();
     ~BTree();
     T* get(Val_T val);
@@ -637,6 +686,15 @@ std::pair<Val_T,Val_T> BTree<T,Val_T,C,SIZE>::_check(BTreeNode<T,Val_T,C,SIZE> *
   std::pair<Val_T,Val_T> oldrange;
   for (i=0; i < n->get_used()+1; i++) {
     if(n->get_node(i)) {
+      #ifdef BTREE_ITERATOR
+      if (n->get_node(i)->get_parent() != n) {
+        PANIC("parent pointer is corrupt");
+      }
+      if (n->get_node(i)->get_parent_index() != i) {
+        printf("actual index %lu != parent index %lu\n", i, n->get_node(i)->get_parent_index());
+        PANIC("parent index is corrupt");
+      }
+      #endif
       range = _check(n->get_node(i));
       range_initialized=true;
       if (!minmax_initialized) {
@@ -697,5 +755,91 @@ std::pair<Val_T,Val_T> BTree<T,Val_T,C,SIZE>::_check(BTreeNode<T,Val_T,C,SIZE> *
   }
   return std::make_pair(min, max);
 }
+
+#ifdef BTREE_ITERATOR
+template<typename T, typename Val_T, typename C, int SIZE>
+class BTree<T,Val_T,C,SIZE>::Iterator {
+  private:
+    BTreeNode<T, Val_T, C, SIZE> *n;
+    size_t index;
+  public:
+    Iterator(BTreeNode<T, Val_T, C, SIZE> *node, size_t i) {
+      n = node;
+      index = i;
+    }
+		Iterator& operator=(const Iterator& other) {
+			n = other.n;
+			index = other.index;
+			return(*this);
+		}
+    bool operator==(const Iterator& other) const {
+      return n == other.n && index == other.index;
+    }
+    bool operator!=(const Iterator& other) const {
+      return n != other.n || index != other.index;
+    }
+    Iterator& operator++(void) {
+      // We're looking at element "index" in n right now
+      // The next piece of data is the first piece in the next child
+      // IF there's a child
+      auto child = n->get_node(index+1);
+      // If there's a child go there
+      if (child) {
+        printf("going down %lu\n", index+1);
+        // Then walk all the way down the subtree
+        n = child;
+        child = n->get_node(0);
+        while (child) {
+          printf("going down %lu\n", 0);
+          n = child;
+          child = n->get_node(0);
+        }
+        index = 0;
+        printf("n=%p, index=%lu, used=%lu\n", n, index, n->get_used());
+        return *this;
+      } 
+      index++;
+      if (index < n->get_used()) {
+        printf("n=%p, index=%lu, used=%lu\n", n, index, n->get_used());
+        return *this;
+      }
+      while (n && index >= n->get_used()) {
+        printf("Going up\n");
+        index = n->get_parent_index();
+        n = n->get_parent();
+      }
+      printf("n=%p, index=%lu, used=%lu\n", n, index, n->get_used());
+      return *this;
+    }
+    Iterator operator++(int) {
+			Iterator tmp(*this);
+			++(*this);
+			return tmp;
+  	}
+    T& operator*() {
+      return n->get_data(index);
+    }
+    T* operator->() {
+      // TODO: is this right?
+      return &n->get_data(index);
+    }
+};
+
+template<typename T, typename Val_T, typename C, int SIZE>
+typename BTree<T,Val_T,C,SIZE>::Iterator BTree<T,Val_T,C,SIZE>::begin() {
+  auto n = root; 
+  auto left_child = n->get_node(0);
+  while (left_child) {
+    n = left_child;
+    left_child = left_child->get_node(0);
+  }
+  return Iterator(n, 0);
+}
+
+template<typename T, typename Val_T, typename C, int SIZE>
+typename BTree<T,Val_T,C,SIZE>::Iterator BTree<T,Val_T,C,SIZE>::end() {
+  return Iterator(nullptr, 0);
+}
+#endif
 
 #endif

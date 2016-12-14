@@ -2,7 +2,8 @@
 
 #include <stdio.h>
 #include "array.h"
-#include "arraytree.h"
+#include "treearray.h"
+#include "dictarray.h"
 
 template<typename AT>
 void base_test(void) {
@@ -94,16 +95,19 @@ int main(void) {
   base_test<StaticUArray<int,4>>();
   base_test<Array<int>>();
   base_test<UArray<int>>();
-  base_test<ArrayTree<int,1>>();
-  base_test<UArrayTree<int,1>>();
+  base_test<TreeArray<int,1>>();
+  base_test<TreeUArray<int,1>>();
+  //base_test<DictUArray<int>>();
   resizable_test<StaticUArray<int,4>>();
   resizable_test<Array<int>>();
   resizable_test<UArray<int>>();
-  resizable_test<ArrayTree<int,1>>();
-  resizable_test<UArrayTree<int,1>>();
+  resizable_test<TreeArray<int,1>>();
+  resizable_test<TreeUArray<int,1>>();
+  //resizable_test<DictUArray<int>>();
   used_test<StaticUArray<int,4>>();
   used_test<UArray<int>>();
-  used_test<UArrayTree<int,1>>();
+  used_test<TreeUArray<int,1>>();
+  //used_test<DictUArray<int>>();
   int test_data[] = {1};
   // Static used array specific tests
   StaticUArray<int,1> sa(test_data, 1);
@@ -119,8 +123,8 @@ int main(void) {
   if (ua.len() != 10) {
     PANIC("Used array resize up failed");
   }
-  // ArrayTree specific tests
-  ArrayTree<int,2> at(10);
+  // TreeArray specific tests
+  TreeArray<int,2> at(10);
   at.resize(100);
   for (int i=0;i<100;i++) {
     at[i] = i;

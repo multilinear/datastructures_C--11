@@ -1,9 +1,10 @@
+Write delayed-copy heap
 Replace class template arguments with function template arguments where possible
-Add iterators to dict/set type structures
+Add iterators to dict/set/array type structures
 Write DynArrayList and DynArrayTree
 Write a mergesort
 Write a skiplist
-Port RingBuffer and Heap to templated array type
+Port RingBuffer to templated array type
 Write queue and stack wrappers
 Write translations from dict -> Array Set -> Array and back again (python style)
 Add Set operations to set

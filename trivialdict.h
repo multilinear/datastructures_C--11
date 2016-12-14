@@ -97,8 +97,7 @@ class TrivialDict {
         index = iterator.index;
         dict = iterator.dict;
       }
-     ~Iterator() {
-      }
+      ~Iterator() {}
 
       Iterator& operator=(const Iterator& other) {
         index = other.index;

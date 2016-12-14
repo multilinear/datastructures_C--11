@@ -15,6 +15,8 @@ We do not use an abstract class and inheritence to make these fully
 interoperable as that would require virtual inheritence and thus
 virtual dispatch. Instead, code that uses Arrays should be templated
 on the specific array type.
+Swap is here so that "sort" doesn't have to care what type it's working on
+only what array type, this makes practical usage of sorts less cluttered.
 
 All Array implementations share a similar meaning for:
 - Constructor()
@@ -86,10 +88,7 @@ class StaticArray {
       ARRAY_CHECK(Size-index);
       return ar[Size-index];
     }
-    size_t len() {
-      return Size;
-    }
-    size_t size() {
+    size_t len() const {
       return Size;
     }
     void swap(size_t i, size_t j) {
@@ -100,7 +99,7 @@ class StaticArray {
       ar[j] = tmp;
     }
     // ** check
-    void check(size_t index) {
+    void check(size_t index) const {
       if (index >= Size) {
         printf("StaticArray %p access out of bounds index:%lu >= size:%lu\n", this, index, Size);
         PANIC("StaticArray access out of bounds index");
@@ -171,14 +170,11 @@ class StaticUArray {
       ARRAY_CHECK(_used-index);
       return ar[_used-index];
     }
-    size_t len() {
+    size_t len() const {
       return _used;
     }
-    bool is_full() {
+    bool is_full() const {
       return _used >= Size;
-    }
-    size_t size() {
-      return Size;
     }
     void swap(size_t i, size_t j) {
       ARRAY_CHECK(i);
@@ -188,7 +184,7 @@ class StaticUArray {
       ar[j] = tmp;
     }
     // ** check
-    void check(size_t index) {
+    void check(size_t index) const {
       ar.check(index);
       if (index >= _used) {
         printf("StaticUArray %p access out of bounds index:%lu >= used:%lu\n", this, index, _used);
@@ -234,7 +230,7 @@ class Array {
       _length = new_size;
       ar = (T*) realloc(ar, _length * sizeof(T));
     }
-    size_t len() {
+    size_t len() const {
       return _length;
     }
     void swap(size_t i, size_t j) {
@@ -255,7 +251,7 @@ class Array {
       return ar[_length-index];
     }
     // ** Check
-    void check(size_t index) {
+    void check(size_t index) const {
       if (index >= _length) {
         printf("\nPANIC: index=%lu length=%lu\n", index, _length);
         PANIC("Array access out of bounds\n");
@@ -331,14 +327,11 @@ class UArray {
       ARRAY_CHECK(_used-index);
       return ar[_used-index];
     }
-    size_t len() {
+    size_t len() const {
       return _used;
     }
-    bool is_full() {
+    bool is_full() const {
       return false;
-    }
-    size_t size() {
-      return ar.len();
     }
     void swap(size_t i, size_t j) {
       ARRAY_CHECK(i);
@@ -347,7 +340,7 @@ class UArray {
       ar[i] = ar[j];
       ar[j] = tmp;
     }
-    void check(size_t index) {
+    void check(size_t index) const {
       size_t length = ar.len();
       if (_used > length) {
         PANIC("Array, more elements used than exist\n");
@@ -360,5 +353,124 @@ class UArray {
       }
     }
 };
+
+/*// This is an array that's designed to change in size a lot
+// This is for use in queues and stacks and that sort of thing
+// It's a doubling array, including memory reclamation on downsizing
+// "len()" returns the actively used portion of the array, not the
+// Total available size
+template<typename T>
+class IncUArray {
+  private:
+    Array<T> ar[2];
+    size_t first;
+    size_t copied;
+    size_t used;
+
+    void incWork(void) {
+      if (copied < used) {
+        ar[first][copied] = ar1[(first+1)%2][copied];
+        copied++;
+      }
+    }
+
+    T& get(size_t i) {
+      if (i < copied) {
+        return ar[first];
+      }
+      return ar2[(first+1)%2];
+    }
+
+  public:
+    IncUArray() {
+      used = 0;
+      first = 0;
+      copied = 0;
+    }
+    IncUArray(size_t size) {
+      ar[0].resize(size);
+      used = size;
+      first = 0;
+      copied = 0;
+    }
+    IncUArray(T input[], size_t input_l): ar[1](input, input_l) {
+      used = input_l;
+      first
+    }
+    IncUArray(IncUArray<T>* input): ar(input->len()) {
+      used = 0;
+      array_copy<IncUArray<T>, IncUArray<T>>(this, input);
+    }
+    void push(T data) {
+      incWork();
+      size_t length = ar.len();
+      if (used == length) {
+        ar.resize(length == 0 ? 1 : length * 2);
+      }
+      ar[used++] = data;
+    }
+    bool pop(T *val) {
+      if (used > 0) {
+        used--;
+        *val = ar[used];
+        // Reclaim memory if the amount used gets small
+        if (used < ar.len()/2) {
+          resize(used);
+        }
+        return true;
+      }
+      return false;
+    }
+    void resize(size_t size) {
+      if (size > ar.len() || size < ar.len()/2) {
+        ar.resize(size);
+      }
+      used = size;
+    }
+    void drop() {
+      if (used > 0) {
+        used--;
+        // Reclaim memory if the amount used gets small
+        if (used < ar.len()/2) {
+          resize(used);
+        }
+      }
+    }
+    T& operator[](size_t index) {
+      ARRAY_CHECK(index);
+      return ar[index];
+    }
+    // Works like negative indices in python (1 is last element)
+    T& revi(size_t index) {
+      ARRAY_CHECK(used-index);
+      return ar[used-index];
+    }
+    size_t len() const {
+      return used;
+    }
+    bool is_full() const {
+      return false;
+    }
+    void swap(size_t i, size_t j) {
+      ARRAY_CHECK(i);
+      ARRAY_CHECK(j);
+      T tmp = ar[i];
+      ar[i] = ar[j];
+      ar[j] = tmp;
+    }
+    void check(size_t index) const {
+      size_t length = ar.len();
+      if (used > length) {
+        PANIC("Array, more elements used than exist\n");
+      }
+      if (index >= length) {
+        PANIC("Array access out of bounds\n");
+      }
+      if (index >= used) {
+        PANIC("Array access of uninitialized data\n");
+      }
+    }
+};*/
+
 
 #endif
