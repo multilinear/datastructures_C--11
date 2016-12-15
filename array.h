@@ -21,6 +21,7 @@ only what array type, this makes practical usage of sorts less cluttered.
 All Array implementations share a similar meaning for:
 - Constructor()
 - Constructor(T ar[], size_t len)
+- get(size_t)
 - operator[](size_t)
 - revi(size_t)
 - len() 
@@ -50,12 +51,12 @@ Code that templatizes on Array type can take advantage of these
 // Writing it this way means we don't need to write a constructor for
 // *every* pair of array types
 template<typename AT1, typename AT2>
-void array_copy(AT1 *dest, AT2 *src) {
+void array_copy(AT1 *dest, const AT2 *src) {
   if (dest->len() != src->len()) {
     dest->resize(src->len());
   }
   for (size_t i = 0; i<src->len(); i++) {
-    (*dest)[i] = (*src)[i];
+    (*dest)[i] = src->get(i);
   }
 }
 
@@ -78,6 +79,10 @@ class StaticArray {
     }
     StaticArray(StaticArray<T, Size>* input) {
       array_copy<StaticArray<T, Size>, StaticArray<T, Size>>(this, input);
+    }
+    const T& get(size_t index) const {
+      ARRAY_CHECK(index);
+      return ar[index];
     }
     T& operator[](size_t index) {
       ARRAY_CHECK(index);
@@ -161,6 +166,10 @@ class StaticUArray {
       }
       _used = size;
     }
+    const T& get(size_t index) const {
+      ARRAY_CHECK(index);
+      return ar->get(index);
+    }
     T& operator[](size_t index) {
       ARRAY_CHECK(index);
       return ar[index];
@@ -241,6 +250,10 @@ class Array {
       ar[j] = tmp;
     }
     // ** Common functions
+    const T& get(size_t index) const {
+      ARRAY_CHECK(index);
+      return ar[index];
+    }
     T& operator[](size_t index) {
       ARRAY_CHECK(index);
       return ar[index];
@@ -317,6 +330,10 @@ class UArray {
           resize(_used);
         }
       }
+    }
+    const T& get(size_t index) const {
+      ARRAY_CHECK(index);
+      return ar.get(index);
     }
     T& operator[](size_t index) {
       ARRAY_CHECK(index);

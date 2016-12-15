@@ -38,6 +38,7 @@
 #include <cstring>
 #include <stdio.h>
 #include <utility>
+#include "array.h"
 #include "panic.h"
 
 #ifndef BTREE_H
@@ -94,10 +95,6 @@ class BTreeNode {
     T data[SIZE];
     BTreeNode<T,Val_T,C,SIZE> *children[SIZE+1];
     size_t used;
-    #ifdef BTREE_ITERATOR
-    BTreeNode* parent;
-    size_t parent_index;
-    #endif
   public:
     void print(void) {
       printf("[");
@@ -120,10 +117,6 @@ class BTreeNode {
     }
     BTreeNode<T,Val_T,C,SIZE>() {
       used = 0;
-      #ifdef BTREE_ITERATOR
-      parent = nullptr;
-      parent_index = 0;
-      #endif
     }
     T& get_data(size_t i) {
       #ifdef BTREE_DEBUG
@@ -159,25 +152,11 @@ class BTreeNode {
         PANIC("Bad Index, child is empty");
       }
       #endif
-      #ifdef BTREE_ITERATOR
-      if (n) {
-        n->parent = this;
-        n->parent_index = i;
-      }
-      #endif
       children[i] = n;
     }
     size_t get_used() {
       return used;
     }
-    #ifdef BTREE_ITERATOR
-    BTreeNode<T, Val_T, C, SIZE>* get_parent() {
-      return parent;
-    }
-    size_t get_parent_index() {
-      return parent_index;
-    }
-    #endif
     // Returns indices as if data and children were interlaced.
     // So 0 is children[0], 1 is data[0], 2 is children[1], etc.
     size_t find(Val_T v, bool *found) {
@@ -239,12 +218,6 @@ class BTreeNode {
       // shift the array
       memmove(&(data[i+1]), &(data[i]), (used-i) * sizeof(T));
       memmove(&(children[i+2]), &(children[i+1]), (used-i) * sizeof(child));
-      #ifndef BTREE_ITERATOR
-      // Fix parent pointers
-      for (size_t j = i+2; j<used+2; ++j) {
-        children[j]->parent_index++;
-      }
-      #endif
       used += 1;
       // and set my element
       set_data(i, datum);
@@ -263,12 +236,6 @@ class BTreeNode {
       // shift the array
       memmove(&(data[i+1]), &(data[i]), (used-i) * sizeof(T));
       memmove(&(children[i+1]), &(children[i]), (used-i+1) * sizeof(child));
-      #ifndef BTREE_ITERATOR
-      // Fix parent pointers
-      for (size_t j = i+1; j<used+2; ++j) {
-        children[j]->parent_index++;
-      }
-      #endif
       used += 1;
       // and set my element
       set_data(i, datum);
@@ -282,12 +249,6 @@ class BTreeNode {
       // shift the array
       memmove(&(data[i]), &(data[i+1]), (used-i-1) * sizeof(T));
       memmove(&(children[i+1]), &(children[i+2]), (used-i-1) * sizeof(pivot_child));
-      #ifndef BTREE_ITERATOR
-      // Fix parent pointers
-      for (size_t j = i+1; j<used; ++j) {
-        children[j]->parent_index--;
-      }
-      #endif
       used--;
       return pivot;
     }
@@ -299,12 +260,6 @@ class BTreeNode {
       // shift the array
       memmove(&(data[i]), &(data[i+1]), (used-i-1) * sizeof(T));
       memmove(&(children[i]), &(children[i+1]), (used-i) * sizeof(pivot_child));
-      #ifndef BTREE_ITERATOR
-      // Fix parent pointers
-      for (size_t j = i; j<used; ++j) {
-        children[j]->parent_index--;
-      }
-      #endif
       used--;
       return pivot;
     }
@@ -342,11 +297,9 @@ class BTree {
     std::pair<Val_T,Val_T> _check(BTreeNode<T,Val_T,C,SIZE> *n);
     void _print(BTreeNode<T,Val_T,C,SIZE> *n);
   public:
-    #ifdef BTREE_ITERATOR
     class Iterator;
-    Iterator begin();
-    Iterator end();
-    #endif
+    Iterator begin(void);
+    Iterator end(void);
 
     BTree();
     ~BTree();
@@ -367,6 +320,9 @@ template<typename T, typename Val_T, typename C, int SIZE>
 BTree<T,Val_T,C,SIZE>::~BTree() {
   if (!isempty()) {
     PANIC("Tried to destroy non-empty tree");
+  }
+  if (root) {
+    delete root;
   }
 }
 
@@ -686,15 +642,6 @@ std::pair<Val_T,Val_T> BTree<T,Val_T,C,SIZE>::_check(BTreeNode<T,Val_T,C,SIZE> *
   std::pair<Val_T,Val_T> oldrange;
   for (i=0; i < n->get_used()+1; i++) {
     if(n->get_node(i)) {
-      #ifdef BTREE_ITERATOR
-      if (n->get_node(i)->get_parent() != n) {
-        PANIC("parent pointer is corrupt");
-      }
-      if (n->get_node(i)->get_parent_index() != i) {
-        printf("actual index %lu != parent index %lu\n", i, n->get_node(i)->get_parent_index());
-        PANIC("parent index is corrupt");
-      }
-      #endif
       range = _check(n->get_node(i));
       range_initialized=true;
       if (!minmax_initialized) {
@@ -756,59 +703,91 @@ std::pair<Val_T,Val_T> BTree<T,Val_T,C,SIZE>::_check(BTreeNode<T,Val_T,C,SIZE> *
   return std::make_pair(min, max);
 }
 
-#ifdef BTREE_ITERATOR
 template<typename T, typename Val_T, typename C, int SIZE>
 class BTree<T,Val_T,C,SIZE>::Iterator {
   private:
-    BTreeNode<T, Val_T, C, SIZE> *n;
-    size_t index;
+    struct StackNode {
+      BTreeNode<T, Val_T, C, SIZE> *node;
+      size_t index;
+      StackNode(BTreeNode<T, Val_T, C, SIZE> *n, size_t i) {
+        node = n;
+        index = i;
+      }
+      bool operator==(const StackNode& pos) const {
+        return node == pos.node  && index == pos.index;
+      }
+      bool operator!=(const StackNode& pos) const {
+        return node != pos.node  || index != pos.index;
+      }
+      StackNode& operator=(const StackNode& pos) {
+        node = pos.node;
+        index = pos.index;
+      }
+    };
+    UArray<StackNode> stack;
+    StackNode pos;
+    // Note: this will do free as well, it would probably be better if it didn't for this use
   public:
-    Iterator(BTreeNode<T, Val_T, C, SIZE> *node, size_t i) {
-      n = node;
-      index = i;
+    Iterator(BTreeNode<T, Val_T, C, SIZE> *n, size_t i):pos(n,i) {
+      if (pos.node == nullptr) {
+        return;
+      }
+      if (pos.node->get_used() == 0) {
+        pos.node = nullptr;
+        pos.index = 0;
+        return;
+      }
+      // Walk down to the smallest element (left-most)
+      auto left_child = pos.node->get_node(0);
+      while (left_child) {
+        stack.push(pos);
+        pos.node = left_child;
+        pos.index = 0;
+        left_child = left_child->get_node(0);
+      }
     }
 		Iterator& operator=(const Iterator& other) {
-			n = other.n;
-			index = other.index;
+			pos.node = other.pos.node;
+			pos.index = other.pos.index;
+      array_copy<UArray<StackNode>,UArray<StackNode>>(&stack, &other.stack);
 			return(*this);
 		}
     bool operator==(const Iterator& other) const {
-      return n == other.n && index == other.index;
+      return pos == other.pos;
     }
     bool operator!=(const Iterator& other) const {
-      return n != other.n || index != other.index;
+      return pos != other.pos;
     }
     Iterator& operator++(void) {
       // We're looking at element "index" in n right now
       // The next piece of data is the first piece in the next child
-      // IF there's a child
-      auto child = n->get_node(index+1);
+      // IF there's a child, if not it's the next index of data
+      pos.index++;
       // If there's a child go there
-      if (child) {
-        printf("going down %lu\n", index+1);
-        // Then walk all the way down the subtree
-        n = child;
-        child = n->get_node(0);
-        while (child) {
-          printf("going down %lu\n", 0);
-          n = child;
-          child = n->get_node(0);
+      auto child = pos.node->get_node(pos.index);
+      bool found_child = !!child;
+      while (child) {
+        stack.push(pos);
+        pos.node = child;
+        pos.index = 0;
+        child = pos.node->get_node(0);
+      }
+      if (found_child) {
+        return *this;
+      }
+      // If not just go to the next element
+      if (pos.index < pos.node->get_used()) {
+        return *this;
+      }
+      // If there is no next element, go up
+      StackNode sn(nullptr,0);
+      do {
+        if (!stack.pop(&pos)) {
+          pos.node = nullptr;
+          pos.index = 0;
+          return *this; 
         }
-        index = 0;
-        printf("n=%p, index=%lu, used=%lu\n", n, index, n->get_used());
-        return *this;
-      } 
-      index++;
-      if (index < n->get_used()) {
-        printf("n=%p, index=%lu, used=%lu\n", n, index, n->get_used());
-        return *this;
-      }
-      while (n && index >= n->get_used()) {
-        printf("Going up\n");
-        index = n->get_parent_index();
-        n = n->get_parent();
-      }
-      printf("n=%p, index=%lu, used=%lu\n", n, index, n->get_used());
+      } while (pos.index >= pos.node->get_used());
       return *this;
     }
     Iterator operator++(int) {
@@ -817,29 +796,22 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
 			return tmp;
   	}
     T& operator*() {
-      return n->get_data(index);
+      return pos.node->get_data(pos.index);
     }
     T* operator->() {
       // TODO: is this right?
-      return &n->get_data(index);
+      return &pos.node->get_data(pos.index);
     }
 };
 
 template<typename T, typename Val_T, typename C, int SIZE>
-typename BTree<T,Val_T,C,SIZE>::Iterator BTree<T,Val_T,C,SIZE>::begin() {
-  auto n = root; 
-  auto left_child = n->get_node(0);
-  while (left_child) {
-    n = left_child;
-    left_child = left_child->get_node(0);
-  }
-  return Iterator(n, 0);
+typename BTree<T,Val_T,C,SIZE>::Iterator BTree<T,Val_T,C,SIZE>::begin(void) {
+  return Iterator(root, 0);
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-typename BTree<T,Val_T,C,SIZE>::Iterator BTree<T,Val_T,C,SIZE>::end() {
+typename BTree<T,Val_T,C,SIZE>::Iterator BTree<T,Val_T,C,SIZE>::end(void) {
   return Iterator(nullptr, 0);
 }
-#endif
 
 #endif

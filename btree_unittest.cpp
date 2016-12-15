@@ -138,13 +138,16 @@ int main(int argc, char* argv[]) {
     tree.insert(i);
   }
   i = 0;
-  tree.print();
   for (auto i2 = tree.begin(); i2 != tree.end(); ++i2) {
-    printf("value=%d\n", *i2);
     if (*i2 != i) {
       PANIC("Tree iterator broken");
     }
     ++i;
+  }
+  int val;
+  auto a = tree.begin();
+  while (a != tree.end() && tree.remove(*a, &val)) {
+    a = tree.begin();
   }
   printf("PASS\n");
 }
