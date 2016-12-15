@@ -67,7 +67,7 @@ void used_test(void) {
   ua.pop(&res);
   b = ua.pop(&res);
   if (b != false) {
-    PANIC("UA pop underflow is broken");
+    PANIC("UA pop underflow is broken got");
   }
   // drop
   ua.push(1);
@@ -90,24 +90,23 @@ void used_test(void) {
 }
 
 int main(void) {
-  printf("Begin Array.h ArrayTree.h unittest\n");
+  printf("Begin Array.h TreeArray.h DictArray.h unittest\n");
   base_test<StaticArray<int,4>>();
   base_test<StaticUArray<int,4>>();
   base_test<Array<int>>();
   base_test<UArray<int>>();
   base_test<TreeArray<int,1>>();
   base_test<TreeUArray<int,1>>();
-  //base_test<DictUArray<int>>();
+  base_test<DictUArray<int>>();
   resizable_test<StaticUArray<int,4>>();
   resizable_test<Array<int>>();
   resizable_test<UArray<int>>();
   resizable_test<TreeArray<int,1>>();
   resizable_test<TreeUArray<int,1>>();
-  //resizable_test<DictUArray<int>>();
   used_test<StaticUArray<int,4>>();
   used_test<UArray<int>>();
   used_test<TreeUArray<int,1>>();
-  //used_test<DictUArray<int>>();
+  used_test<DictUArray<int>>();
   int test_data[] = {1};
   // Static used array specific tests
   StaticUArray<int,1> sa(test_data, 1);

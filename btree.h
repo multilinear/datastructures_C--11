@@ -722,6 +722,7 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
       StackNode& operator=(const StackNode& pos) {
         node = pos.node;
         index = pos.index;
+        return *this;
       }
     };
     UArray<StackNode> stack;
