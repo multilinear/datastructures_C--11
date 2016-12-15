@@ -21,10 +21,19 @@ class Set {
     BTree<T, T, SetComp, SET_ARITY> tree;
   public:
     Set():tree() {}
+    Set(Set<T> &s):tree() {
+			*this = s;			
+		}
+    ~Set() {
+			auto a = tree.begin();
+			while (a != end() && remove(*a)) {
+				a = begin();
+			}
+    }
     bool contains(T val) {
       return !!tree.get(val);
     }
-    bool add(T val) {
+    bool insert(T val) {
       return tree.insert(val);
     }
     bool remove(T val) {
@@ -35,6 +44,52 @@ class Set {
     }
     bool isempty(void) {
       return tree.isempty();
+    }
+    bool operator[](T &key) {
+      return tree.get(key) != nullptr;
+    }
+    typename BTree<T, T, SetComp, SET_ARITY>::Iterator begin() {
+      return tree.begin();
+    }
+    typename BTree<T, T, SetComp, SET_ARITY>::Iterator end() { 
+      return tree.end();
+    }
+		// Basic set operations
+    Set<T>& operator-=(Set &s) {
+      for (auto i = s.begin(); i != s.end(); ++i) {
+        remove(*s);
+      }
+			return *this;
+    }
+    Set<T>& operator+=(Set &s) {
+      for (auto i = s.begin(); i != s.end(); ++i) {
+        insert(*s);
+      }
+			return *this;
+    }
+		Set<T> operator+(Set &s) {
+			Set<T> n();
+			n += *this;
+			n += s;
+			return s;
+		}
+		Set<T> operator-(Set &s) {
+			Set<T> n();
+			n += *this;
+			n -= s;
+			return s;
+		}
+    Set<T>& operator=(Set &s) {
+			// dump it
+			auto a = tree.begin();
+			while (a != end() && remove(*a)) {
+				a = begin();
+			}
+			// and copy the other one
+      for (auto i = s.begin(); i != s.end(); ++i) {
+        insert(*s);
+      }
+			return *this;
     }
 };
 

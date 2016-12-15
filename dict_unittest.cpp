@@ -93,12 +93,6 @@ int main(int argc, char *argv[]) {
     }
     ++i;
   }
-  int val;
-  auto a = d.begin();
-  while (a != d.end() && d.remove(a->first, &val)) {
-    a = d.begin();
-  }
-
   printf("PASS\n");
 }
 

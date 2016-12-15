@@ -5,9 +5,9 @@ int main(int argc, char *argv[]) {
   printf("Begin Set.h unittest\n");
   Set<int> s;
   int i;
-  // Check basic adding and removing
+  // Check basic inserting and removing
   for (i=0; i<100; i++) {
-    if(!s.add(i)) {
+    if(!s.insert(i)) {
       PANIC("Insert doesn't work");
     }
   }
@@ -34,6 +34,18 @@ int main(int argc, char *argv[]) {
   }
   if (!s.isempty()) {
     PANIC("List is empty, reports not empty");
+  }
+
+  // Test iterator
+  for (size_t i=0; i<100; i++) {
+    s.insert(i);
+  }
+  i = 0;
+  for (auto i2 = s.begin(); i2 != s.end(); ++i2) {
+    if (*i2 != i) {
+      PANIC("Set iterator broken");
+    }
+    ++i;
   }
 
   printf("PASS\n");
