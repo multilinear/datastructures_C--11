@@ -82,6 +82,23 @@ int main(int argc, char *argv[]) {
     }
   }
 
+ 	// Test iterator
+  for (size_t i=0; i<100; i++) {
+    d.insert(i,i);
+  }
+  i = 0;
+  for (auto i2 = d.begin(); i2 != d.end(); ++i2) {
+    if (i2->first != i || i2->second != i) {
+      PANIC("Tree iterator broken");
+    }
+    ++i;
+  }
+  int val;
+  auto a = d.begin();
+  while (a != d.end() && d.remove(a->first, &val)) {
+    a = d.begin();
+  }
+
   printf("PASS\n");
 }
 

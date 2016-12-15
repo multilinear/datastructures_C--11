@@ -53,6 +53,15 @@ class Dict {
     bool isempty(void) {
       return tree.isempty();
     }
+    VT& operator[](KT &key) {
+      return *tree.get(key);
+    }
+    typename BTree<std::pair<KT,VT>, KT, DictComp, DICT_ARITY>::Iterator begin() {
+      return tree.begin(); 
+    }
+    typename BTree<std::pair<KT,VT>, KT, DictComp, DICT_ARITY>::Iterator end() {
+      return tree.end(); 
+    }
 };
 
 #endif
