@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv[]) {
   printf("Begin RingBuffer.h test\n");
-  RingBuffer<int> rbuf(13);
+  RingBuffer<int, 13> rbuf;
   int i;
   int j;
   int el = 0;

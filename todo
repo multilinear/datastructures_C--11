@@ -1,13 +1,11 @@
 Write delayed-copy heap
-Replace class template arguments with function template arguments where possible
-Add iterators to dict/set/array type structures
 Add bool conversion to everything
 Write DynArrayList and DynArrayTree
 Write a mergesort
 Write a skiplist
 Port RingBuffer to templated array type
-Write queue and stack wrappers
-Write translations from dict -> Array Set -> Array and back again (python style)
+Write queue and stack wrappers (with internal allocation)
+Write translations from Array -> Set, dict
 Add Iterator to AVL trees
 Make initializers work for all arrays, set, and dict
 Make a thread-pool using the ts_work_queue
