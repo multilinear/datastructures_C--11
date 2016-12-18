@@ -28,7 +28,9 @@ int main(int argc, char* argv[]) {
     L.enqueue(n);
   }
   for (int j=0; j<1; j++) {
-    check(L.dequeue()->value);
+    auto n = L.dequeue();
+    check(n->value);
+    delete n;
   }
   // two in 2 out
   for (int j=0; j<2; j++) {
@@ -49,7 +51,9 @@ int main(int argc, char* argv[]) {
     L.enqueue(n);
   }
   for (int j=0; j<1; j++) {
-    check(L.dequeue()->value);
+    auto n = L.dequeue();
+    check(n->value);
+    delete n;
   }
   if (L.isempty()) {
     PANIC("not empty queue reports empty");
@@ -61,7 +65,9 @@ int main(int argc, char* argv[]) {
   }
   // drain
   for (int j=0; j<2; j++) {
-    check(L.dequeue()->value);
+    auto n = L.dequeue();
+    check(n->value);
+    delete n;
   }
   // Check underflow
   if (L.dequeue()) {
@@ -72,6 +78,25 @@ int main(int argc, char* argv[]) {
   }
   if (!L.isempty()) {
     PANIC("empty queue reports not empty");
+  }
+  // test iterator
+  int x;
+  for (x = 0; x < 10; x++) {
+    auto n = new Node(x);
+    L.enqueue(n);
+  }
+  auto it = L.begin();
+  for (x = 0; x < 10; x++) {
+    if (it->value != x) {
+      PANIC("Iterator is broken");
+    }
+    ++it;
+  }
+  if (it != L.end()) {
+    PANIC("Iterator isn't at the end");
+  }
+  for (x=0; x<10; x++) {
+    delete L.dequeue();
   }
     
   printf("PASS\n");

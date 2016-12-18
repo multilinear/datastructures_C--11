@@ -31,6 +31,54 @@ template<typename Node_T> class List{
     Node_T* _head;
     Node_T* tail;
   public:
+    // In theory we *could* just ues Node_T here... but that has a major downside.
+    // We'll have overridden operators for Node, so if you use that class in multiple
+    // datastructure types it won't work properly (eewww). So... we keep it in a 
+    // seperate class
+    class Iterator {
+      private:
+        Node_T* n;
+      public:
+        Iterator(Node_T *nn) {
+          n = nn;
+        }
+        Iterator(const Iterator& other) {
+          n = other.n;
+        }
+        Iterator& operator=(const Iterator& other) {
+          n = other->_head;
+        }
+        bool operator==(const Iterator& other) const {
+          return n == other.n;
+        }
+        bool operator!=(const Iterator& other) const {
+          return n != other.n;
+        }
+        Iterator& operator++() {
+          if (n) {
+            n = n->next;
+          }
+          return *this;
+        }
+        Iterator operator++(int) {
+          Iterator tmp(*this);
+          ++(*this);
+          return tmp;
+        }
+        Node_T& operator*() {
+          return *n;
+        }
+        Node_T* operator->() {
+          return n;
+        }
+    };
+    Iterator begin() {
+      return Iterator(_head);
+    }
+    Iterator end() {
+      return Iterator(nullptr);
+    }
+
     List();
     ~List();
     bool isempty(void);

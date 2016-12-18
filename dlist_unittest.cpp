@@ -110,6 +110,26 @@ int main(int argc, char* argv[]) {
     }
   }
 
+  // test iterator
+  int x;
+  for (x = 0; x < 10; x++) {
+    auto n = new Node(x);
+    L.enqueue(n);
+  }
+  auto it = L.begin();
+  for (x = 0; x < 10; x++) {
+    if (it->value != x) {
+      PANIC("Iterator is broken");
+    }
+    ++it;
+  }
+  if (it != L.end()) {
+    PANIC("Iterator isn't at the end");
+  }
+  for (x=0; x<10; x++) {
+    delete L.dequeue();
+  }
+
   printf("PASS\n");
   // And test destructor here
   return 0;
