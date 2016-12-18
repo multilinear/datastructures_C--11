@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-O3 -std=c++11 -Wall -Werror
 CFLAGS_THREAD=-pthread
 
-SOURCES=array_unittest.cpp avl_unittest.cpp bheap_unittest.cpp boundedheap_unittest.cpp btree_unittest.cpp dict_unittest.cpp dlist_unittest.cpp heap_unittest.cpp list_unittest.cpp redblack_unittest.cpp ringbuffer_unittest.cpp rredblack_unittest.cpp set_unittest.cpp sort_unittest.cpp trivialdict_unittest.cpp ts_btree_unittest.cpp ts_ringbuffer_unittest.cpp ts_work_queue_unittest.cpp
+SOURCES=array_unittest.cpp avl_unittest.cpp bheap_unittest.cpp boundedheap_unittest.cpp btree_unittest.cpp dict_unittest.cpp dlist_unittest.cpp heap_unittest.cpp list_unittest.cpp queue_unittest.cpp redblack_unittest.cpp ringbuffer_unittest.cpp rredblack_unittest.cpp set_unittest.cpp sort_unittest.cpp trivialdict_unittest.cpp ts_btree_unittest.cpp ts_ringbuffer_unittest.cpp ts_work_queue_unittest.cpp
 
 EXES=$(SOURCES:.cpp=) 
 
@@ -21,6 +21,8 @@ avl_unittest: *.h *.cpp ; $(CC) $(CFLAGS) avl_unittest.cpp -o avl_unittest
 bheap_unittest: *.h *.cpp ; $(CC) $(CFLAGS) bheap_unittest.cpp -o bheap_unittest
 
 boundedheap_unittest: *.h *.cpp ; $(CC) $(CFLAGS) boundedheap_unittest.cpp -o boundedheap_unittest
+
+queue_unittest: *.h *.cpp ; $(CC) $(CFLAGS) queue_unittest.cpp -o queue_unittest
 
 # not using CFLAGS due to a problem with an initialized variable gcc doesn't understand
 btree_unittest: *.h *.cpp ; $(CC) -O3 -std=c++11 btree_unittest.cpp -o btree_unittest

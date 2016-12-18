@@ -22,7 +22,7 @@
 
 template<typename Node_T>
 class ListNode_base {
-  public: // TODO(mbrewer): make this private somehow
+  public:
     Node_T* next;
 };
 

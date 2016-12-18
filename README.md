@@ -10,10 +10,16 @@ with ideas, both in library APIs for these algorithms as well as testing
 various implementation details.
 
 How to use it:
-Notice that there are multiple implementations of some algorithms. I want
-to keep around the alternate implementations, but for each problem I'm
-selecting the best algorithm for common use. Notes are included in headers
-of several, for example AVL vs. RB trees (see notes below).
+First, notice there's a "dict" and then other dict implementations...
+"Dict" is intended as a simple interface hiding most of the details
+of the underlying implementation. The backing implementation has been
+chosen based on benchmarking and other tests. If on the other hand you want
+to get in to the details (e.g. using external allocation etc.) you can bypass
+the more abstract interfaces lke "dict" "set" or "queue"
+There are multiple implementations of some algorithms. I want to keep around 
+the alternate implementations, but for each problem I'm selecting the best 
+algorithm for common use. Notes are included in headers of several, for example 
+AVL vs. RB trees (see notes below).
 
 What this library is NOT:
 Readability is often secondary to speed in this library. To compare algorithms

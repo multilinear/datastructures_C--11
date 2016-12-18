@@ -3,7 +3,6 @@ Add bool conversion to everything
 Write DynArrayList and DynArrayTree
 Write a mergesort
 Write a skiplist
-Port RingBuffer to templated array type
 Write queue and stack wrappers (with internal allocation)
 Write translations from Array -> Set, dict
 Add Iterator to AVL trees
