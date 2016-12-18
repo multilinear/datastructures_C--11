@@ -96,7 +96,7 @@ class BTreeNode {
     BTreeNode<T,Val_T,C,SIZE> *children[SIZE+1];
     size_t used;
   public:
-    void print(void) {
+    void print(void) const {
       printf("[");
       size_t i;
       for (i=0; i<used; i++) {
@@ -127,7 +127,7 @@ class BTreeNode {
       #endif
       return data[i];
     }
-    BTreeNode<T,Val_T,C,SIZE> *get_node(size_t i) {
+    BTreeNode<T,Val_T,C,SIZE> *get_node(size_t i) const {
       #ifdef BTREE_DEBUG
       if (i >= used+1) {
         printf("i = %ld, used = %ld\n", i, used);
@@ -154,7 +154,7 @@ class BTreeNode {
       #endif
       children[i] = n;
     }
-    size_t get_used() {
+    size_t get_used() const {
       return used;
     }
     // Returns indices as if data and children were interlaced.
@@ -291,24 +291,23 @@ class BTree {
   static_assert(std::is_same<decltype(C::val(std::declval<T>())), Val_T>(), "Please define a static method Val_T val(T) method on C class");
   private:
     BTreeNode<T,Val_T,C,SIZE> *root;
-    Val_T* Check(BTreeNode<T,Val_T,C,SIZE> *n, Val_T *prev);
     bool maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTreeNode<T,Val_T,C,SIZE> *n, size_t i);
     int maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t i);
-    std::pair<Val_T,Val_T> _check(BTreeNode<T,Val_T,C,SIZE> *n);
-    void _print(BTreeNode<T,Val_T,C,SIZE> *n);
+    std::pair<Val_T,Val_T> _check(BTreeNode<T,Val_T,C,SIZE> *n) const;
+    void _print(BTreeNode<T,Val_T,C,SIZE> *n) const;
   public:
     class Iterator;
-    Iterator begin(void);
-    Iterator end(void);
+    Iterator begin(void) const;
+    Iterator end(void) const;
 
     BTree();
     ~BTree();
-    T* get(Val_T val);
+    T* get(Val_T val) const;
     bool insert(T);
     bool remove(Val_T val, T* result);
-    void check(void);
-    void print(void); 
-    bool isempty(void);
+    void check(void) const;
+    void print(void) const; 
+    bool isempty(void) const;
 };
 
 template<typename T, typename Val_T, typename C, int SIZE>
@@ -327,7 +326,7 @@ BTree<T,Val_T,C,SIZE>::~BTree() {
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-T* BTree<T,Val_T,C,SIZE>::get(Val_T val) {
+T* BTree<T,Val_T,C,SIZE>::get(Val_T val) const {
   PRINT("BTree Get, begins\n");
   PRINT_TREE();
   CHECK();
@@ -350,7 +349,7 @@ T* BTree<T,Val_T,C,SIZE>::get(Val_T val) {
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-bool BTree<T,Val_T,C,SIZE>::isempty(void) {
+bool BTree<T,Val_T,C,SIZE>::isempty(void) const {
   // it is possible for root to have only one child
   // it'll resolve as soon as we run a remove or something, but
   // it means we have to check it's child for nullptr
@@ -591,13 +590,13 @@ int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-void BTree<T,Val_T,C,SIZE>::print(void) {
+void BTree<T,Val_T,C,SIZE>::print(void) const {
   _print(root);
   printf("\n");
 }
  
 template<typename T, typename Val_T, typename C, int SIZE>
-void BTree<T,Val_T,C,SIZE>::_print(BTreeNode<T,Val_T,C,SIZE> *n) {
+void BTree<T,Val_T,C,SIZE>::_print(BTreeNode<T,Val_T,C,SIZE> *n) const {
   if (!n) {
     printf("n");
     return;
@@ -616,14 +615,14 @@ void BTree<T,Val_T,C,SIZE>::_print(BTreeNode<T,Val_T,C,SIZE> *n) {
 }
  
 template<typename T, typename Val_T, typename C, int SIZE>
-void BTree<T,Val_T,C,SIZE>::check() {
+void BTree<T,Val_T,C,SIZE>::check() const {
   if (root) {
     _check(root);  
   }
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-std::pair<Val_T,Val_T> BTree<T,Val_T,C,SIZE>::_check(BTreeNode<T,Val_T,C,SIZE> *n) {
+std::pair<Val_T,Val_T> BTree<T,Val_T,C,SIZE>::_check(BTreeNode<T,Val_T,C,SIZE> *n) const {
   if (n != root && n->get_used() < (SIZE-1)/2-1) {
     printf("Element: ");
     n->print();
@@ -806,12 +805,12 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
 };
 
 template<typename T, typename Val_T, typename C, int SIZE>
-typename BTree<T,Val_T,C,SIZE>::Iterator BTree<T,Val_T,C,SIZE>::begin(void) {
+typename BTree<T,Val_T,C,SIZE>::Iterator BTree<T,Val_T,C,SIZE>::begin(void) const {
   return Iterator(root, 0);
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-typename BTree<T,Val_T,C,SIZE>::Iterator BTree<T,Val_T,C,SIZE>::end(void) {
+typename BTree<T,Val_T,C,SIZE>::Iterator BTree<T,Val_T,C,SIZE>::end(void) const {
   return Iterator(nullptr, 0);
 }
 

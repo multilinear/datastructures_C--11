@@ -1,6 +1,7 @@
 Write delayed-copy heap
 Replace class template arguments with function template arguments where possible
 Add iterators to dict/set/array type structures
+Add bool conversion to everything
 Write DynArrayList and DynArrayTree
 Write a mergesort
 Write a skiplist

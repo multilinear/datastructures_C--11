@@ -48,6 +48,44 @@ int main(int argc, char *argv[]) {
     ++i;
   }
 
+  // Test set operations
+  Set<int> s1;
+  for (int i=0; i<10; i++) {
+    s1.insert(i);
+  }
+  Set<int> s2;
+  for (int i=5; i<15; i++) {
+    s2.insert(i);
+  }
+  Set<int> s3;
+  for (int i=0; i<5; i++) {
+    s3.insert(i);
+  }
+  Set<int> s4;
+  for (int i=10; i<15; i++) {
+    s4.insert(i);
+  }
+  Set<int> s5;
+  for (int i=5; i<10; i++) {
+    s5.insert(i);
+  }
+
+  if (s3 != (s1-s2)) {
+    PANIC("Subtraction doesn't work");
+  }
+  if (s2+s3 != (s1+s4)) {
+    PANIC("Addition doesn't work");
+  }
+  if (s5 != (s1&s2)) {
+    PANIC("Intersection doesn't work");
+  }
+  if (s2+s3 != (s1|s4)) {
+    PANIC("Union doesn't work");
+  }
+  if (s3+s5 != (s1^s4)) {
+    PANIC("co-intersection doesn't work");
+  }
+
   printf("PASS\n");
 }
 

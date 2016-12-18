@@ -21,7 +21,7 @@ class Set {
     BTree<T, T, SetComp, SET_ARITY> tree;
   public:
     Set():tree() {}
-    Set(Set<T> &s):tree() {
+    Set(const Set<T> &s):tree() {
 			*this = s;			
 		}
     ~Set() {
@@ -45,52 +45,116 @@ class Set {
     bool isempty(void) {
       return tree.isempty();
     }
-    bool operator[](T &key) {
-      return tree.get(key) != nullptr;
-    }
-    typename BTree<T, T, SetComp, SET_ARITY>::Iterator begin() {
-      return tree.begin();
-    }
-    typename BTree<T, T, SetComp, SET_ARITY>::Iterator end() { 
-      return tree.end();
-    }
-		// Basic set operations
-    Set<T>& operator-=(Set &s) {
-      for (auto i = s.begin(); i != s.end(); ++i) {
-        remove(*s);
-      }
-			return *this;
-    }
-    Set<T>& operator+=(Set &s) {
-      for (auto i = s.begin(); i != s.end(); ++i) {
-        insert(*s);
-      }
-			return *this;
-    }
-		Set<T> operator+(Set &s) {
-			Set<T> n();
-			n += *this;
-			n += s;
-			return s;
-		}
-		Set<T> operator-(Set &s) {
-			Set<T> n();
-			n += *this;
-			n -= s;
-			return s;
-		}
-    Set<T>& operator=(Set &s) {
+
+    Set& operator=(const Set &s) {
 			// dump it
 			auto a = tree.begin();
 			while (a != end() && remove(*a)) {
 				a = begin();
 			}
-			// and copy the other one
+      // and add in the new data
+			return (*this += s);
+    }
+
+    // For use like an array
+    bool operator[](T &key) const {
+      return tree.get(key) != nullptr;
+    }
+    typename BTree<T, T, SetComp, SET_ARITY>::Iterator begin() const {
+      return tree.begin();
+    }
+    typename BTree<T, T, SetComp, SET_ARITY>::Iterator end() const { 
+      return tree.end();
+    }
+    operator bool() {
+      return !tree.isempty();
+    }
+
+    // ** comparisons
+    bool operator==(const Set &s) const {
+      auto i = s.begin(); 
+      auto j = begin(); 
+      while(i != s.end() && j != end()) {
+        if (*i != *j) {
+          return false;
+        }
+        ++i; 
+        ++j;
+      }
+      return i == s.end() && j == end(); 
+    }
+    bool operator!=(const Set &s) const {
+      return !(*this==s);
+    }
+
+		// ** set operations
+    // sutraction
+    Set& operator-=(const Set &s) {
       for (auto i = s.begin(); i != s.end(); ++i) {
-        insert(*s);
+        remove(*i);
       }
 			return *this;
     }
+    // union
+    Set& operator+=(const Set &s) {
+      for (auto i = s.begin(); i != s.end(); ++i) {
+        insert(*i);
+      }
+			return *this;
+    }
+    // intersection
+    Set& operator&=(const Set &s) {
+      // TODO(mbrewer): This uses more memory and copies than it should
+      // we can't modify "this" while iterating over it, so the obvious
+      // removal based algorithm doesn't work
+      Set<T> n((*this) & s);
+      *this = n;
+      return *this;
+    }
+    // also union
+    Set& operator|=(const Set &s) {
+      return (*this)+=s;
+    }
+    // co-intersection
+    Set& operator^=(const Set &s) {
+      for (auto i = begin(); i != end(); ++i) {
+        if (s[*i]) {
+          remove(*i);
+        } else {
+          insert(*i);
+        }
+      }     
+      return *this;
+    }
+		Set operator+(const Set &s) const {
+			Set<T> n(*this);
+			n += s;
+			return n;
+		}
+		Set operator-(const Set &s) const {
+			Set<T> n(*this);
+			n -= s;
+			return n;
+		}
+		Set operator&(const Set &s) const {
+			Set<T> n;
+      for (auto i = begin(); i != end(); ++i) {
+        if (s[*i]) {
+          n.insert(*i);
+        }
+      }
+      return n;
+		}
+		Set operator|(const Set &s) const {
+			Set<T> n(*this);
+			n |= s;
+			return n;
+		}
+		Set operator^(const Set &s) const {
+			Set<T> n(*this);
+			n ^= s;
+			return n;
+		}
 };
 
 #endif
