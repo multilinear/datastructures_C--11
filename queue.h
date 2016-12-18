@@ -5,6 +5,11 @@
  * interface to an easy to use, but less efficient and flexible internal
  * allocation... Making fast development easier.
  *
+ * Design decisions:
+ *   there are several ways to implement this, but for lazy usage (the target of this wrapper)
+ *   a simple malloc-based list is simple, robust, and fairly performant. If you need
+ *   stricter properties you can use list.h dlist.h or ringbuffer.h
+ *
  * Threadsafety:
  *  Thread compatible
  */

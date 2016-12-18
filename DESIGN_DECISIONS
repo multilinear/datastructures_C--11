@@ -1,0 +1,14 @@
+overall principle:
+  I'd like to build a library that optimizes worse-case rather than average case
+  usage, while still trying to bring average down to a usable range.
+
+ABSTRACT STRUCTURES
+(See files for most cases)
+
+Stack:
+  we do not provide a stack interface, becaues array works well for the quick-hacking use-cases 
+  More involved use you can use any of array, list, or dlist
+
+CONCRETE STRUCTURES
+(See files for most cases)
+
