@@ -1,6 +1,10 @@
 /*
  * Copyright: Matthew Brewer 2014-04-14 
  *
+ * When to use this:
+ * Don't, avl.h is strictly superior for the same use-cases
+ * I'm leaving this code here for comparison/demonstration purposes
+ *
  * How to use this library:
  *  You can look at the unittest for an example.
  *  Basically, include this file, write a new "node" class that inherits

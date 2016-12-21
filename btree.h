@@ -1,5 +1,8 @@
 /*
  * Copyright: Matthew Brewer (mbrewer@smalladventures.net) 2014-05-12
+ * 
+ * When to use this:
+ * Any time you want a dictionary style structure, this is a good choice.
  *
  * This is an implementation of a binary B-tree, with lazy split/merge.
  * If SIZE is set to 5, this implements a 2-3-4 tree with lazy split/merge.

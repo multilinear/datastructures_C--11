@@ -182,7 +182,7 @@ class StaticUArray {
     size_t len() const {
       return _used;
     }
-    bool is_full() const {
+    bool isfull() const {
       return _used >= Size;
     }
     void swap(size_t i, size_t j) {
@@ -347,7 +347,7 @@ class UArray {
     size_t len() const {
       return _used;
     }
-    bool is_full() const {
+    bool isfull() const {
       return false;
     }
     void swap(size_t i, size_t j) {
@@ -465,7 +465,7 @@ class IncUArray {
     size_t len() const {
       return used;
     }
-    bool is_full() const {
+    bool isfull() const {
       return false;
     }
     void swap(size_t i, size_t j) {

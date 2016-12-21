@@ -1,9 +1,15 @@
-Write delayed-copy heap
-Add bool conversion to everything
-Write DynArrayList and DynArrayTree
-Write a mergesort
-Write a skiplist
-Write translations from Array -> Set, dict
-Add Iterator to AVL trees
-Make initializers work for all arrays, set, and dict
-Make a thread-pool using the ts_work_queue
+New:
+  Write delayed-copy heap
+  Write a mergesort
+  Write a skiplist
+  Write hashtables, compre to btree
+  Write medianfind (and variants)
+
+Usability
+  Add bool conversion to everything
+  Write translations from Array -> Set, dict
+  Add Iterator to AVL trees
+  Make initializers work for everything
+
+Other:
+  Make a thread-pool using the ts_work_queue

@@ -80,11 +80,11 @@ void used_test(void) {
     PANIC("UA drop underflow is broken");
   }
   // full
-  if (ua.is_full()) {
+  if (ua.isfull()) {
     PANIC("UA is full when it's empty!");
   }
   ua.push(1);
-  if (ua.is_full()) {
+  if (ua.isfull()) {
     PANIC("UA is full with only one element!");
   }
 }
@@ -110,12 +110,12 @@ int main(void) {
   int test_data[] = {1};
   // Static used array specific tests
   StaticUArray<int,1> sa(test_data, 1);
-  if (!sa.is_full()) {
+  if (!sa.isfull()) {
     PANIC("StaticUArray should be full");
   }
   // Used Array specific tests
   UArray<int> ua(test_data, 1);
-  if (ua.is_full()) {
+  if (ua.isfull()) {
     PANIC("UArray should not be full");
   }
   ua.resize(10);

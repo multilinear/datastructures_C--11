@@ -3,15 +3,17 @@
  * A BHeap is a datastructure invented by Myself (Matthew Brewer), which
  * combines the concepts of a B-tree and a Heap.
  *
- * THIS IMPLEMENTATION IS SLOW (but faster than boundedheap.h)
- * For better speed use heap.h
+ * When to use this:
+ * Probably don't, it's slow.
+ * This is the best heap I've yet written in relation to worst-case runtimes...
+ * but I think a cycle-steeling-copy heap would work better.
+ * heap.h is faster average time., more detail below
  *
  * Reasons to use this:
- * 1) Much Faster than Bounded Heap
- * 2) Gives a bound on worst-case run-time without concern for realloc implementation
+ * Gives a bound on worst-case run-time without concern for realloc implementation
  * A good realloc should avoid copying all data on an array resize for for a
  * Normal heap, but your depending on it to do that. With this impl, it doesn't matter
- * Cost relative to heap.h is ~30%
+ * Cost relative to heap.h is ~20%
  *
  * Originally I had hoped it would have a better average case runtime than
  * a normal heap... It does not.
@@ -144,8 +146,8 @@ class SubHeap {
     // TODO: make this const?
     size_t parent_index;
 
-    bool is_full() {
-      return splits.is_full() && subheaps.is_full();
+    bool isfull() {
+      return splits.isfull() && subheaps.isfull();
     }
 
     bool is_empty() {
@@ -593,7 +595,7 @@ class BHeap {
       //printf("Pushing\n"); print();
       BHEAP_CHECK();
       // If the tail node is full, we need to find a new location
-      if (tail->splits.is_full()) {
+      if (tail->splits.isfull()) {
         make_new_tail();
       }
       tail->splits.push(data);

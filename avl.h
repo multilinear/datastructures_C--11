@@ -1,6 +1,14 @@
 /*
  * Copywrite: Matthew Brewer 2014-04-19
  *
+ * When to use this:
+ * If you want a generic dictionary style structure, btree.h is faster
+ * BUT, if your:
+ * 1) Need to avoid moving data physically in memory
+ * 2) Need "external allocation" meaning you can allocate the memory ourself
+ * and put it in to the dict, rather than having it copied.
+ * If you need either of these, this is the ideal datastructure for you 
+ *
  * For comparitive performance see:
  * PERFORMANCE
  *

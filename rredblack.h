@@ -1,8 +1,9 @@
 /*
  * Copyright: Matthew Brewer 2014-04-14 
  *
- * Don't use this, use btree.h or avl.h instead :).
- * Leaving this code here for comparison/demonstration purposes
+ * When to use this:
+ * Don't, avl is superior for the same use cases. Even redblack is a better impl.
+ * I'm leaving this code here for comparison/demonstration purposes
  *
  * How to use this library:
  *  You can look at the unittest for an example.
