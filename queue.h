@@ -98,6 +98,12 @@ class Queue {
       delete n;
       return true;
     }
+    bool isempty() const {
+      return l.peek()==nullptr;
+    }
+    operator bool() const {
+      return l.peek();
+    }
 };
 
 #endif

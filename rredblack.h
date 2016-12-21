@@ -120,7 +120,7 @@ class RRedBlack{
     // Assumes the node is in the tree
     //   if it's not you're going to have a bad time.
     Node_T *remove(Val_T v);
-    bool isempty();
+    bool isempty() const;
     // These are mostly for debugging
     void check(void);
     void checkAll(void);
@@ -755,7 +755,7 @@ void RRedBlack<Node_T, Val_T>::_print(Node_T *n) {
 }
 
 template<typename Node_T, typename Val_T>
-bool RRedBlack<Node_T, Val_T>::isempty(void) {
+bool RRedBlack<Node_T, Val_T>::isempty(void) const {
   return !root;
 }
 

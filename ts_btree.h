@@ -317,7 +317,7 @@ class TSBTree {
     int maybe_merge(TSBTreeNode<T,Val_T,C,SIZE> *parent, size_t i);
     std::pair<Val_T,Val_T> _check(TSBTreeNode<T,Val_T,C,SIZE> *n);
     void _print(TSBTreeNode<T,Val_T,C,SIZE> *n);
-    std::mutex m; // used for changing root
+    mutable std::mutex m; // used for changing root
   public:
     TSBTree();
     ~TSBTree();
@@ -326,7 +326,7 @@ class TSBTree {
     bool remove(Val_T val, T* result);
     void check(void);
     void print(void); 
-    bool isempty(void);
+    bool isempty(void) const;
 };
 
 template<typename T, typename Val_T, typename C, int SIZE>
@@ -376,7 +376,7 @@ bool TSBTree<T,Val_T,C,SIZE>::get(Val_T val, T* result) {
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-bool TSBTree<T,Val_T,C,SIZE>::isempty(void) {
+bool TSBTree<T,Val_T,C,SIZE>::isempty(void) const {
   // it is possible for root to have only one child
   // it'll resolve as soon as we run a remove or something, but
   // it means we have to check it's child for nullptr

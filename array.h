@@ -34,6 +34,10 @@ All UArray (Standing for Used Array) implementations further share
 - size_t size()
 - bool push(T*)
 - bool pop(T*)
+- bool isfull()
+- bool isempty()
+- bool operator bool()
+
 (len for these means "length of the active portion of the array")
 
 Code that templatizes on Array type can take advantage of these
@@ -110,6 +114,12 @@ class StaticArray {
         PANIC("StaticArray access out of bounds index");
       }
     }
+    bool isempty() const {
+      return !Size;
+    }
+    operator bool() const {
+      return Size;
+    }
 };
 
 // This is a static array including no dynamic allocation, but tracking usage
@@ -185,6 +195,12 @@ class StaticUArray {
     bool isfull() const {
       return _used >= Size;
     }
+    bool isempty() const {
+      return !_used;
+    }
+    operator bool() const {
+      return _used;
+    }
     void swap(size_t i, size_t j) {
       ARRAY_CHECK(i);
       ARRAY_CHECK(j);
@@ -240,6 +256,12 @@ class Array {
       ar = (T*) realloc(ar, _length * sizeof(T));
     }
     size_t len() const {
+      return _length;
+    }
+    bool isempty() const {
+      return !_length;
+    }
+    operator bool() const {
       return _length;
     }
     void swap(size_t i, size_t j) {
@@ -349,6 +371,12 @@ class UArray {
     }
     bool isfull() const {
       return false;
+    }
+    bool isempty() const {
+      return !_used;
+    }
+    operator bool() const {
+      return _used;
     }
     void swap(size_t i, size_t j) {
       ARRAY_CHECK(i);
@@ -467,6 +495,12 @@ class IncUArray {
     }
     bool isfull() const {
       return false;
+    }
+    bool isempty() const {
+      return !_used;
+    }
+    operator bool() const {
+      return _used;
     }
     void swap(size_t i, size_t j) {
       ARRAY_CHECK(i);

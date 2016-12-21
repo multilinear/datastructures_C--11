@@ -46,6 +46,13 @@ void resizable_test(void) {
   if (a.revi(1) != 3) {
     PANIC("Resize revi semantics are wrong");
   }
+  if (a.isempty()) {
+    PANIC("Array is empty when it has data!");
+  }
+  if (!a) {
+    PANIC("Array is empty when it has data!");
+  }
+
 }
 
 template<typename AT>
@@ -86,6 +93,9 @@ void used_test(void) {
   ua.push(1);
   if (ua.isfull()) {
     PANIC("UA is full with only one element!");
+  }
+  if (!ua) {
+    PANIC("bool conversion doesn't work");
   }
 }
 

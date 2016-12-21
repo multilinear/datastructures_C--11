@@ -146,16 +146,16 @@ class SubHeap {
     // TODO: make this const?
     size_t parent_index;
 
-    bool isfull() {
+    bool isfull() const {
       return splits.isfull() && subheaps.isfull();
     }
 
-    bool is_empty() {
+    bool isempty() const {
       return splits.len() == 0;
     }
     
-    bool is_leaf() {
-      return subheaps.is_empty();
+    bool isleaf() const {
+      return subheaps.isempty();
     }
 
     static void swap(SubHeap<T, C, Size> *subheap1, size_t index1, SubHeap<T, C, Size> *subheap2, size_t index2) {
@@ -621,7 +621,7 @@ class BHeap {
         // Could optimize out the swap here.
         SubHeap<T, C, Size>::swap(tail, tail->splits.len()-1, &root, 0);
         found = tail->splits.pop(val);
-        if (tail->is_empty()){
+        if (tail->isempty()){
           //printf("Deleting tail\n");
           delete_tail();
         }

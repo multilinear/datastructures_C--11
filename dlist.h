@@ -97,8 +97,8 @@ template<typename Node_T> class DList {
     void enqueue(Node_T*);
     Node_T* dequeue(void);
     void remove(Node_T*);
-    bool isempty();
-    void check(void);
+    bool isempty() const;
+    void check(void) const;
 };
 
 template<typename Node_T>
@@ -180,12 +180,12 @@ void DList<Node_T>::remove(Node_T *n) {
 }
 
 template<typename Node_T>
-bool DList<Node_T>::isempty() {
+bool DList<Node_T>::isempty() const {
   return head == nullptr;
 }
 
 template<typename Node_T>
-void DList<Node_T>::check(void) {
+void DList<Node_T>::check(void) const {
   Node_T* n;
   Node_T* last_n = nullptr;
   for (n=head; n; n = n->next) {

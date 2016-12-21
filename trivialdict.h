@@ -49,7 +49,7 @@ class TrivialDict {
       }
       used = 0;
     }
-    bool isempty() {
+    bool isempty() const {
       return used==0;
     }
     bool insert(T el) {

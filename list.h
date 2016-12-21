@@ -81,10 +81,10 @@ template<typename Node_T> class List{
 
     List();
     ~List();
-    bool isempty(void);
+    bool isempty(void) const;
     void enqueue(Node_T*);
     Node_T* dequeue();
-    Node_T* peek(void);
+    Node_T* peek(void) const;
 };
 
 template<typename Node_T>
@@ -128,12 +128,12 @@ Node_T* List<Node_T>::dequeue(){
 }
 
 template<typename Node_T>
-bool List<Node_T>::isempty(void) {
+bool List<Node_T>::isempty(void) const {
   return _head == nullptr;
 }
 
 template<typename Node_T>
-Node_T *List<Node_T>::peek(void) {
+Node_T *List<Node_T>::peek(void) const {
   return _head; 
 }
 

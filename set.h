@@ -42,7 +42,7 @@ class Set {
       // the value
       return tree.remove(val, &ret);
     }
-    bool isempty(void) {
+    bool isempty(void) const {
       return tree.isempty();
     }
 
@@ -66,7 +66,7 @@ class Set {
     typename BTree<T, T, SetComp, SET_ARITY>::Iterator end() const { 
       return tree.end();
     }
-    operator bool() {
+    operator bool() const {
       return !tree.isempty();
     }
 

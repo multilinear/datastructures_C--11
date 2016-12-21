@@ -6,7 +6,6 @@ New:
   Write medianfind (and variants)
 
 Usability
-  Add bool conversion to everything
   Write translations from Array -> Set, dict
   Add Iterator to AVL trees
   Make initializers work for everything

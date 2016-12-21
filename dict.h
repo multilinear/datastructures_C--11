@@ -57,8 +57,11 @@ class Dict {
       }
       return found;
     }
-    bool isempty(void) {
+    bool isempty(void) const {
       return tree.isempty();
+    }
+    operator bool() const {
+      return !tree.isempty();
     }
     VT& operator[](KT &key) {
       return *tree.get(key);

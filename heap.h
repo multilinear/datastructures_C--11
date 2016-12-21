@@ -111,6 +111,12 @@ class Heap {
       HEAP_CHECK();
       return ar.pop(val);
     }
+    bool isempty() const {
+      return !ar;
+    }
+    operator bool() const {
+      return ar;
+    }
     void check() {
       _check(0);
     }
