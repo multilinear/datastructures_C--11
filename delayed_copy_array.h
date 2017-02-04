@@ -16,6 +16,13 @@
  * This is the preferred implementation for a stack, and also the preferred
  * backing store for a heap (unless using an external store). Otherwise
  * you probably don't want to.
+ *
+ * Performance notes:
+ * In benchmark tests we found:
+ * ~30% time overhead over a normal doubling array on small heaps
+ * ~15% time overhead over a normal doubling array on large heaps
+ * Theoretical memory costs are:
+ * ~1/2 max memory usage overhead of a normal doubling array
  */
 
 
