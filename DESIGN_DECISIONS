@@ -2,12 +2,17 @@ overall principle:
   I'd like to build a library that optimizes worse-case rather than average case
   usage, while still trying to bring average down to a usable range.
 
+  I'm re-implementing a lot of STL datastructures here, I'm aware of that. To
+  understand the performance in detail you need the full code in front of you
+  and this library is also about perforance *testing* of various algorithms.
+
 ABSTRACT STRUCTURES
 (See files for most cases)
 
 Stack:
-  we do not provide a stack interface, becaues array works well for the quick-hacking use-cases 
-  More involved use you can use any of array, list, or dlist
+  we do not provide a seperate stack interface, because delayed copy array works
+  well for quick-hacking use-cases as is. For more involved uses you can use any
+  of delayed copy array, array, list, or dlist
 
 CONCRETE STRUCTURES
 (See files for most cases)

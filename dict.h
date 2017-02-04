@@ -1,3 +1,13 @@
+/*
+ * Copyright: Matthew Brewer (mbrewer@smalladventures.net) 
+ * (this header added 2017-02-04)
+ * 
+ * This is a simple wrapper creating a "dict" type interface (key/value store).
+ * It can be ported to use basically any of the various dictionary style
+ * structures in this library, but has been implemented using the best for
+ * for most use cases (the btree). 
+ */ 
+
 #include "btree.h"
 
 #ifndef DICT_H
@@ -8,7 +18,10 @@
 #define DICT_ARITY 30 
 #endif
 
-// TODO(mbrewer): should this be storing pointers, not pairs?
+// TODO: To use pairs like this dict should really support move semantics
+// internally (as data moves about a btree quite often).
+// performance could probably be increased significantly with this small change
+
 template<typename KT, typename VT>
 class Dict {
   private:

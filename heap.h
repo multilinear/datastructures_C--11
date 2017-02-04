@@ -21,15 +21,16 @@
 #define HEAP_CHECK()
 #endif
  
-template<typename ArrayT, typename T, typename C>
+template<typename UArrayT, typename T, typename C>
 class Heap {
   private:
-    ArrayT ar;
+    UArrayT ar;
     void _check(size_t i) {
       int c;
       if (2*i+1 < ar.len()) {
         c = C::compare(&ar[2*i+1], &ar[i]);
         if (c < 0) {
+          printf("2*i+1=%lu i=%lu\n", 2*i+1, i);
           PANIC("heap is not in order\n");
         }
         _check(2*i+1);
@@ -103,9 +104,20 @@ class Heap {
       HEAP_CHECK();
       if (ar.len() > 1) {
         *val = ar[0];
-        ar.pop(&ar[0]);
+        // notionally we'd like to do this... but
+        // pop start mutation before it writes, making
+        // the reference potentially no longer valid
+        //ar.pop(&(ar[0]));
+        // So we do this instead
+        // TODO cast of tmp to an rvalue would use move semantics, saving a copy
+        T tmp;
+        // We shouldn't need this check, but otherwise we get an uninitialized variable error
+        if (!ar.pop(&tmp)){
+          PANIC("This should never happen");
+        }
+        ar[0] = tmp;
         bubble_down();
-        HEAP_CHECK();
+        //HEAP_CHECK();
         return true;
       }
       HEAP_CHECK();
@@ -119,6 +131,12 @@ class Heap {
     }
     void check() {
       _check(0);
+    }
+    size_t len() const {
+      return ar.len();
+    }
+    const T& get(size_t i) {
+      return ar.get(i);
     }
 };
 

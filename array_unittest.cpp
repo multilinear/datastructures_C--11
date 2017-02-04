@@ -4,6 +4,7 @@
 #include "array.h"
 #include "treearray.h"
 #include "dictarray.h"
+#include "delayed_copy_array.h"
 
 template<typename AT>
 void base_test(void) {
@@ -41,6 +42,7 @@ void resizable_test(void) {
   // Testing resize (to smaller only)
   a.resize(3);
   if (a.len() != 3) {
+    printf("a.len() = %lu, not 3\n", a.len());
     PANIC("Resize failed");
   }
   if (a.revi(1) != 3) {
@@ -108,15 +110,18 @@ int main(void) {
   base_test<TreeArray<int,1>>();
   base_test<TreeUArray<int,1>>();
   base_test<DictUArray<int>>();
+  base_test<DCUArray<int>>();
   resizable_test<StaticUArray<int,4>>();
   resizable_test<Array<int>>();
   resizable_test<UArray<int>>();
   resizable_test<TreeArray<int,1>>();
   resizable_test<TreeUArray<int,1>>();
+  resizable_test<DCUArray<int>>();
   used_test<StaticUArray<int,4>>();
   used_test<UArray<int>>();
   used_test<TreeUArray<int,1>>();
   used_test<DictUArray<int>>();
+  used_test<DCUArray<int>>();
   int test_data[] = {1};
   // Static used array specific tests
   StaticUArray<int,1> sa(test_data, 1);

@@ -1,14 +1,20 @@
 New:
-  Write delayed-copy heap
   Write a mergesort
+  Write hashtables, compare to btree
   Write a skiplist
-  Write hashtables, compre to btree
   Write medianfind (and variants)
 
-Usability
+Cleanup:
+  consider replacing comparators with lambdas
+  review for move semantics (arrays especially)
+  decltype (sorts especially, can probably replace some templating) 
+  drop arrays in favor of vector due to "emplace"
+
+Usability:
   Write translations from Array -> Set, dict
   Add Iterator to AVL trees
   Make initializers work for everything
 
+
 Other:
-  Make a thread-pool using the ts_work_queue
+   Make a thread-pool using the ts_work_queue (nevermind, compiler does this now)

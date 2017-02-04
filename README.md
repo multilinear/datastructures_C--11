@@ -57,3 +57,11 @@ So, this is my personal playground for experimenting with datastructures and
 language features in an attempt to write the best simple datastructures I can. 
 
 For further performance notes see the file "PERFORMANCE"
+
+Known deficiencies:
+  - The array types here are kind of silly... vector would be better due to often
+  having native compiler support and features like move semantics and "emplace"
+  already idealy implemented. std::array replaces my static arrays as well.
+  - Move semantics particularly impact the dict instantiation of btree, as this
+  stores an actual object, and the object is reconstructed whenever it's moved,
+  btree does not use array.h though, so it needs to be fixed seperately
