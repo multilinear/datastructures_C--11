@@ -1,8 +1,8 @@
 #define HEAP_DEBUG
-#include "heap.h"
 #define ARRAY_DEBUG
-#include "array.h"
 #define DELAYED_COPY_ARRAY_DEBUG
+#include "heap.h"
+#include "array.h"
 #include "delayed_copy_array.h"
 
 #define TEST_SIZE 200

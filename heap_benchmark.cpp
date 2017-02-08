@@ -18,7 +18,7 @@ class HeapCompare {
 };
 
 int main(int argc, char **argv) {
-  printf("Begin Heap.h/Array.h benchmark\n");
+  printf("Begin Heap benchmark\n");
   //Heap<TreeUArray<int, 12>, int, HeapCompare> heap;
   //Heap<DictUArray<int>, int, HeapCompare> heap;
   //Heap<UArray<int>, int, HeapCompare> heap;
@@ -35,6 +35,6 @@ int main(int argc, char **argv) {
     }
   }
 
-  printf("PASS\n");
+  printf("Done\n");
   return 0;
 }

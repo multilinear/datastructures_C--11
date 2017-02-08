@@ -1,8 +1,11 @@
-// Sorts are smallest -> largest
-// Comparitors are a-b (so if a < b then result is negative)
+#include "panic.h"
+#include "array.h"
 
 #ifndef SORT_H
 #define SORT_H
+
+// Sorts are smallest -> largest
+// Comparitors are a-b (so if a < b then result is negative)
 
 // Implemented mostly for correctness tests
 // Though might be useful on some smaller data
@@ -23,7 +26,8 @@ void selection_sort(AT *a) {
 }
 
 // Useful for lists likely to have only a few inversions
-// O(N^2), \Theta(N^2) on random list
+// O(N^2), \Omega(N)
+// expected O(N^2) on random list
 // On list with constant number of inversions O(N)
 // This sort is stable, and in place
 template <typename AT, typename C>
@@ -78,7 +82,8 @@ void quick_sort_helper(AT *a, size_t bottom, size_t top) {
 }
 
 // This sort is not stable, but is in place
-// O(N^2), \Theta(Nlog(N))
+// O(N^2), \Omega(Nlog(N))
+// expected O(Nlog(N)) on random list
 template <typename AT, typename C>
 void quick_sort(AT *a) {
   if (a->len() <= 0) {
@@ -122,8 +127,7 @@ void merge_sort_helper(AAT *a, BAT *b, size_t chunk, size_t len) {
 }
 
 // This sort is stable, but not in place
-// O(Nlog(N), \Theta(Nlog(N))
-//
+// \Theta(Nlog(N))
 template <typename AT, typename TAT, typename C>
 void merge_sort(AT *in, TAT *tmp) {
   size_t chunk = 1;
