@@ -26,6 +26,8 @@ void run(Array<int>* input, void* _unused){
   Array<int> s_a(input);  
   Array<int> b_a(input);  
   Array<int> q_a(input);  
+  Array<int> m_a(input);  
+  Array<int> tmp_a(m_a.len());  
   //printf("testing: ");
   //print_array(input);
   //printf("Selection: ");
@@ -33,15 +35,22 @@ void run(Array<int>* input, void* _unused){
   //print_array(&s_a);
   //printf("Bubble: ");
   bubble_sort<Array<int>,IntCompare>(&b_a);
-  //print_array(&b_a);
+  //print_array(&q_a);
   //printf("Quick: ");
   quick_sort<Array<int>,IntCompare>(&q_a);
-  //print_array(&q_a);
+  //printf("Merge Test %lu\n", m_a.len());
+  //print_array(&m_a);
+  //printf("Merge: ");
+  merge_sort<Array<int>,Array<int>,IntCompare>(&m_a, &tmp_a);
+  //print_array(&m_a);
   for (size_t i=0; i<s_a.len(); i++) {
     if (s_a[i] != b_a[i]) {
       bad = true;
     }
     if (s_a[i] != q_a[i]) {
+      bad = true;
+    }
+    if (s_a[i] != m_a[i]) {
       bad = true;
     }
   }

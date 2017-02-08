@@ -250,6 +250,7 @@ class Array {
 
     ~Array() {
       free(ar);
+      ar = nullptr;
     }
     void resize(size_t new_size) {
       _length = new_size;
