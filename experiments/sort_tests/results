@@ -1,0 +1,16 @@
+#define TEST_SIZE 10000000
+#define PASSES 100
+quicksort:
+real  1m45.298s
+user  1m45.284s
+sys 0m0.012s
+merge (with alloc):
+real  2m3.543s
+user  2m2.772s
+sys 0m0.764s
+merge (without alloc):
+real  2m2.468s
+user  2m2.448s
+sys 0m0.012s
+
+
