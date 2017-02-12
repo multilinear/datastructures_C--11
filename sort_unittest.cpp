@@ -45,7 +45,7 @@ void run(Array<int>* input, void* _unused){
   merge_sort<Array<int>,Array<int>,IntCompare>(&m_a, &tmp_a);
   //print_array(&m_a);
   heap_sort<Array<int>,IntCompare>(&h_a);
-  print_array(&h_a);
+  //print_array(&h_a);
   for (size_t i=0; i<s_a.len(); i++) {
     if (s_a[i] != b_a[i]) {
       bad = true;

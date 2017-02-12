@@ -1,19 +1,30 @@
 // This turns on rather expensive internal consistancy checking
-#define HASHTABLE_DEBUG
+#define OCHASHTABLE_DEBUG
 #define ARRAY_DEBUG
 #define DLIST_DEBUG
 #include <stdio.h>
 #include "panic.h"
 #include "trivialdict.h"
-#include "hashtable.h"
+#include "ochashtable.h"
 
 #define TEST_SIZE 500
 
-class IntHash {
+class OCHashTableNode: public OCHashTableNode_base<OCHashTableNode> {
   public:
-    // Most boring hash function ever written, cast, weeee!
+    int v;
+    // function to extract val from node
+    // return type must be comparable
+    // value must be unique for nodes that should be unique
+    int val(void) {
+      return v;
+    }
+    // function to hash val
+    // this should be well distributed, but uniqueness is not necessary
     static size_t hash(int v) {
       return v;
+    }
+    OCHashTableNode(int val) {
+      v = val;
     }
 };
 
@@ -36,7 +47,7 @@ class TrivialDictDatum {
     }
 };
 
-void check(HashTable<int, IntHash> *hash, TrivialDict<TrivialDictDatum,int> *dict) {
+void check(OCHashTable<OCHashTableNode, int> *hash, TrivialDict<TrivialDictDatum,int> *dict) {
   auto i = dict->begin();
   for (; i != dict->end(); i++) {
     if(!hash->get(i->val())) {
@@ -48,11 +59,11 @@ void check(HashTable<int, IntHash> *hash, TrivialDict<TrivialDictDatum,int> *dic
 
 int main(int argc, char* argv[]) {
   TrivialDict<TrivialDictDatum, int> dict(TEST_SIZE);
-  HashTable<int, IntHash> hash;
+  OCHashTable<OCHashTableNode, int> hash;
 
   int i;
   // insert in order, then remove
-  printf("Begin HashTable.h test\n");
+  printf("Begin OCHashTable.h test\n");
   int k;
   for (k=1; k<TEST_SIZE; k++) {
     dict.reset(TEST_SIZE);
@@ -67,7 +78,7 @@ int main(int argc, char* argv[]) {
         new_v = !dict.get(r);
       }
       // put it in the hashtable
-      hash.insert(r);
+      hash.insert(new OCHashTableNode(r));
       // and in the list
       dict.insert(r);
       // check that everything is in the list that should be
@@ -76,7 +87,7 @@ int main(int argc, char* argv[]) {
     while (!dict.isempty()) {
       // We're invalidating our iterator every round, by modifying the tree
       auto i = dict.begin();
-      hash.remove(i->val());
+      hash.remove(hash.get(i->val()));
       dict.remove(i->val());
       // check that everything is in the list that should be
       check(&hash, &dict);
@@ -87,17 +98,17 @@ int main(int argc, char* argv[]) {
   }
   
   // Check non-existant element
-  int *n = hash.get(1); 
+  OCHashTableNode *n = hash.get(1); 
   if (n != nullptr) {
     PANIC("Underflow returned a value!");
   }
 
   // Check duplicate element behavior
-  bool inserted = hash.insert(1);
+  bool inserted = hash.insert(new OCHashTableNode(1));
   if (!inserted) {
     PANIC("Insertion failed");
   }
-  inserted = hash.insert(1);
+  inserted = hash.insert(new OCHashTableNode(1));
   if (inserted) {
     PANIC("Double insertion succeeded");
   }
@@ -105,9 +116,7 @@ int main(int argc, char* argv[]) {
   if (n == nullptr) {
     PANIC("Attempted insertion removed existing data");
   }
-  if (!hash.remove(1)) {
-    PANIC("Removal of extant data failed");
-  }
+  hash.remove(hash.get(1));
   n = hash.get(1);
   if (n != nullptr) {
     PANIC("underflow returned a value after duplicate insert");

@@ -1,3 +1,8 @@
+/* Copyright:  Matthew Brewer (mbrewer@smalladventures.net)  2017-02-12 
+ *
+ * A collection of sorting algorithms
+ */
+ 
 #include "panic.h"
 #include "array.h"
 
