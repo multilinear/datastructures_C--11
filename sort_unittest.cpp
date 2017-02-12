@@ -27,6 +27,7 @@ void run(Array<int>* input, void* _unused){
   Array<int> b_a(input);  
   Array<int> q_a(input);  
   Array<int> m_a(input);  
+  Array<int> h_a(input);  
   Array<int> tmp_a(m_a.len());  
   //printf("testing: ");
   //print_array(input);
@@ -43,6 +44,8 @@ void run(Array<int>* input, void* _unused){
   //printf("Merge: ");
   merge_sort<Array<int>,Array<int>,IntCompare>(&m_a, &tmp_a);
   //print_array(&m_a);
+  heap_sort<Array<int>,IntCompare>(&h_a);
+  print_array(&h_a);
   for (size_t i=0; i<s_a.len(); i++) {
     if (s_a[i] != b_a[i]) {
       bad = true;
@@ -51,6 +54,9 @@ void run(Array<int>* input, void* _unused){
       bad = true;
     }
     if (s_a[i] != m_a[i]) {
+      bad = true;
+    }
+    if (s_a[i] != h_a[i]) {
       bad = true;
     }
   }
@@ -87,7 +93,7 @@ void permutations(Array<int>* a, void (*callback)(ArrayType*, void*), DataType o
 int main(){
   printf("Begin Sort.h unittest\n");
   Array<int> testdata; 
-  // Exhaustive testing of up to 9 elements
+  // Exhaustive testing of up to 8 elements
   for (int x=0; x<10; x++) {
     testdata.resize(x);
     if (x>0) {

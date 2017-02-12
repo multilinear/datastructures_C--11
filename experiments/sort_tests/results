@@ -8,9 +8,36 @@ merge (with alloc):
 real  2m3.543s
 user  2m2.772s
 sys 0m0.764s
+(17% slower)
 merge (without alloc):
 real  2m2.468s
 user  2m2.448s
 sys 0m0.012s
+(16% slower)
+heapsort
+real  3m54.075s
+user  3m54.064s
+sys 0m0.012s
+(122% slower)
 
-
+#define TEST_SIZE 100
+#define PASSES 10000000
+quicksort:
+real  0m39.088s
+user  0m39.088s
+sys 0m0.000s
+merge (with alloc):
+real  0m42.930s
+user  0m42.924s
+sys 0m0.000s
+(10%)
+merge (without alloc):
+real  0m42.459s
+user  0m42.456s
+sys 0m0.000s
+(9%)
+heapsort
+real 0m46.434s
+user  0m46.408s
+sys 0m0.008s
+(19%)

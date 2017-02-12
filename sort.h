@@ -84,6 +84,7 @@ void quick_sort_helper(AT *a, size_t bottom, size_t top) {
 // This sort is not stable, but is in place
 // O(N^2), \Omega(Nlog(N))
 // expected O(Nlog(N)) on random list
+// Fastest average runtime (tested)
 template <typename AT, typename C>
 void quick_sort(AT *a) {
   if (a->len() <= 0) {
@@ -128,6 +129,8 @@ void merge_sort_helper(AAT *a, BAT *b, size_t chunk, size_t len) {
 
 // This sort is stable, but not in place
 // \Theta(Nlog(N))
+// Second fastest average runtime (tested)
+// Believed to be the fastest worst-case runtime
 template <typename AT, typename TAT, typename C>
 void merge_sort(AT *in, TAT *tmp) {
   size_t chunk = 1;
@@ -152,6 +155,69 @@ void merge_sort(AT *in, TAT *tmp) {
     merge_sort_helper<TAT, AT, C>(tmp, in, chunk, len);
     chunk = 2*chunk;
   }
+}
+
+// This sort is not stable, but is in place
+// \Theta(Nlog(N))
+template <typename AT, typename C>
+void heap_sort(AT *in) {
+	// *** first we build the heap
+	// push of in.len()-1 is noop
+	if (in->len() <= 1) {
+		return;
+	}
+	size_t len = in->len();
+	for (size_t i=1; i<len; i++) {
+		// bubble up i
+		size_t j = i;
+		size_t parent;
+		while (j != 0) {
+			parent = (j-1)/2;
+			int c = C::compare((*in)[parent], (*in)[j]);
+			if (c<0) {
+				in->swap(parent, j);
+			} else {
+				break;
+			}
+			j = parent;
+		}
+	}
+	// *** then we take the heap apart
+  // Again when heap is size 1, we ignore it (the loop below skips index 0)
+	for (size_t k = len-1; k>0; k--) {
+		// pop the smallest element off the heap (and make the heap 1 element smaller)
+		in->swap(k, 0);
+		// now bubble the new value down
+		size_t i = 0;
+		size_t j;
+		while(true) {
+			size_t left = 2*i + 1;
+			size_t right = 2*i + 2;
+			if (right < k) {
+				// find the smaller value
+				int c = C::compare((*in)[left], (*in)[right]);
+				if (c < 0) {
+					j = right;
+				} else {
+					j = left;
+				}
+			} else if (left < k) {
+				j = left;
+			} else {
+				break;
+			}
+			// and if i is larger than j we need to swap
+			// if not we're done
+			int c = C::compare((*in)[i], (*in)[j]);
+			if (c < 0) {
+				in->swap(i,j);
+			} else {
+				break;
+			}
+			// go to where we moved the data and try again
+			i = j;
+		}
+	}
 }
  
 #endif // SORT_H
