@@ -59,7 +59,8 @@ template<typename Node_T> class DList {
           n = other.n;
         }
         Iterator& operator=(const Iterator& other) {
-          n = other->_head;
+          n = other.n;
+          return *this;
         }
         bool operator==(const Iterator& other) const {
           return n == other.n;
@@ -86,9 +87,11 @@ template<typename Node_T> class DList {
         }
     };
     Iterator begin() {
+      CHECK();
       return Iterator(head);
     }
     Iterator end() {
+      CHECK();
       return Iterator(nullptr);
     }
 
@@ -166,14 +169,12 @@ void DList<Node_T>::remove(Node_T *n) {
   #endif
   if (n == head) {
     head = n->next;
+  } else {
+    n->prev->next = n->next;
   }
   if (n == tail) {
     tail = n->prev;
-  }
-  if (n->prev) {
-    n->prev->next = n->next;
-  }
-  if (n->next) {
+  } else {
     n->next->prev = n->prev;
   }
   CHECK();
@@ -193,6 +194,11 @@ void DList<Node_T>::check(void) const {
       PANIC("DList is corrupt");
     }
     last_n = n;
+  }
+  if (last_n != tail) {
+    printf("list end %p != tail %p\n", last_n, tail);
+    printf("head %p\n", head);
+    PANIC("DList is corrupt");
   }
 }
 

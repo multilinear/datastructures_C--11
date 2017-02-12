@@ -1,5 +1,5 @@
-overall principle:
-  I'd like to build a library that optimizes worse-case rather than average case
+Overall principle:
+  I'd like to build a library that optimizes worst-case rather than average case
   usage, while still trying to bring average down to a usable range.
 
   I'm re-implementing a lot of STL datastructures here, I'm aware of that. To

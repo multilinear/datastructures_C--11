@@ -139,7 +139,7 @@ class BTreeNode {
       #endif
       return children[i];
     }
-    void set_data(size_t i, T datum) {
+    void set_data(size_t i, T& datum) {
       #ifdef BTREE_DEBUG
       if (i >= used) {
         printf("i = %ld, used = %ld\n", i, used);
@@ -209,7 +209,7 @@ class BTreeNode {
       return s+1; // pointer after fist element
     }
     // Inserts a new datum in a node, with a child to it's right
-    void insert_right(size_t i, T datum, BTreeNode<T,Val_T,C,SIZE> *child) {
+    void insert_right(size_t i, T& datum, BTreeNode<T,Val_T,C,SIZE> *child) {
       #ifdef BTREE_DEBUG
       if (i>used+1) {
         PANIC("Bad Index, index out of range");
@@ -227,7 +227,7 @@ class BTreeNode {
       set_node(i+1, child); 
     }
     // Inserts a new datum in a node, with a child to it's left
-    void insert_left(size_t i, T datum, BTreeNode<T,Val_T,C,SIZE> *child) {
+    void insert_left(size_t i, T& datum, BTreeNode<T,Val_T,C,SIZE> *child) {
       #ifdef BTREE_DEBUG
       if (i>used+1) {
         PANIC("Bad Index, index out of range");

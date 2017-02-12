@@ -4,6 +4,13 @@
 #ifndef SORT_H
 #define SORT_H
 
+// Default sorting algorithm
+template <typename AT, typename C>
+void sort(AT *a) {
+  AT b(a->len());
+  merge_sort(a, &b);
+}
+
 // Sorts are smallest -> largest
 // Comparitors are a-b (so if a < b then result is negative)
 
@@ -159,6 +166,7 @@ void merge_sort(AT *in, TAT *tmp) {
 
 // This sort is not stable, but is in place
 // \Theta(Nlog(N))
+// Slow in practice, bad constant factors
 template <typename AT, typename C>
 void heap_sort(AT *in) {
 	// *** first we build the heap

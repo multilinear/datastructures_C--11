@@ -1,5 +1,4 @@
 New:
-  Write a mergesort
   Write hashtables, compare to btree
   Write a skiplist
   Write medianfind (and variants)
@@ -14,7 +13,3 @@ Usability:
   Write translations from Array -> Set, dict
   Add Iterator to AVL trees
   Make initializers work for everything
-
-
-Other:
-   Make a thread-pool using the ts_work_queue (nevermind, compiler does this now)
