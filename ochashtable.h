@@ -5,6 +5,12 @@
  *
  * resizes up when size is < 2x data it contains
  * resizes down when size is > 4x data it contains
+ *
+ * Faster average case than btree by ~2x
+ *
+ * Worst case operation is linear per op due to
+ * 1) linear rehash
+ * 2) possability of every item hash colliding
  */ 
 
 #include "panic.h"
