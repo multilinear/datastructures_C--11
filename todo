@@ -1,5 +1,5 @@
 New:
-  Write hashtables, compare to btree
+  Write hashtable with amortized rehash
   Write a skiplist
   Write medianfind (and variants)
 
