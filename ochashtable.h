@@ -20,9 +20,6 @@
 #ifndef OC_HASHTABLE_H
 #define OC_HASHTABLE_H
 
-// TODO: hashtable currently compares only hash, should compare actual values
-// otherwise correctness is not guaranteed given hash collisions
-
 #define MINSIZE 16
 
 template <typename Node_T>

@@ -52,7 +52,6 @@ void print_tree(BTree<int,int,BTreeComp,ARITY> *t) {
 
 void check(BTree<int,int,BTreeComp,ARITY> *tree, TrivialDict<TrivialDictDatum,int> *dict) {
   auto i = dict->begin();
-  int d;
   for (; i != dict->end(); i++) {
     if(!tree->get(i->val())) {
       printf("%d\n", i->val());

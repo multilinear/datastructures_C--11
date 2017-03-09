@@ -2,7 +2,8 @@
 #include "panic.h"
 #include "avl.h"
 
-#define TEST_SIZE 20000000
+#define TEST_ITERATIONS 1000000
+#define TEST_SIZE 100
 
 class AVLNode: public AVLNode_base<AVLNode, int> {
   public:
@@ -31,34 +32,36 @@ int ints_end;
 
 int main(int argc, char* argv[]) {
   AVL<AVLNode, int> tree;
-
-  int i;
-  int gets=0;
   printf("Begin AVL.h benchmark\n");
-  ints_end=0;
+  int j;
+  int get_count=0;
   AVLNode *nodes = new AVLNode[TEST_SIZE];
-  int ni=0;
-  for (i=0; i<TEST_SIZE; i++) {
-    bool new_v = false;
-    int r;
-    // find a value we haven't used yet
-    while (!new_v) {
-      // Note, we did not initialize rand, this is purposeful
-      r = rand();
-      new_v = (tree.get(r) == nullptr); 
-      gets++;
+  for (j=0;j<TEST_ITERATIONS;j++) {
+    int i;
+    ints_end=0;
+    int ni=0;
+    for (i=0; i<TEST_SIZE; i++) {
+      bool new_v = false;
+      int r;
+      // find a value we haven't used yet
+      while (!new_v) {
+        // Note, we did not initialize rand, this is purposeful
+        r = rand();
+        new_v = (tree.get(r) == nullptr); 
+        get_count++;
+      }
+      // put it in thet tree
+      AVLNode *n = &(nodes[ni++]); 
+      n->set(r);
+      tree.insert(n);
+      // and in the list
+      ints[ints_end++] = r;
     }
-    // put it in thet tree
-    AVLNode *n = &(nodes[ni++]); 
-    n->set(r);
-    tree.insert(n);
-    // and in the list
-    ints[ints_end++] = r;
+    for(i=0; i<ints_end; i++) {
+      int v = ints[i];
+      auto n = tree.get(v);
+      tree.remove(n);
+    }
   }
-  for(i=0; i<ints_end; i++) {
-    int v = ints[i];
-    auto n = tree.get(v);
-    tree.remove(n);
-  }
-  printf("gets %d\n", gets);
+  printf("get_count %d\n", get_count);
 }

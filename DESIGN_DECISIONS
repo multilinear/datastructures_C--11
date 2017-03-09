@@ -1,4 +1,4 @@
-Overall principle:
+OVERALL PRINCIPLE:
   I'd like to build a library that optimizes worst-case rather than average case
   usage, while still trying to bring average down to a usable range.
 
@@ -6,7 +6,29 @@ Overall principle:
   understand the performance in detail you need the full code in front of you
   and this library is also about perforance *testing* of various algorithms.
 
-ABSTRACT STRUCTURES
+OBJECT OWNERSHIP:
+Objects contained in these datastructures are owned by the code which creates
+them rather than being notionally "handed off" to the datastructures when they
+are inserted.
+Thus, we promise that delete will never be called on any objects contained in
+these datastructures.
+If you want to put data in, and then delete it later without storing the pointer
+externally, you can use the iterator to do it, like so:
+
+  auto p = datastructure->begin();
+  while (p != end())) {
+    delete &(*p);
+    p = begin();
+  }
+
+Note that deletion invalidates the iterator, as it mutates the structure, so we
+call "begin" again each iteration.
+Structures with external allocation will panic on deletion if they are not empty
+(e.g. an AVL tree or a linklist), the user is required to free the memory, since
+the user allocated it. Structures with internal allocation (e.g. btrees or arrays)
+will free their own memory, but as noted will not call delete on it.
+
+ABSTRACT STRUCTURES:
 (See files for most cases)
 
 Stack:
@@ -14,6 +36,6 @@ Stack:
   well for quick-hacking use-cases as is. For more involved uses you can use any
   of delayed copy array, array, list, or dlist
 
-CONCRETE STRUCTURES
+CONCRETE STRUCTURES:
 (See files for most cases)
 

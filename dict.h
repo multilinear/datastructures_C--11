@@ -37,13 +37,7 @@ class Dict {
     BTree<std::pair<KT,VT>, KT, DictComp, DICT_ARITY> tree;
   public:
     Dict():tree() {}
-    ~Dict() {
-      auto a = tree.begin();
-      VT val;
-      while (a != end() && remove(a->first, &val)) {
-        a = begin();
-      }
-    }
+    ~Dict() {}
     VT* get(KT val) {
       auto ptr = tree.get(val);
       if (ptr) {

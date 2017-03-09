@@ -315,7 +315,7 @@ class TSBTree {
     Val_T* Check(TSBTreeNode<T,Val_T,C,SIZE> *n, Val_T *prev);
     bool maybe_split(TSBTreeNode<T,Val_T,C,SIZE> *parent, TSBTreeNode<T,Val_T,C,SIZE> *n, size_t i);
     int maybe_merge(TSBTreeNode<T,Val_T,C,SIZE> *parent, size_t i);
-    std::pair<Val_T,Val_T> _check(TSBTreeNode<T,Val_T,C,SIZE> *n);
+    std::pair<Val_T,Val_T> _check(TSBTreeNode<T,Val_T,C,SIZE> *n, Val_T v);
     void _print(TSBTreeNode<T,Val_T,C,SIZE> *n);
     mutable std::mutex m; // used for changing root
   public:
@@ -336,8 +336,30 @@ TSBTree<T,Val_T,C,SIZE>::TSBTree() {
 
 template<typename T, typename Val_T, typename C, int SIZE>
 TSBTree<T,Val_T,C,SIZE>::~TSBTree() {
-  if (!isempty()) {
-    PANIC("Tried to destroy non-empty tree");
+  while (true) {
+    auto gparent = root;
+    if (!gparent) {
+      break;
+    }
+    auto parent = gparent->get_node(gparent->get_used());
+    if (!parent) {
+      delete gparent;
+      break;
+    }
+    auto n = parent->get_node(parent->get_used());
+    while (n) {
+      gparent = parent;
+      parent = n;
+      n = n->get_node(n->get_used());
+    }
+    // remove parent from gparent, and delete
+    // we set nullptr because there are used+1 elements, and 0 indicates the
+    // 0'th element might or might not exist
+    gparent->set_node(gparent->get_used(), nullptr);
+    if (gparent->get_used()) {
+      gparent->set_used(gparent->get_used()-1);
+    }
+    delete parent;
   }
 }
 
@@ -669,12 +691,14 @@ void TSBTree<T,Val_T,C,SIZE>::_print(TSBTreeNode<T,Val_T,C,SIZE> *n) {
 template<typename T, typename Val_T, typename C, int SIZE>
 void TSBTree<T,Val_T,C,SIZE>::check() {
   if (root) {
-    _check(root);  
+    if (root->get_used()) {
+      _check(root, C::val(root->get_data(0)));
+    }
   }
 }
 
 template<typename T, typename Val_T, typename C, int SIZE>
-std::pair<Val_T,Val_T> TSBTree<T,Val_T,C,SIZE>::_check(TSBTreeNode<T,Val_T,C,SIZE> *n) {
+std::pair<Val_T,Val_T> TSBTree<T,Val_T,C,SIZE>::_check(TSBTreeNode<T,Val_T,C,SIZE> *n, Val_T v) {
   if (n != root && n->get_used() < (SIZE-1)/2-1) {
     printf("Element: ");
     n->print();
@@ -685,15 +709,15 @@ std::pair<Val_T,Val_T> TSBTree<T,Val_T,C,SIZE>::_check(TSBTreeNode<T,Val_T,C,SIZ
   // Check ranges
   size_t i;
   int c;
-  Val_T min;
-  Val_T max;
+  Val_T min = v;
+  Val_T max = v;
   bool minmax_initialized=false;
   std::pair<Val_T,Val_T> range;
   bool range_initialized=false;
   std::pair<Val_T,Val_T> oldrange;
   for (i=0; i < n->get_used()+1; i++) {
     if(n->get_node(i)) {
-      range = _check(n->get_node(i));
+      range = _check(n->get_node(i), v);
       range_initialized=true;
       if (!minmax_initialized) {
         min = range.first;
