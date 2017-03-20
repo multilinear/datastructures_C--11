@@ -13,6 +13,8 @@
  * 2) possability of every item hash colliding
  */ 
 
+// TODO: Add an iterator
+
 #include "panic.h"
 #include "array.h"
 #include "dlist.h"

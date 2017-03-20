@@ -120,6 +120,7 @@ class BTreeNode {
     }
     BTreeNode<T,Val_T,C,SIZE>() {
       used = 0;
+      memset(children, 0, (SIZE+1)*sizeof(children[0]));
     }
     T& get_data(size_t i) {
       #ifdef BTREE_DEBUG
@@ -349,6 +350,7 @@ BTree<T,Val_T,C,SIZE>::~BTree() {
     auto parent = gparent->get_node(gparent->get_used());
     if (!parent) {
       delete gparent;
+      root = nullptr;
       break;
     }
     auto n = parent->get_node(parent->get_used());
@@ -370,9 +372,9 @@ BTree<T,Val_T,C,SIZE>::~BTree() {
 
 template<typename T, typename Val_T, typename C, int SIZE>
 BTree<T,Val_T,C,SIZE>& BTree<T,Val_T,C,SIZE>::operator=(BTree<T,Val_T,C,SIZE> &&t) { 
-  this->root = t->root;
+  this->root = t.root;
   // Just a precaution so only one tree points at things.
-  t->root = nullptr;
+  t.root = nullptr;
   return *this;
 }
 
@@ -767,10 +769,10 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
         index = i;
       }
       bool operator==(const StackNode& pos) const {
-        return node == pos.node  && index == pos.index;
+        return node == pos.node && index == pos.index;
       }
       bool operator!=(const StackNode& pos) const {
-        return node != pos.node  || index != pos.index;
+        return node != pos.node || index != pos.index;
       }
       StackNode& operator=(const StackNode& pos) {
         node = pos.node;
@@ -780,7 +782,6 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
     };
     UArray<StackNode> stack;
     StackNode pos;
-    // Note: this will do free as well, it would probably be better if it didn't for this use
   public:
     Iterator(BTreeNode<T, Val_T, C, SIZE> *n, size_t i):pos(n,i) {
       if (pos.node == nullptr) {
