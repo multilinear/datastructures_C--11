@@ -1,14 +1,49 @@
-mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror ochashtable_benchmark.cpp -o ochashtable_benchmark && time ./ochashtable_benchmark
-Begin OCHashTable.h benchmark
-gets 20093205
+#define TEST_ITERATIONS 1000000
+#define TEST_SIZE 100
 
-real  0m14.252s
-user  0m13.832s
-sys 0m0.416s
 mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror btree_benchmark.cpp -o btree_benchmark && time ./btree_benchmark
 Begin BTree.h benchmark
-gets 20093205
+get_count 100000004
 
-real  0m37.230s
-user  0m37.060s
-sys 0m0.168
+real	0m11.290s
+user	0m11.284s
+sys	0m0.000s
+mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror ochashtable_benchmark.cpp -o ochashtable_benchmark && time ./ochashtable_benchmark
+Begin OCHashTable.h benchmark
+get_count 100000004
+
+real	0m11.229s
+user	0m11.224s
+sys	0m0.000s
+mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror treehashtable_benchmark.cpp -o treehashtable_benchmark && time ./treehashtable_benchmark
+Begin TreeHashTable.h benchmark
+get_count 100000004
+
+real  0m33.420s
+user  0m33.412s
+sys 0m0.000s
+
+#define TEST_ITERATIONS 1000
+#define TEST_SIZE 100000
+mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror ochashtable_benchmark.cpp -o ochashtable_benchmark && time ./ochashtable_benchmark
+Begin OCHashTable.h benchmark
+get_count 100000004
+
+real  0m11.223s
+user  0m11.220s
+sys 0m0.000s
+mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror btree_benchmark.cpp -o btree_benchmark && time ./btree_benchmark
+Begin BTree.h benchmark
+get_count 100002297
+
+real  0m33.750s
+user  0m33.428s
+sys 0m0.316s
+mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror btreehashtable_benchmark.cpp -o btreehashtable_benchmark && time ./btreehashtable_benchmark
+Begin TreeHashTable.h benchmark
+get_count 100002297
+
+real  2m20.489s
+user  1m41.296s
+sys 0m39.176s
+

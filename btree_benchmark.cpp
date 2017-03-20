@@ -7,8 +7,8 @@
 #ifndef ARITY
 #define ARITY 64 
 #endif
-#define TEST_ITERATIONS 1000000
-#define TEST_SIZE 100
+#define TEST_ITERATIONS 1000
+#define TEST_SIZE 100000
 
 class BTreeComp {
   // For use with T=int, Val_T=int
@@ -29,7 +29,6 @@ class BTreeComp {
 
 
 int ints[TEST_SIZE];
-int ints_start;
 int ints_end;
 
 int main(int argc, char* argv[]) {
@@ -41,7 +40,6 @@ int main(int argc, char* argv[]) {
   for (j=0; j<TEST_ITERATIONS; j++) {
     int i;
     ints_end=0;
-    ints_start=0;
     for (i=0; i<TEST_SIZE; i++) {
       bool new_v = false;
       int r;
@@ -60,7 +58,6 @@ int main(int argc, char* argv[]) {
     for(i=0; i<ints_end; i++) {
       int junk;
       tree.remove(ints[i], &junk);
-      ints_start += 1;
     }
   }
   printf("get_count %d\n", get_count);

@@ -180,6 +180,9 @@ class TSBTreeNode {
     size_t get_used() {
       return used;
     }
+    void set_used(size_t u) {
+      used = u;
+    }
     // Returns indices as if data and children were interlaced.
     // So 0 is children[0], 1 is data[0], 2 is children[1], etc.
     size_t find(Val_T v, bool *found) {
