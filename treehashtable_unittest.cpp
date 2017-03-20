@@ -104,6 +104,8 @@ int main(int argc, char* argv[]) {
   // Check non-existant element
   int *n = hash.get(1); 
   if (n != nullptr) {
+    printf("ptr=%p\n", n);
+    printf("value=%d\n", *n);
     PANIC("Underflow returned a value!");
   }
 

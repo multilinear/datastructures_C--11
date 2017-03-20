@@ -122,7 +122,11 @@ bool TreeHashTable<Data_T, Val_T, HC>::insert(const Data_T& data) {
 template <typename Data_T, typename Val_T, typename HC>
 Data_T* TreeHashTable<Data_T, Val_T, HC>::get(Val_T key) {
   size_t i = TreeHashTableComp<Data_T,Val_T, HC>::hash(key) % table.len();
-  return &(table[i].get(key)->data);
+  auto n = table[i].get(key);
+  if (!n) {
+    return nullptr;
+  }
+  return &(n->data);
 }
 
 template <typename Data_T, typename Val_T, typename HC>
