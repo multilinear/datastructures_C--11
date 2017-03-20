@@ -249,12 +249,19 @@ class Array {
     }
 
     ~Array() {
-      free(ar);
+      if (ar) {
+        free(ar);
+      }
       ar = nullptr;
     }
     void resize(size_t new_size) {
       _length = new_size;
-      ar = (T*) realloc(ar, _length * sizeof(T));
+      if (new_size) {
+        ar = (T*) realloc(ar, _length * sizeof(T));
+      } else {
+        free(ar);
+        ar = nullptr;
+      }
     }
     size_t len() const {
       return _length;
