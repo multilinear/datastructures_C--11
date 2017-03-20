@@ -48,7 +48,7 @@ class OCHashTable {
     ~OCHashTable();
     bool insert(Node_T *n);
     Node_T* get(Val_T key);
-    void remove(Node_T *n);
+    Node_T* remove(Node_T *n);
     bool isempty(void) const; 
     void resize(size_t s);
 };
@@ -117,7 +117,7 @@ Node_T* OCHashTable<Node_T,Val_T>::get(Val_T key) {
 }
 
 template <typename Node_T, typename Val_T>
-void OCHashTable<Node_T,Val_T>::remove(Node_T *n) {
+Node_T * OCHashTable<Node_T,Val_T>::remove(Node_T *n) {
   // Note, if n is not in the hashtable, this will cause
   // some nasty corruption.
   Val_T v = n->val();
@@ -125,6 +125,7 @@ void OCHashTable<Node_T,Val_T>::remove(Node_T *n) {
   table[i].remove(&(*n)); 
   count--;
   check_sizedown();
+  return n;
 }
 
 template <typename Node_T, typename Val_T>

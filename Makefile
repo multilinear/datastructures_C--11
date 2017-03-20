@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-O3 -std=c++11 -Wall -Werror
 CFLAGS_THREAD=-pthread
 
-SOURCES=array_unittest.cpp avl_unittest.cpp bheap_unittest.cpp boundedheap_unittest.cpp btreehashtable_unittest.cpp btree_unittest.cpp dict_unittest.cpp dlist_unittest.cpp ochashtable_unittest.cpp heap_unittest.cpp list_unittest.cpp queue_unittest.cpp redblack_unittest.cpp ringbuffer_unittest.cpp rredblack_unittest.cpp set_unittest.cpp sort_unittest.cpp trivialdict_unittest.cpp ts_btree_unittest.cpp ts_ringbuffer_unittest.cpp ts_work_queue_unittest.cpp
+SOURCES=array_unittest.cpp avlhashtable_unittest.cpp avl_unittest.cpp bheap_unittest.cpp boundedheap_unittest.cpp btreehashtable_unittest.cpp btree_unittest.cpp dict_unittest.cpp dlist_unittest.cpp ochashtable_unittest.cpp heap_unittest.cpp list_unittest.cpp queue_unittest.cpp redblack_unittest.cpp ringbuffer_unittest.cpp rredblack_unittest.cpp set_unittest.cpp sort_unittest.cpp trivialdict_unittest.cpp ts_btree_unittest.cpp ts_ringbuffer_unittest.cpp ts_work_queue_unittest.cpp
 
 EXES=$(SOURCES:.cpp=) 
 
@@ -17,6 +17,8 @@ clean: ;rm $(EXES); true
 array_unittest: *.h *.cpp ; $(CC) $(CFLAGS) array_unittest.cpp -o array_unittest
 
 avl_unittest: *.h *.cpp ; $(CC) $(CFLAGS) avl_unittest.cpp -o avl_unittest
+
+avlhashtable_unittest: *.h *.cpp ; $(CC) $(CFLAGS) avlhashtable_unittest.cpp -o avlhashtable_unittest
 
 bheap_unittest: *.h *.cpp ; $(CC) $(CFLAGS) bheap_unittest.cpp -o bheap_unittest
 
@@ -50,7 +52,7 @@ set_unittest: *.h *.cpp ; $(CC) $(CFLAGS) set_unittest.cpp -o set_unittest
 
 sort_unittest: *.h *.cpp ; $(CC) $(CFLAGS) sort_unittest.cpp -o sort_unittest
 
-ts_btree_unittest: *.h *.cpp ;  $(CC) $(CFLAGS) -O3 -std=c++11 $(CFLAGS_THREAD) ts_btree_unittest.cpp -o ts_btree_unittest
+ts_btree_unittest: *.h *.cpp ;  $(CC) $(CFLAGS) $(CFLAGS_THREAD) ts_btree_unittest.cpp -o ts_btree_unittest
 
 ts_ringbuffer_unittest: *.h *.cpp ; $(CC) $(CFLAGS) $(CFLAGS_THREAD) ts_ringbuffer_unittest.cpp -o ts_ringbuffer_unittest
 

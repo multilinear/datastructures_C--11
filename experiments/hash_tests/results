@@ -15,8 +15,8 @@ get_count 100000004
 real	0m11.229s
 user	0m11.224s
 sys	0m0.000s
-mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror treehashtable_benchmark.cpp -o treehashtable_benchmark && time ./treehashtable_benchmark
-Begin TreeHashTable.h benchmark
+mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror btreehashtable_benchmark.cpp -o btreehashtable_benchmark && time ./btreehashtable_benchmark
+Begin BTreeHashTable.h benchmark
 get_count 100000004
 
 real  0m33.420s
@@ -39,8 +39,8 @@ get_count 100002297
 real  0m33.750s
 user  0m33.428s
 sys 0m0.316s
-mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror btreehashtable_benchmark.cpp -o btreehashtable_benchmark && time ./btreehashtable_benchmark
-Begin TreeHashTable.h benchmark
+mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror bbtreehashtable_benchmark.cpp -o bbtreehashtable_benchmark && time ./bbtreehashtable_benchmark
+Begin BTreeHashTable.h benchmark
 get_count 100002297
 
 real  2m20.489s

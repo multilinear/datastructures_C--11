@@ -97,6 +97,7 @@ class AVLNode_base {
 
 template <typename Node_T, typename Val_T>
 class AVL{
+  // These ought to be const
   static_assert(std::is_same<decltype(std::declval<Node_T>().val()), Val_T>(), "Please define a method Val_T val() method on Node_T class");
   static_assert(std::is_same<decltype(Node_T::compare(std::declval<Val_T>(), std::declval<Val_T>())), int>(), "Please define a static method int compare(Val_T, Val_T) method on Node_T class");
   private:
@@ -107,6 +108,88 @@ class AVL{
     int _rotate_left(Node_T *a);
     int _rotate_right(Node_T *a);
   public:
+    class Iterator {
+      private:
+        Node_T *n;
+        // This marks whether we've explored right yet, in our iteration
+        // this is enough for 64 levels, which would consume all
+        // of our virtual address space... should be enough.
+        size_t bits;
+        size_t level;
+      public:
+        Iterator(Node_T *nn) {
+          n = nn;
+          bits = 0;
+          level = 0;
+					if (n == nullptr) {
+						return;
+					}
+          // Find the left-most branch
+          while(n->left) {
+            n = n->left;
+            level++;
+            // Don't need to mark level, since bits is already 0
+          }
+          return;
+        }
+        Iterator(const Iterator& other) {
+          n = other.n;
+          bits = other.bits;
+          level = other.level;
+        }
+        Iterator& operator=(const Iterator& other) {
+          n = other.n;
+          bits = other.bits;
+          level = other.level;
+          return *this;
+        }
+        bool operator==(const Iterator& other) const {
+          return n == other.n && bits == other.bits && level == other.level;
+        }
+        bool operator!=(const Iterator& other) const {
+          return n != other.n || bits != other.bits || level != other.level;
+        }
+        Iterator& operator++() {
+          // Check if we can go right, and if we have already been right
+          if (n->right && !((1<<level) & bits)) {
+            // Mark that we've been right from here
+            bits |= (1<<level);
+            n = n->right;
+            level++;
+            // new branch, so clear the "have we been right" bit
+            bits &= ~(1<<level);
+            // And walk all the way down the left
+            while (n->left) {
+              n = n->left;
+              level++;
+              // new branch, so clear the "have we been right" bit
+              bits &= ~(1<<level);
+            }
+            return *this;
+          }
+          // Can't go right, so go up
+          n = n->parent;
+          level--;
+          return *this;
+        }
+        Iterator operator++(int) {
+          Iterator tmp(*this);
+          ++(*this);
+          return tmp;
+        }
+        Node_T& operator*() {
+          return *n;
+        }
+        Node_T* operator->() {
+          return n;
+        }
+    };
+    Iterator begin() {
+      return Iterator(root);
+    }
+    Iterator end() {
+      return Iterator(nullptr);
+    }
     AVL();
     Node_T *get(Val_T v);
     // Returns False if node is already in the tree

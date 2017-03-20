@@ -98,6 +98,7 @@ template<typename Node_T> class DList {
     DList();
     ~DList();
     void enqueue(Node_T*);
+    void insert(Node_T*);
     Node_T* dequeue(void);
     void remove(Node_T*);
     bool isempty() const;
@@ -133,6 +134,11 @@ void DList<Node_T>::enqueue(Node_T* el) {
   tail->next = el;
   tail = el;
   CHECK();
+}
+
+template<typename Node_T>
+void DList<Node_T>::insert(Node_T* el) {
+  this->enqueue(el);
 }
 
 template<typename Node_T>
