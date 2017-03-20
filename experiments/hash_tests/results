@@ -1,0 +1,14 @@
+mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror ochashtable_benchmark.cpp -o ochashtable_benchmark && time ./ochashtable_benchmark
+Begin OCHashTable.h benchmark
+gets 20093205
+
+real  0m14.252s
+user  0m13.832s
+sys 0m0.416s
+mbrewer@slate:~/src/datastructures_C--11$ g++  -O3 -std=c++11 -Wall -Werror btree_benchmark.cpp -o btree_benchmark && time ./btree_benchmark
+Begin BTree.h benchmark
+gets 20093205
+
+real  0m37.230s
+user  0m37.060s
+sys 0m0.168

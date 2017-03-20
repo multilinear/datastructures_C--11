@@ -1,0 +1,48 @@
+Comparing doubling array, with a doubling copy array as backing
+store for a standard heap implementation.
+Note that both include resizing down when below 1/3 (switching to 1/2 seems to have little impact)
+
+TEST_SIZE 100000000
+PASSES 1
+
+Normal heap:
+real  0m35.485s
+user  0m35.380s
+sys 0m0.100s
+
+DelayedCopy heap:
+real  0m41.140s
+user  0m40.920s
+sys 0m0.220s
+
+= 15% longer
+
+#define TEST_SIZE 1000
+#define PASSES 1000000
+
+Normal heap:
+real  1m8.338s
+user  1m8.340s
+sys 0m0.000s
+
+DelayedCopy heap:
+real  1m26.171s
+user  1m26.172s
+sys 0m0.004s
+
+= 26% longer
+
+#define TEST_SIZE 100
+#define PASSES 1000000
+
+Normal:
+real  0m5.136s
+user  0m5.132s
+sys 0m0.000s
+
+DelayedCopy:
+real  0m6.898s
+user  0m6.892s
+sys 0m0.000s
+
+= 34% longer
