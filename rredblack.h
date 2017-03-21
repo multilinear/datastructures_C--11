@@ -117,8 +117,8 @@ class RRedBlack{
     Node_T *get(Val_T v);
     // Returns False if node is already in the tree
     void insert(Node_T *n);
-    // Assumes the node is in the tree
-    //   if it's not you're going to have a bad time.
+    // RRedblack is weird, we actually gain nothing by knowing the
+    // node before doing a deletion, so we break our usual API here
     Node_T *remove(Val_T v);
     bool isempty() const;
     // These are mostly for debugging
