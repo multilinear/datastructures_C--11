@@ -153,12 +153,16 @@ void OCHashTable<Node_T,Val_T>::resize(size_t s) {
   for (size_t i=0; i<table.len(); ++i) {
     auto n = table[i].begin();
     while (n != table[i].end() && n->hs != s) {
-      auto node = &(*n);
-      table[i].remove(node);
-      size_t new_index = Node_T::hash(node->val()) % s;
-      node->hs = s;
-      table[new_index].enqueue(node);
-      n = table[i].begin();
+      if (n->hs != s) {
+        auto node = &(*n);
+        table[i].remove(node);
+        size_t new_index = Node_T::hash(node->val()) % s;
+        node->hs = s;
+        table[new_index].enqueue(node);
+        n = table[i].begin();
+      } else {
+        n++;
+      }
     }
   }
   // If decreasing we resize after

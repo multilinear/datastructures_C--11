@@ -125,10 +125,9 @@ class AVL{
 						return;
 					}
           // Find the left-most branch
-          while(n->left) {
+          while (n->left) {
             n = n->left;
             level++;
-            // Don't need to mark level, since bits is already 0
           }
           return;
         }
@@ -144,10 +143,12 @@ class AVL{
           return *this;
         }
         bool operator==(const Iterator& other) const {
-          return n == other.n && bits == other.bits && level == other.level;
+          return (n == nullptr && other.n == nullptr) || 
+            (n == other.n && bits == other.bits && level == other.level);
         }
         bool operator!=(const Iterator& other) const {
-          return n != other.n || bits != other.bits || level != other.level;
+          return !(n == nullptr && other.n == nullptr) && 
+            (n != other.n || bits != other.bits || level != other.level);
         }
         Iterator& operator++() {
           // Check if we can go right, and if we have already been right
@@ -162,13 +163,13 @@ class AVL{
             while (n->left) {
               n = n->left;
               level++;
-              // new branch, so clear the "have we been right" bit
-              bits &= ~(1<<level);
             }
-            return *this;
+           return *this;
           }
           // Can't go right, so go up
           n = n->parent;
+          // clear the "have we been right" bit in prep for the next descent
+          bits &= ~(1<<level);
           level--;
           return *this;
         }
@@ -196,7 +197,7 @@ class AVL{
     bool insert(Node_T *n);
     // Assumes the node is in the tree
     //   if it's not you're going to have a bad time.
-    Node_T* remove(Node_T *n);
+    void remove(Node_T *n);
     bool isempty() const;
     // These are mostly for debugging
     void check(void) const;
@@ -493,7 +494,7 @@ bool AVL<Node_T, Val_T>::insert(Node_T *n) {
 }
 
 template<typename Node_T, typename Val_T>
-Node_T *AVL<Node_T, Val_T>::remove(Node_T *n)  {
+void AVL<Node_T, Val_T>::remove(Node_T *n)  {
   PRINT("Begin remove: ");
   #ifdef AVL_DEBUG_VERBOSE
   n->print();
@@ -683,7 +684,6 @@ Node_T *AVL<Node_T, Val_T>::remove(Node_T *n)  {
   PRINT_TREE();
   CHECK_ALL();
   PRINT("remove complete\n");
-  return nullptr;
 }
 
 template<typename Node_T, typename Val_T>

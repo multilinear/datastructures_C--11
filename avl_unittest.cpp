@@ -89,7 +89,9 @@ int main(int argc, char* argv[]) {
     while (!dict.isempty()) {
       // We're invalidating our iterator every round, by modifying the tree
       auto i = dict.begin();
-      delete tree.remove(tree.get(i->val()));
+      auto n = tree.get(i->val());
+      tree.remove(n);
+      delete n;
       dict.remove(i->val());
       // check that everything is in the list that should be
       check(&tree, &dict);
@@ -120,7 +122,9 @@ int main(int argc, char* argv[]) {
   if (n == nullptr) {
     PANIC("Attempted insertion removed existing data");
   }
-  delete tree.remove(tree.get(1));
+  n = tree.get(1);
+  tree.remove(n);
+  delete n;
   n = tree.get(1);
   if (n != nullptr) {
     PANIC("underflow returned a value after duplicate insert");
