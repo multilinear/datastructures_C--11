@@ -1,3 +1,13 @@
+/* Copywrite Matthew Brewer 2017-03-22
+ *
+ * This is a benchmark for dictionaries using external allocation
+ * We decide WHAT we're testing using the macro system
+ * Our Makefile takes advantage of this.
+ *
+ * This seems odd, but it avoids code duplication and ensures all our
+ * datastructures have the same API (Except where it really isn't a good idea)
+ */
+
 #include <stdio.h>
 #include "panic.h"
 
@@ -7,35 +17,33 @@
 #ifdef TEST_AVL
 #include "avl.h"
 class Node: public AVLNode_base<Node, int> {
-  public:
-    int value;
-  public:
-    const int val(void) {
-      return value;
-    }
-    static const int compare(const int val1, const int val2) {
-      return val1-val2;
-    }
-    Node() {}
-    void set(int v) {
-      value = v;
-    }
-};
 #endif
-
 #ifdef TEST_AVLHASHTABLE
 #include "avlhashtable.h"
 class Node: public AVLHashTableNode_base<Node, int> {
+#endif
+#ifdef TEST_OCHASHTABLE
+#include "ochashtable.h"
+class Node: public OCHashTableNode_base<Node> {
+#endif
+#ifdef TEST_REDBLACK
+#include "redblack.h"
+class Node: public RedBlackNode_base<Node, int> {
+#endif 
+#ifdef TEST_RREDBLACK
+#include "rredblack.h"
+class Node: public RRedBlackNode_base<Node, int> {
+#endif 
   public:
     int value;
   public:
-    const int val(void) {
+    const int val(void) const {
       return value;
     }
     static size_t hash(int v) {
       return v;
     }
-    static int compare(int v1, int v2) {
+    static int compare(const int v1, const int v2) {
       return v1-v2;
     }
     Node() {}
@@ -46,70 +54,6 @@ class Node: public AVLHashTableNode_base<Node, int> {
       value = v;
     }
 };
-#endif
-
-#ifdef TEST_OCHASHTABLE
-#include "ochashtable.h"
-class Node: public OCHashTableNode_base<Node> {
-  public:
-    int value;
-  public:
-    const int val(void) {
-      return value;
-    }
-    static size_t hash(int v) {
-      return v;
-    }
-    Node() {}
-    void set(int v) {
-      value = v;
-    }
-    Node(int v) {
-      value = v;
-    }
-};
-#endif
-
-#ifdef TEST_REDBLACK
-#include "redblack.h"
-class Node: public RedBlackNode_base<Node, int> {
-  public:
-    int value;
-  public:
-    const int val(void) {
-      return value;
-    }
-    static const int compare(const int val1, const int val2) {
-      return val1-val2;
-    }
-    Node() { }
-    void set(int v) {
-      value = v;
-    }
-};
-#endif
-
-#ifdef TEST_RREDBLACK
-#include "rredblack.h"
-class Node: public RRedBlackNode_base<Node, int> {
-  public:
-    int value;
-  public:
-    const int val(void) {
-      return value;
-    }
-    static const int compare(const int val1, const int val2) {
-      return val1-val2;
-    }
-    Node(int v) {
-      value = v;
-    }
-    Node() { }
-    void set(int v) {
-      value = v;
-    }
-};
-#endif
 
 int ints[TEST_SIZE];
 int ints_end;

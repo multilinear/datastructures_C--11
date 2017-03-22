@@ -69,12 +69,82 @@ class BTreeHashTable {
     void check_sizeup(void);
     void check_sizedown(void);
   public:
+   	class Iterator {
+      private:
+        Array<BTree<BTreeHashTableNode<Data_T>, Val_T, BTreeHashTableComp<Data_T,Val_T, HC>, ARITY>> *table;
+        size_t index;
+			typename BTree<BTreeHashTableNode<Data_T>, Val_T, BTreeHashTableComp<Data_T,Val_T, HC>, ARITY>::Iterator iter;
+      public:
+        Iterator(Array<BTree<BTreeHashTableNode<Data_T>, Val_T, BTreeHashTableComp<Data_T,Val_T, HC>, ARITY>> *t, size_t ind) {
+          table = t;
+          index = ind;
+          iter = (*table)[index].begin();
+          // Look for a valid element (if we don't have one)
+          while (index < table->len() && iter == (*table)[index].end()) {
+            index++;
+            iter = (*table)[index].begin();
+          }
+        }
+        Iterator(const Iterator& other) {
+          table = other.table;
+          index = other.index;
+          iter = other.iter;
+        }
+        Iterator& operator=(const Iterator& other) {
+          table = other.table;
+          index = other.index;
+          iter = other.iter;
+          return *this;
+        }
+        bool operator==(const Iterator& other) {
+          return (index >= table.len() && other.index >= other.table.len()) ||
+            index == other.index && iter == other.iter;
+        }
+        bool operator!=(const Iterator& other) {
+          return !(index >= table->len() && other.index >= other.table->len()) && 
+            (index != other.index || iter != other.iter);
+        }
+        Iterator operator++() {
+          // If we're at the end, we're done
+          if (index >= table->len()) {
+            return *this;
+          }
+          // We were at a valid element (or the end of the array)
+          // so iter++ makes sense
+          iter++;
+          while (iter == (*table)[index].end() && index < (*table).len()) {
+            index++;
+            iter = (*table)[index].begin();
+          }
+          return *this;
+        }
+        Iterator operator++(int) {
+          Iterator tmp(*this);
+          ++(*this);
+          return tmp;
+        }
+        Data_T& operator*() {
+					// Get what's inside the iterator
+          return iter->data;
+        }
+        Data_T* operator->() {
+					// Get a reference to what's inside the iterator (lol)
+          return &(iter->data);
+        }
+    };
+    Iterator begin() {
+      return Iterator(&table, 0);
+    }
+    Iterator end() {
+      return Iterator(&table, table.len());
+    }
+
     BTreeHashTable();
     BTreeHashTable(size_t s);
     ~BTreeHashTable();
     bool insert(const Data_T& data);
     Data_T* get(Val_T key);
-    void remove(Val_T key, Data_T* data);
+    bool remove(Val_T key, Data_T* data);
     bool isempty(void) const; 
     void resize(size_t s);
     void print(void);
@@ -130,15 +200,14 @@ Data_T* BTreeHashTable<Data_T, Val_T, HC>::get(Val_T key) {
 }
 
 template <typename Data_T, typename Val_T, typename HC>
-void BTreeHashTable<Data_T, Val_T, HC>::remove(Val_T v, Data_T *data) {
-  // Note, if n is not in the hashtable, this will cause
-  // some nasty corruption.
+bool BTreeHashTable<Data_T, Val_T, HC>::remove(Val_T v, Data_T *data) {
   size_t i = BTreeHashTableComp<Data_T,Val_T, HC>::hash(v) % table.len();
   BTreeHashTableNode<Data_T> tmp;
-  table[i].remove(v, &tmp); 
+  bool b = table[i].remove(v, &tmp); 
   *data = tmp.data;
   count--;
   check_sizedown();
+  return b;
 }
 
 template <typename Data_T, typename Val_T, typename HC>

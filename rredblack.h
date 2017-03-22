@@ -54,6 +54,7 @@
 #include <stdio.h>
 #include <utility>
 #include "panic.h"
+#include "array.h"
 
 #ifndef RREDBLACK_H
 #define RREDBLACK_H
@@ -112,11 +113,91 @@ class RRedBlack{
     static Node_T *_remove_balance_left(Node_T *n, bool *balanced);
     static Node_T *_get_rightmost(Node_T *n, Node_T **rightmost, bool *balanced);
   public:
+    class Iterator {
+      private:
+        UArray<Node_T*> stack;
+        Node_T *n;
+      public:
+        Iterator() {
+          n = nullptr;
+        }
+        Iterator(Node_T *nn) {
+          n = nn;
+					if (n == nullptr) {
+						return;
+					}
+          while (n->left) {
+            stack.push(n);
+            n = n->left;
+          }
+          return;
+        }
+        Iterator(const Iterator& other) {
+          n = other.n;
+          array_copy<UArray<Node_T*>,UArray<Node_T*>>(&stack, &(other.stack));
+        }
+        Iterator& operator=(const Iterator& other) {
+          n = other.n;
+          array_copy<UArray<Node_T*>,UArray<Node_T*>>(&stack, &(other.stack));
+          return *this;
+        }
+        bool operator==(const Iterator& other) const {
+          if (n == nullptr && other.n == nullptr)  {
+            return true;
+          }
+          size_t i;
+          if (stack.len() != other.stack.len()) {
+            return false;
+          }
+          for (i = 0; i < stack.len(); i++) {
+            if (stack.get(i) != other.stack.get(i)) {
+              return false;
+            }
+          }
+          return true;
+        }
+        bool operator!=(const Iterator& other) const {
+          return !(*this == other);
+        }
+        Iterator& operator++() {
+          if (n->right) {
+            // We don't push when we go right
+            // 'cause we're done with that node anyway
+            n = n->right;
+            while (n->left) {
+              stack.push(n);
+              n = n->left;
+            }
+           return *this;
+          }
+          stack.pop(&n);
+          return *this;
+        }
+        Iterator operator++(int) {
+          Iterator tmp(*this);
+          ++(*this);
+          return tmp;
+        }
+        Node_T& operator*() {
+          return *n;
+        }
+        Node_T* operator->() {
+          return n;
+        }
+    };
+    Iterator begin() {
+      return Iterator(root);
+    }
+    Iterator end() {
+      return Iterator(nullptr);
+    }
+
     RRedBlack();
     ~RRedBlack();
     Node_T *get(Val_T v);
-    // Returns False if node is already in the tree
-    void insert(Node_T *n);
+    // Bool here is a lie... Since this code is for demostration, I didn't feel
+    // like passing a tuple back (ick in C++), so we just PANIC if it's already there
+    bool insert(Node_T *n);
     // RRedblack is weird, we actually gain nothing by knowing the
     // node before doing a deletion, so we break our usual API here
     Node_T *remove(Val_T v);
@@ -161,7 +242,7 @@ Node_T *RRedBlack<Node_T, Val_T>::get(Val_T v) {
 }
 
 template<typename Node_T, typename Val_T>
-void RRedBlack<Node_T, Val_T>::insert(Node_T *new_n) {
+bool RRedBlack<Node_T, Val_T>::insert(Node_T *new_n) {
   PRINT("Begin Insert\n");
   PRINT_TREE();
   CHECK_ALL();
@@ -177,6 +258,8 @@ void RRedBlack<Node_T, Val_T>::insert(Node_T *new_n) {
   root->red = false;
   PRINT_TREE();
   CHECK_ALL();
+  // TODO: yeah, we should recursively return a tuple
+  return false;
 }    
 
 template<typename Node_T>

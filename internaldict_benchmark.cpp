@@ -1,3 +1,13 @@
+/* Copywrite Matthew Brewer 2017-03-22
+ *
+ * This is a benchmark for dictionaries using internal allocation
+ * We decide WHAT we're testing using the macro system
+ * Our Makefile takes advantage of this.
+ *
+ * This seems odd, but it avoids code duplication and ensures all our
+ * datastructures have the same API (Except where it really isn't a good idea)
+ */
+
 #include <stdio.h>
 #include <time.h>
 #include "panic.h"
@@ -20,8 +30,6 @@
 #define ARITY 64 
 #endif
 #endif
-
-
 
 #ifdef TEST_BTREEHASHTABLE
 #include "btreehashtable.h"

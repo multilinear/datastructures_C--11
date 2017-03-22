@@ -137,6 +137,94 @@ class RedBlack{
     void _print(Node_T *n);
     void _order(void (*prefunc)(Node_T*), void (*infunc)(Node_T*), void (*postfunc)(Node_T*), void (*leaffunc)(void), Node_T *n);
   public:
+    class Iterator {
+      private:
+        Node_T *n;
+        // This marks whether we've explored right yet, in our iteration
+        // this is enough for 64 levels, which would consume all
+        // of our virtual address space... should be enough.
+        size_t bits;
+        size_t level;
+      public:
+        Iterator() {
+          n = nullptr;
+          bits = 0;
+          level = 0;
+        }
+        Iterator(Node_T *nn) {
+          n = nn;
+          bits = 0;
+          level = 0;
+					if (n == nullptr) {
+						return;
+					}
+          // Find the left-most branch
+          while (n->left) {
+            n = n->left;
+            level++;
+          }
+          return;
+        }
+        Iterator(const Iterator& other) {
+          n = other.n;
+          bits = other.bits;
+          level = other.level;
+        }
+        Iterator& operator=(const Iterator& other) {
+          n = other.n;
+          bits = other.bits;
+          level = other.level;
+          return *this;
+        }
+        bool operator==(const Iterator& other) const {
+          return (n == nullptr && other.n == nullptr) || 
+            (n == other.n && bits == other.bits && level == other.level);
+        }
+        bool operator!=(const Iterator& other) const {
+          return !(n == nullptr && other.n == nullptr) && 
+            (n != other.n || bits != other.bits || level != other.level);
+        }
+        Iterator& operator++() {
+          // Check if we can go right, and if we have already been right
+          if (n->right && !((1<<level) & bits)) {
+            // Mark that we've been right from here
+            bits |= (1<<level);
+            n = n->right;
+            level++;
+            // new branch, so clear the "have we been right" bit
+            bits &= ~(1<<level);
+            // And walk all the way down the left
+            while (n->left) {
+              n = n->left;
+              level++;
+            }
+           return *this;
+          }
+          // Can't go right, so go up
+          n = n->parent;
+          // clear the "have we been right" bit in prep for the next descent
+          bits &= ~(1<<level);
+          level--;
+          return *this;
+        }
+        Iterator operator++(int) {
+          Iterator tmp(*this);
+          ++(*this);
+          return tmp;
+        }
+        Node_T& operator*() {
+          return *n;
+        }
+        Node_T* operator->() {
+          return n;
+        }
+    };
+    Iterator begin() {
+      return Iterator(root);
+    }
+    Iterator end() {
+      return Iterator(nullptr);
+    }
     RedBlack();
     ~RedBlack();
     Node_T *get(Val_T v);

@@ -769,10 +769,12 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
         index = i;
       }
       bool operator==(const StackNode& pos) const {
-        return node == pos.node && index == pos.index;
+        return (node == nullptr && pos.node == nullptr) || 
+          (node == pos.node && index == pos.index);
       }
       bool operator!=(const StackNode& pos) const {
-        return node != pos.node || index != pos.index;
+        return !(node == nullptr && pos.node == nullptr) && 
+          (node != pos.node || index != pos.index);
       }
       StackNode& operator=(const StackNode& pos) {
         node = pos.node;
@@ -783,6 +785,7 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
     UArray<StackNode> stack;
     StackNode pos;
   public:
+    Iterator():pos(nullptr, 0) {}
     Iterator(BTreeNode<T, Val_T, C, SIZE> *n, size_t i):pos(n,i) {
       if (pos.node == nullptr) {
         return;

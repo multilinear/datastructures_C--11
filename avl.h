@@ -117,6 +117,11 @@ class AVL{
         size_t bits;
         size_t level;
       public:
+        Iterator() {
+          n = nullptr;
+          bits = 0;
+          level = 0;
+        }
         Iterator(Node_T *nn) {
           n = nn;
           bits = 0;

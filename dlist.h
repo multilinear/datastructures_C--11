@@ -52,6 +52,9 @@ template<typename Node_T> class DList {
       private:
         Node_T* n;
       public:
+        Iterator() {
+          n = nullptr;
+        }
         Iterator(Node_T *nn) {
           n = nn;
         }

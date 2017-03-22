@@ -43,12 +43,80 @@ class OCHashTable {
     void check_sizeup(void);
     void check_sizedown(void);
   public:
+    class Iterator {
+      private:
+        Array<DList<Node_T>> *table;
+        size_t index;
+        typename DList<Node_T>::Iterator iter;
+      public:
+        Iterator(Array<DList<Node_T>> *t, size_t ind) {
+          table = t;
+          index = ind;
+          iter = (*table)[index].begin();
+          // Look for a valid element (if we don't have one)
+          while (index < table->len() && iter == (*table)[index].end()) {
+            index++;
+            iter = (*table)[index].begin();
+          }
+        }
+        Iterator(const Iterator& other) {
+          table = other.table;
+          index = other.index;
+          iter = other.iter;
+        }
+        Iterator& operator=(const Iterator& other) {
+          index = other.index;
+          iter = other.iter;
+          return *this;
+        }
+        bool operator==(const Iterator& other) {
+          return (index >= table->len() && other.index >= other.table->len()) ||
+            index == other.index && iter == other.iter;
+        }
+        bool operator!=(const Iterator& other) {
+          return !(index >= table->len() && other.index >= other.table->len()) && 
+            (index != other.index || iter != other.iter);
+        }
+        Iterator operator++() {
+          // If we're at the end, we're done
+          if (index >= table->len()) {
+            return *this;
+          }
+          // We were at a valid element (or the end of the array)
+          // so iter++ makes sense
+          iter++;
+          while (iter == (*table)[index].end() && index < table->len()) {
+            index++;
+            iter = (*table)[index].begin();
+          }
+          return *this;
+        }
+        Iterator operator++(int) {
+          Iterator tmp(*this);
+          ++(*this);
+          return tmp;
+        }
+        Node_T& operator*() {
+					// Get what's inside the iterator
+          return *iter;
+        }
+        Node_T* operator->() {
+					// Get a reference to what's inside the iterator (lol)
+          return &(*iter);
+        }
+    };
+    Iterator begin() {
+      return Iterator(&table, 0);
+    }
+    Iterator end() {
+      return Iterator(&table, table.len());
+    }
     OCHashTable();
     OCHashTable(size_t s);
     ~OCHashTable();
     bool insert(Node_T *n);
     Node_T* get(Val_T key);
-    Node_T* remove(Node_T *n);
+    void remove(Node_T *n);
     bool isempty(void) const; 
     void resize(size_t s);
 };
@@ -117,7 +185,7 @@ Node_T* OCHashTable<Node_T,Val_T>::get(Val_T key) {
 }
 
 template <typename Node_T, typename Val_T>
-Node_T * OCHashTable<Node_T,Val_T>::remove(Node_T *n) {
+void OCHashTable<Node_T,Val_T>::remove(Node_T *n) {
   // Note, if n is not in the hashtable, this will cause
   // some nasty corruption.
   Val_T v = n->val();
@@ -125,7 +193,6 @@ Node_T * OCHashTable<Node_T,Val_T>::remove(Node_T *n) {
   table[i].remove(&(*n)); 
   count--;
   check_sizedown();
-  return n;
 }
 
 template <typename Node_T, typename Val_T>

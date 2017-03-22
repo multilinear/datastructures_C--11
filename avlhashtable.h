@@ -43,6 +43,75 @@ class AVLHashTable {
     void check_sizeup(void);
     void check_sizedown(void);
   public:
+    class Iterator {
+      private:
+        Array<AVL<Node_T, Val_T>> *table;
+        size_t index;
+        typename AVL<Node_T, Val_T>::Iterator iter;
+      public:
+        Iterator(Array<AVL<Node_T, Val_T>> *t, size_t ind) {
+          table = t;
+          index = ind;
+          iter = (*table)[index].begin();
+          // Look for a valid element (if we don't have one)
+          while (index < table->len() && iter == (*table)[index].end()) {
+            index++;
+            iter = (*table)[index].begin();
+          }
+        }
+        Iterator(const Iterator& other) {
+          table = other.table;
+          index = other.index;
+          iter = other.iter;
+        }
+        Iterator& operator=(const Iterator& other) {
+          table = other.table;
+          index = other.index;
+          iter = other.iter;
+          return *this;
+        }
+        bool operator==(const Iterator& other) {
+          return (index >= table.len() && other.index >= table.len()) ||
+            index == other.index && iter == other.iter;
+        }
+        bool operator!=(const Iterator& other) {
+          return !(index >= table->len() && other.index >= table->len()) && 
+            (index != other.index || iter != other.iter);
+        }
+        Iterator operator++() {
+          // If we're at the end, we're done
+          if (index >= table->len()) {
+            return *this;
+          }
+          // We were at a valid element (or the end of the array)
+          // so iter++ makes sense
+          iter++;
+          while (iter == (*table)[index].end() && index < (*table).len()) {
+            index++;
+            iter = (*table)[index].begin();
+          }
+          return *this;
+        }
+        Iterator operator++(int) {
+          Iterator tmp(*this);
+          ++(*this);
+          return tmp;
+        }
+        Node_T& operator*() {
+					// Get what's inside the iterator
+          return *iter;
+        }
+        Node_T* operator->() {
+					// Get a reference to what's inside the iterator (lol)
+          return &(*iter);
+        }
+    };
+    Iterator begin() {
+      return Iterator(&table, 0);
+    }
+    Iterator end() {
+      return Iterator(&table, table.len());
+    }
     AVLHashTable();
     AVLHashTable(size_t s);
     ~AVLHashTable();
