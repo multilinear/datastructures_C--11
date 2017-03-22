@@ -1,3 +1,6 @@
+broken:
+  Get unittests working again
+
 New:
   Write hashtable with amortized rehash
   Write a skiplist
@@ -11,5 +14,4 @@ Cleanup:
 
 Usability:
   Write translations from Array -> Set, dict
-  Add Iterator to AVL trees
   Make initializers work for everything
