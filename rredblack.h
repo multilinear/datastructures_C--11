@@ -142,6 +142,9 @@ class RRedBlack{
           return *this;
         }
         bool operator==(const Iterator& other) const {
+          if (n != other.n) {
+            return false;
+          }
           if (n == nullptr && other.n == nullptr)  {
             return true;
           }
@@ -170,7 +173,9 @@ class RRedBlack{
             }
            return *this;
           }
-          stack.pop(&n);
+          if (!stack.pop(&n)) {
+            n = nullptr;
+          }
           return *this;
         }
         Iterator operator++(int) {
@@ -259,7 +264,7 @@ bool RRedBlack<Node_T, Val_T>::insert(Node_T *new_n) {
   PRINT_TREE();
   CHECK_ALL();
   // TODO: yeah, we should recursively return a tuple
-  return false;
+  return true;
 }    
 
 template<typename Node_T>

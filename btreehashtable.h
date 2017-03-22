@@ -204,10 +204,13 @@ bool BTreeHashTable<Data_T, Val_T, HC>::remove(Val_T v, Data_T *data) {
   size_t i = BTreeHashTableComp<Data_T,Val_T, HC>::hash(v) % table.len();
   BTreeHashTableNode<Data_T> tmp;
   bool b = table[i].remove(v, &tmp); 
+  if (!b) {
+    return false;
+  }
   *data = tmp.data;
   count--;
   check_sizedown();
-  return b;
+  return true;
 }
 
 template <typename Data_T, typename Val_T, typename HC>
@@ -245,16 +248,18 @@ void BTreeHashTable<Data_T, Val_T, HC>::resize(size_t s) {
       i++;
       continue;
     }
-    // remove it
     Val_T v = BTreeHashTableComp<Data_T,Val_T,HC>::val(*n);
-    BTreeHashTableNode<Data_T> data;
-    if (!table[i].remove(v, &data)) {
-      PANIC("Value wasn't in Tree!\n"); 
-    }
-    // rehash it
     size_t new_index = BTreeHashTableComp<Data_T,Val_T, HC>::hash(v) % s;
-    data.hs = s; // set hashsize to the new size
-    table[new_index].insert(data);
+    n->hs = s; // set hashsize to the new size
+    // If it moved, move it
+    if (new_index != i) {  
+      BTreeHashTableNode<Data_T> data;
+      // remove it
+      if (!table[i].remove(v, &data)) {
+        PANIC("Value wasn't in Tree!\n"); 
+      }
+      table[new_index].insert(data);
+    }
   }
   // If decreasing we resize after
   if (s < old_size) {

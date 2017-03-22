@@ -35,9 +35,16 @@ class DListNode_base {
   public: // TODO(mbrewer): make this private somehow
     Node_T* next;
     Node_T* prev;
+    // User must define
+    // Val_T val(void) {}
+    // User may override
+    void print(void) {
+      printf("?"); 
+    }
 };
 
-template<typename Node_T> class DList {
+template<typename Node_T, typename Val_T>
+class DList {
   private:
     // data is removed at the head
     Node_T* head;
@@ -105,24 +112,27 @@ template<typename Node_T> class DList {
     Node_T* dequeue(void);
     void remove(Node_T*);
     bool isempty() const;
+    Node_T *get(Val_T v);
+    void print(void) const;
     void check(void) const;
+    Node_T *peak();
 };
 
-template<typename Node_T>
-DList<Node_T>::DList() {
+template<typename Node_T, typename Val_T>
+DList<Node_T, Val_T>::DList() {
   head = nullptr;
   tail = nullptr;
 }
 
-template<typename Node_T>
-DList<Node_T>::~DList(){
+template<typename Node_T, typename Val_T>
+DList<Node_T,Val_T>::~DList(){
   if (head != nullptr || tail != nullptr) {
     PANIC("DList destroyed while not empty");
   }
 }
 
-template<typename Node_T>
-void DList<Node_T>::enqueue(Node_T* el) {
+template<typename Node_T, typename Val_T>
+void DList<Node_T,Val_T>::enqueue(Node_T* el) {
   CHECK();
   // We do this here rather than in a constructor as it saves setting it to
   // NULL on dequeue, which we'd have to do to ensure re-enqueuing worked.
@@ -139,13 +149,13 @@ void DList<Node_T>::enqueue(Node_T* el) {
   CHECK();
 }
 
-template<typename Node_T>
-void DList<Node_T>::insert(Node_T* el) {
+template<typename Node_T, typename Val_T>
+void DList<Node_T,Val_T>::insert(Node_T* el) {
   this->enqueue(el);
 }
 
-template<typename Node_T>
-Node_T* DList<Node_T>::dequeue(void) {
+template<typename Node_T, typename Val_T>
+Node_T* DList<Node_T,Val_T>::dequeue(void) {
   CHECK();
   auto el = head;
   if (head == nullptr) {
@@ -161,8 +171,13 @@ Node_T* DList<Node_T>::dequeue(void) {
   return el;
 }
 
-template<typename Node_T>
-void DList<Node_T>::remove(Node_T *n) {
+template<typename Node_T, typename Val_T>
+Node_T* DList<Node_T,Val_T>::peak(void) {
+  return head;
+}
+
+template<typename Node_T, typename Val_T>
+void DList<Node_T,Val_T>::remove(Node_T *n) {
   CHECK();
   #ifndef DLIST_DEBUG
   bool found = false;
@@ -189,13 +204,35 @@ void DList<Node_T>::remove(Node_T *n) {
   CHECK();
 }
 
-template<typename Node_T>
-bool DList<Node_T>::isempty() const {
+template<typename Node_T, typename Val_T>
+bool DList<Node_T,Val_T>::isempty() const {
   return head == nullptr;
 }
+    
+template<typename Node_T, typename Val_T>
+Node_T* DList<Node_T,Val_T>::get(Val_T v){
+  for (auto n = head; n != nullptr; n = n->next) {
+    if (n->val() == v) {
+      return n;
+    }
+  }
+  return nullptr;
+}
 
-template<typename Node_T>
-void DList<Node_T>::check(void) const {
+template<typename Node_T, typename Val_T>
+void DList<Node_T,Val_T>::print(void) const {
+  printf("[");
+  for (auto n = head; n != nullptr; n = n->next) {
+    n->print();
+    if (n->next) {
+      printf(",");
+    }
+  }
+  printf("]");
+}
+ 
+template<typename Node_T, typename Val_T>
+void DList<Node_T,Val_T>::check(void) const {
   Node_T* n;
   Node_T* last_n = nullptr;
   for (n=head; n; n = n->next) {

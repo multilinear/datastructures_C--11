@@ -197,14 +197,23 @@ class RedBlack{
             while (n->left) {
               n = n->left;
               level++;
+              // new branch, so clear the "have we been right" bit
+              bits &= ~(1<<level);
             }
            return *this;
           }
           // Can't go right, so go up
           n = n->parent;
-          // clear the "have we been right" bit in prep for the next descent
+          // clear bits in prep for next descent
           bits &= ~(1<<level);
           level--;
+          // Keep going till we find a node we haven't already completed
+          while (n && ((1<<level) & bits)) {
+            n = n->parent;
+            // clear bits in prep for next descent
+            bits &= ~(1<<level);
+            level--;
+          }
           return *this;
         }
         Iterator operator++(int) {

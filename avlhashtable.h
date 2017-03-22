@@ -52,6 +52,10 @@ class AVLHashTable {
         Iterator(Array<AVL<Node_T, Val_T>> *t, size_t ind) {
           table = t;
           index = ind;
+          if (index >= table->len()) {
+            iter = (*table)[0].end();
+            return;
+          } 
           iter = (*table)[index].begin();
           // Look for a valid element (if we don't have one)
           while (index < table->len() && iter == (*table)[index].end()) {
@@ -71,12 +75,11 @@ class AVLHashTable {
           return *this;
         }
         bool operator==(const Iterator& other) {
-          return (index >= table.len() && other.index >= table.len()) ||
-            index == other.index && iter == other.iter;
+          return (index >= table->len() && other.index >= other.table->len()) ||
+            (index == other.index && iter == other.iter);
         }
         bool operator!=(const Iterator& other) {
-          return !(index >= table->len() && other.index >= table->len()) && 
-            (index != other.index || iter != other.iter);
+          return !((*this) == other);
         }
         Iterator operator++() {
           // If we're at the end, we're done
@@ -86,8 +89,12 @@ class AVLHashTable {
           // We were at a valid element (or the end of the array)
           // so iter++ makes sense
           iter++;
-          while (iter == (*table)[index].end() && index < (*table).len()) {
+          while (iter == (*table)[index].end()) {
             index++;
+            if (index >= (*table).len()) {
+              iter = (*table)[0].end();
+              break;
+            } 
             iter = (*table)[index].begin();
           }
           return *this;
@@ -196,6 +203,8 @@ bool AVLHashTable<Node_T,Val_T>::isempty(void) const {
 
 // TODO the runtime of this is still abysmal
 // as it walks all the elements for every element it moves
+// If 3 elements stay, and 3 elements move, it'll walk the first
+// 3 elements 3 times...
 template <typename Node_T, typename Val_T>
 void AVLHashTable<Node_T,Val_T>::resize(size_t s) {
   // nothing to do
@@ -218,14 +227,16 @@ void AVLHashTable<Node_T,Val_T>::resize(size_t s) {
     while (n != table[i].end()) {
       if (n->hs != s) {
         auto node = &(*n);
-        table[i].remove(node);
         size_t new_index = Node_T::hash(node->val()) % s;
         node->hs = s;
-        table[new_index].insert(node);
-        n = table[i].begin();
-      } else {
-        n++;
-      }
+        if (new_index != i) {
+          table[i].remove(node);
+          table[new_index].insert(node);
+          n = table[i].begin();
+          continue;
+        }
+      } 
+      n++;
     }
   }
   // If decreasing we resize after

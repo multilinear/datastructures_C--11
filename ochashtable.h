@@ -3,6 +3,10 @@
  * A standard open chaining hashtable implementation, using external allocation
  * for nodes.
  *
+ * Note: This could be generalized to use any dict-type structure, but during
+ * resize we take advantage of the dlist's queue ordering properties... if you
+ * want to make one general take a look at avlhashtable
+ *
  * resizes up when size is < 2x data it contains
  * resizes down when size is > 4x data it contains
  *
@@ -38,18 +42,18 @@ class OCHashTableNode_base: public DListNode_base<Node_T> {
 template <typename Node_T, typename Val_T>
 class OCHashTable {
   private:
-    Array<DList<Node_T>> table;
+    Array<DList<Node_T, Val_T>> table;
     size_t count = 0;
     void check_sizeup(void);
     void check_sizedown(void);
   public:
     class Iterator {
       private:
-        Array<DList<Node_T>> *table;
+        Array<DList<Node_T,Val_T>> *table;
         size_t index;
-        typename DList<Node_T>::Iterator iter;
+        typename DList<Node_T,Val_T>::Iterator iter;
       public:
-        Iterator(Array<DList<Node_T>> *t, size_t ind) {
+        Iterator(Array<DList<Node_T,Val_T>> *t, size_t ind) {
           table = t;
           index = ind;
           iter = (*table)[index].begin();
@@ -119,6 +123,7 @@ class OCHashTable {
     void remove(Node_T *n);
     bool isempty(void) const; 
     void resize(size_t s);
+    void print();
 };
 
 template <typename Node_T, typename Val_T>
@@ -126,7 +131,7 @@ OCHashTable<Node_T,Val_T>::OCHashTable():table(MINSIZE) {
   // We have to initialize the lists since
   // array doesn't construct objects it contains
   for (size_t i=0; i<MINSIZE; ++i) {
-    table[i] = DList<Node_T>();
+    table[i] = DList<Node_T,Val_T>();
   }
 }
 
@@ -135,7 +140,7 @@ OCHashTable<Node_T,Val_T>::OCHashTable(size_t s):table(s) {
   // We have to initialize the lists since
   // array doesn't construct objects it contains
   for (size_t i=0; i<s; ++i) {
-    table[i] = DList<Node_T>();
+    table[i] = DList<Node_T,Val_T>();
   }
 }
 
@@ -156,16 +161,9 @@ bool OCHashTable<Node_T,Val_T>::insert(Node_T *new_node) {
   Val_T v = new_node->val();
   new_node->hs = table.len();
   size_t i = Node_T::hash(v) % table.len();
-  // This is just to check for repeat keys
-  // if we allow repeat keys we can remove this
-  // TODO: maybe everything should have a "contains" operator?
-  for (auto n = table[i].begin(); n != table[i].end(); ++n) {
-    // We check v rather than hash, this way correctness
-    // is preserved if hashes collide
-    if (n->val() == v) {
-      return false;
-    }
-  } 
+  if (table[i].get(v)) {
+    return false;
+  }
   table[i].enqueue(new_node);
   count++;
   return true;
@@ -174,12 +172,9 @@ bool OCHashTable<Node_T,Val_T>::insert(Node_T *new_node) {
 template <typename Node_T, typename Val_T>
 Node_T* OCHashTable<Node_T,Val_T>::get(Val_T key) {
   size_t i = Node_T::hash(key) % table.len();
-  for (auto n = table[i].begin(); n != table[i].end(); ++n) {
-    // We check v rather than hash, this way correctness
-    // is preserved if hashes collide
-    if (n->val() == key) {
-      return &(*n);
-    }
+  auto n = table[i].get(key);
+  if (n) {
+    return &(*n);
   }
   return nullptr;
 }
@@ -213,23 +208,21 @@ void OCHashTable<Node_T,Val_T>::resize(size_t s) {
     // We have to initialize the lists since
     // array doesn't construct objects it contains
     for (size_t i=old_size; i<s; ++i) {
-      table[i] = DList<Node_T>(); 
+      table[i] = DList<Node_T,Val_T>(); 
     }
   }
   // Rehash everything based on "s"
   for (size_t i=0; i<table.len(); ++i) {
-    auto n = table[i].begin();
-    while (n != table[i].end() && n->hs != s) {
-      if (n->hs != s) {
-        auto node = &(*n);
-        table[i].remove(node);
-        size_t new_index = Node_T::hash(node->val()) % s;
-        node->hs = s;
-        table[new_index].enqueue(node);
-        n = table[i].begin();
-      } else {
-        n++;
-      }
+    // because dlist is a *queue* we can cheat!
+    // everything we've rehashed will be on one end
+    // so we can just peak 'til we hit one!
+    while (table[i].peak() && table[i].peak()->hs != s) {
+      auto node = table[i].dequeue();
+      size_t new_index = Node_T::hash(node->val()) % s;
+      node->hs = s;
+      // We remove and enqueue even if it didn't move
+      // this saves us a linear search
+      table[new_index].enqueue(node);
     }
   }
   // If decreasing we resize after
@@ -256,6 +249,16 @@ void OCHashTable<Node_T,Val_T>::check_sizeup(void) {
   if (table.len() < 2*count) {
     resize(table.len()*2); 
   } 
+}
+
+template <typename Node_T, typename Val_T>
+void OCHashTable<Node_T,Val_T>::print(void) {
+  printf("[\n");
+  for (size_t i=0; i<table.len(); ++i) {
+    printf("  ");
+    table[i].print();
+  }
+  printf("]\n");
 }
 
 #endif
