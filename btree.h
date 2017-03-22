@@ -62,9 +62,9 @@
 // for debugging code that uses the tree as well.
 // This checks all of the BTREE invariants before and after ever oparation.
 #ifdef BTREE_DEBUG
-#define CHECK() check()
+#define BTREE_CHECK() check()
 #else
-#define CHECK()
+#define BTREE_CHECK()
 #endif
 
 // Below are the requirements for T, Val_T, C, and SIZE
@@ -382,7 +382,7 @@ template<typename T, typename Val_T, typename C, int SIZE>
 T* BTree<T,Val_T,C,SIZE>::get(Val_T val) const {
   PRINT("BTree Get, begins\n");
   PRINT_TREE();
-  CHECK();
+  BTREE_CHECK();
   auto *n = root;
   bool found;
   while(n) {
@@ -390,14 +390,14 @@ T* BTree<T,Val_T,C,SIZE>::get(Val_T val) const {
     if (found) {
       PRINT("BTree Get, end found\n");
       PRINT_TREE();
-      CHECK();
+      BTREE_CHECK();
       return &(n->get_data(i));
     }
     n = n->get_node(i);
   }
   PRINT("BTree Get, end not found\n");
   PRINT_TREE();
-  CHECK();
+  BTREE_CHECK();
   return nullptr;
 }
 
@@ -418,7 +418,7 @@ bool BTree<T,Val_T,C,SIZE>::insert(T datum) {
   printf("\n");
   #endif
   PRINT_TREE();
-  CHECK();
+  BTREE_CHECK();
   auto *n = root;
   BTreeNode<T,Val_T,C,SIZE> *parent = nullptr;
   bool found = false;
@@ -462,7 +462,7 @@ bool BTree<T,Val_T,C,SIZE>::insert(T datum) {
     root->insert_right(0, datum, nullptr);
     PRINT("BTree Insert, done\n");
     PRINT_TREE();
-    CHECK();
+    BTREE_CHECK();
     return true;
   }
   // Note - i should always be set by this point
@@ -474,7 +474,7 @@ bool BTree<T,Val_T,C,SIZE>::insert(T datum) {
   parent->insert_right(i, datum, nullptr);
   PRINT("BTree Insert, done\n");
   PRINT_TREE();
-  CHECK();
+  BTREE_CHECK();
   return true;
 }
 
@@ -482,7 +482,7 @@ template<typename T, typename Val_T, typename C, int SIZE>
 bool BTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
   PRINT("BTree Remove, begins\n");
   PRINT_TREE();
-  CHECK();
+  BTREE_CHECK();
   auto *n = root;
   bool found;
   // if the root node is empty (except one child), delete it
@@ -527,7 +527,7 @@ bool BTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
   if (!n) {
     PRINT("BTree Remove, not found\n");
     PRINT_TREE();
-    CHECK();
+    BTREE_CHECK();
     return false;
   }
   // We found it
@@ -538,7 +538,7 @@ bool BTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
     n->remove_right(i, &junk); 
     PRINT("BTree Remove, complete\n");
     PRINT_TREE();
-    CHECK();
+    BTREE_CHECK();
     return true;
   } 
   // If the node below has to merge then the data we're deleting could migrate
@@ -557,7 +557,7 @@ bool BTree<T,Val_T,C,SIZE>::remove(Val_T v, T *result) {
   n->set_data(i, replacement); 
   PRINT("BTree Remove, complete\n");
   PRINT_TREE();
-  CHECK();
+  BTREE_CHECK();
   return true; 
 }
 
@@ -569,13 +569,13 @@ bool BTree<T,Val_T,C,SIZE>::maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTree
   }
   PRINT("Split begin\n");
   PRINT_TREE();
-  CHECK();
+  BTREE_CHECK();
   auto right_n = new BTreeNode<T,Val_T,C,SIZE>();
   T pivot = n->split(right_n);
   parent->insert_right(i, pivot, right_n);
   PRINT("Split end\n");
   PRINT_TREE();
-  CHECK();
+  BTREE_CHECK();
   return true;  
 }
 
@@ -585,7 +585,7 @@ bool BTree<T,Val_T,C,SIZE>::maybe_split(BTreeNode<T,Val_T,C,SIZE> *parent, BTree
 template<typename T, typename Val_T, typename C, int SIZE>
 int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t i){
   PRINT("Maybe merge\n");
-  CHECK();
+  BTREE_CHECK();
   BTreeNode<T,Val_T,C,SIZE> *n = parent->get_node(i);
   if (!n || n->get_used() > (SIZE-1)/2-1) {
     return 0;
@@ -604,7 +604,7 @@ int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t
       parent->set_data(i-1, sibling_datum); 
       n->insert_left(0, old_pivot, sibling_child);
       PRINT_TREE();
-      CHECK();
+      BTREE_CHECK();
       return 1;
     }
     PRINT("merging with node to left\n");
@@ -613,14 +613,14 @@ int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t
     sibling->merge(pivot, n);
     delete n;
     PRINT_TREE();
-    CHECK();
+    BTREE_CHECK();
     return 2;
   }
   // if there's nothing to the left, there must be something to the right
   auto sibling = parent->get_node(i+1);
   if (sibling->get_used() + n->get_used() >= SIZE) {
     PRINT("stealing from node to right\n");
-    CHECK();
+    BTREE_CHECK();
     // sibling is too large to join with, so we rotate instead
     // Rotate left 
     BTreeNode<T,Val_T,C,SIZE> *sibling_child;
@@ -629,7 +629,7 @@ int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t
     parent->set_data(i, sibling_datum); 
     n->insert_right(n->get_used(), old_pivot, sibling_child);
     PRINT_TREE();
-    CHECK();
+    BTREE_CHECK();
     return 1;
   }
   PRINT("merging with node to right\n");
@@ -638,7 +638,7 @@ int BTree<T,Val_T,C,SIZE>::maybe_merge(BTreeNode<T,Val_T,C,SIZE> *parent, size_t
   n->merge(pivot, sibling);
   delete sibling;
   PRINT_TREE();
-  CHECK();
+  BTREE_CHECK();
   return 1;
 }
 

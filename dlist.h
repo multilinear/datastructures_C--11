@@ -25,9 +25,9 @@
 //#define LIST_DEBUG
 
 #ifdef DLIST_DEBUG
-#define CHECK() check()
+#define DLIST_CHECK() check()
 #else
-#define CHECK()
+#define DLIST_CHECK()
 #endif
 
 template<typename Node_T>
@@ -97,11 +97,11 @@ class DList {
         }
     };
     Iterator begin() {
-      CHECK();
+      DLIST_CHECK();
       return Iterator(head);
     }
     Iterator end() {
-      CHECK();
+      DLIST_CHECK();
       return Iterator(nullptr);
     }
 
@@ -133,7 +133,7 @@ DList<Node_T,Val_T>::~DList(){
 
 template<typename Node_T, typename Val_T>
 void DList<Node_T,Val_T>::enqueue(Node_T* el) {
-  CHECK();
+  DLIST_CHECK();
   // We do this here rather than in a constructor as it saves setting it to
   // NULL on dequeue, which we'd have to do to ensure re-enqueuing worked.
   el->next = nullptr;
@@ -141,12 +141,12 @@ void DList<Node_T,Val_T>::enqueue(Node_T* el) {
   if (tail == nullptr) {
     head = el;
     tail = el;
-    CHECK();
+    DLIST_CHECK();
     return;
   }
   tail->next = el;
   tail = el;
-  CHECK();
+  DLIST_CHECK();
 }
 
 template<typename Node_T, typename Val_T>
@@ -156,7 +156,7 @@ void DList<Node_T,Val_T>::insert(Node_T* el) {
 
 template<typename Node_T, typename Val_T>
 Node_T* DList<Node_T,Val_T>::dequeue(void) {
-  CHECK();
+  DLIST_CHECK();
   auto el = head;
   if (head == nullptr) {
     return nullptr;
@@ -167,7 +167,7 @@ Node_T* DList<Node_T,Val_T>::dequeue(void) {
   } else {
     head->prev = nullptr;
   }
-  CHECK();
+  DLIST_CHECK();
   return el;
 }
 
@@ -178,7 +178,7 @@ Node_T* DList<Node_T,Val_T>::peak(void) {
 
 template<typename Node_T, typename Val_T>
 void DList<Node_T,Val_T>::remove(Node_T *n) {
-  CHECK();
+  DLIST_CHECK();
   #ifndef DLIST_DEBUG
   bool found = false;
   for(Node_T *t=head; t; t=t->next){
@@ -201,7 +201,7 @@ void DList<Node_T,Val_T>::remove(Node_T *n) {
   } else {
     n->next->prev = n->prev;
   }
-  CHECK();
+  DLIST_CHECK();
 }
 
 template<typename Node_T, typename Val_T>
