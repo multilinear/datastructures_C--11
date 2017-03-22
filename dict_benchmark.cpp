@@ -14,7 +14,6 @@ int main(int argc, char* argv[]) {
   Dict<int, int> tree;
 
   int i;
-  int j;
   int gets=0;
   printf("Begin Dict.h benchmark\n");
   ints_end=0;
