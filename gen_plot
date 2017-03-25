@@ -1,0 +1,22 @@
+logfile=dict_benchmark_log
+
+echo -n "plot " >  plotfile
+for l in $(cat ${logfile} | awk '/time=/{print $1}' | sort -u); do
+  echo ${l}
+  # get out the actual runtime for $l *only*
+  echo -e "${l} ${l}" > ${l}_data
+  cat ${logfile} | tr = ' ' | awk "/^${l}/{print \$3,\$7}" >> ${l}_data
+  echo -n -e "'${l}_data' using 1:2 with lines," >> plotfile
+done
+echo >> plotfile
+
+cat >> plotfile << EOF
+set title "Time to run a K/Test_Size Iterations for Various Test Sizes"
+set xlabel "Test size"
+set ylabel "Seconds to run"
+set logscale x
+set key autotitle columnheader
+pause -1
+EOF
+
+gnuplot "plotfile"

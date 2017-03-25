@@ -9,10 +9,15 @@
  */
 
 #include <stdio.h>
+#include <time.h>
 #include "panic.h"
 
+#ifndef TEST_ITERATIONS
 #define TEST_ITERATIONS 1000000
+#endif
+#ifndef TEST_SIZE
 #define TEST_SIZE 100
+#endif
 
 #ifdef TEST_AVL
 #include "avl.h"
@@ -21,6 +26,10 @@ class Node: public AVLNode_base<Node, int> {
 #ifdef TEST_AVLHASHTABLE
 #include "avlhashtable.h"
 class Node: public AVLHashTableNode_base<Node, int> {
+#endif
+#ifdef TEST_DLIST
+#include "dlist.h"
+class Node: public DListNode_base<Node> {
 #endif
 #ifdef TEST_OCHASHTABLE
 #include "ochashtable.h"
@@ -56,40 +65,46 @@ class Node: public RRedBlackNode_base<Node, int> {
 };
 
 int ints[TEST_SIZE];
-int ints_end;
+size_t ints_end;
 
 // necessary for external allocation datastructures
 Node *nodes = new Node[TEST_SIZE];
 
 int main(int argc, char* argv[]) {
   #ifdef TEST_OCHASHTABLE
-  printf("Begin OCHashTable.h benchmark\n");
+  printf("OCHashTable.h ");
   OCHashTable<Node, int> hash;
   #endif
   #ifdef TEST_AVLHASHTABLE
-  printf("Begin AVLHashTable.h benchmark\n");
+  printf("AVLHashTable.h ");
   AVLHashTable<Node, int> hash;
   #endif
   #ifdef TEST_AVL
-  printf("Begin AVL.h benchmark\n");
+  printf("AVL.h ");
   AVL<Node, int> hash;
   #endif
+  #ifdef TEST_DLIST
+  printf("DList.h ");
+  DList<Node, int> hash;
+  #endif
   #ifdef TEST_REDBLACK
-  printf("Begin RedBlack.h benchmark\n");
+  printf("RedBlack.h ");
   RedBlack<Node, int> hash;
   #endif
   #ifdef TEST_RREDBLACK
-  printf("Begin RRedBlack.h benchmark\n");
+  printf("RRedBlack.h ");
   RRedBlack<Node, int> hash;
 	#endif 
+  printf("test_size=%d test_iterations=%d ", TEST_SIZE, TEST_ITERATIONS); 
 
-  int j;
+  time_t t1 = time(nullptr);
+  size_t j;
   int get_count=0;
   for (j=0; j<TEST_ITERATIONS; j++) {
     ints_end=0;
-    int i;
+    size_t i;
     #ifndef USE_MALLOC
-    int ni=0;
+    size_t ni=0;
     #endif
     for (i=0; i<TEST_SIZE; i++) {
       bool new_v = false;
@@ -130,5 +145,6 @@ int main(int argc, char* argv[]) {
       #endif
     }
   }
-  printf("get_count %d\n", get_count);
+  time_t t2 = time(nullptr);
+  printf("time=%ld\n", t2-t1);
 }

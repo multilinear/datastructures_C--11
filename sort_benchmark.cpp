@@ -3,8 +3,12 @@
 #include "sort.h"
 #include "array.h"
 
-#define TEST_SIZE 10000000 
-#define PASSES 100
+#ifndef TEST_ITERATIONS
+#define TEST_ITERATIONS 1000000
+#endif
+#ifndef TEST_SIZE
+#define TEST_SIZE 100
+#endif
 
 class IntComparitor {
   public:
@@ -17,7 +21,7 @@ int main(int argc, char **argv) {
   printf("Begin sort benchmark\n");
   Array<int> a(TEST_SIZE);
   //Array<int> b(TEST_SIZE);
-  for (uint32_t j = 0; j<PASSES; j++) {
+  for (uint32_t j = 0; j<TEST_ITERATIONS; j++) {
     for (uint32_t i = 0; i<TEST_SIZE; i++) {
       a[i] = rand();
     }

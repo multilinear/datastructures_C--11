@@ -12,8 +12,12 @@
 #include <time.h>
 #include "panic.h"
 
+#ifndef TEST_ITERATIONS
 #define TEST_ITERATIONS 1000000
+#endif
+#ifndef TEST_SIZE
 #define TEST_SIZE 100
+#endif
 
 #ifdef TEST_BTREE
 // This is so we can script sets of tests at different arities
@@ -61,18 +65,20 @@ int ints_end;
 
 int main(int argc, char* argv[]) {
   #ifdef TEST_BTREE
-  printf("Begin BTree.h benchmark\n");
+  printf("BTree.h ");
   BTree<int, int, Comp, ARITY> dict;
   #endif
   #ifdef TEST_TS_BTREE
-  printf("Begin BTree.h benchmark\n");
+  printf("BTree.h ");
   TSBTree<int, int, Comp, ARITY> dict;
   #endif
   #ifdef TEST_BTREEHASHTABLE
-  printf("Begin BTreeHashTable.h benchmark\n");
+  printf("BTreeHashTable.h ");
   BTreeHashTable<int, int, Comp> dict; 
   #endif
+  printf("test_size=%d test_iterations=%d ", TEST_SIZE, TEST_ITERATIONS);
 
+  time_t t1 = time(nullptr);
   int j;
   int get_count=0;
   for (j=0; j<TEST_ITERATIONS; j++) {
@@ -103,6 +109,7 @@ int main(int argc, char* argv[]) {
       dict.remove(ints[i], &junk);
     }
   }
-  printf("get_count %d\n", get_count);
+  time_t t2 = time(nullptr);
+  printf("time=%ld\n", t2-t1);
 }
 
