@@ -4,7 +4,9 @@
 #include "dict.h"
 
 // This is so we can script sets of tests at different arities
+#ifndef TEST_SIZE
 #define TEST_SIZE 20000000
+#endif
 
 int ints[TEST_SIZE];
 int ints_start;

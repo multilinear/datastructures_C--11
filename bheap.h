@@ -143,7 +143,6 @@ class SubHeap {
     SubHeap<T, C, Size> *parent;
     // Note that subheaps never move, they are only created and destroyed
     // only data moves, so this index is persistant from creation on 
-    // TODO: make this const?
     size_t parent_index;
 
     bool isfull() const {

@@ -12,6 +12,8 @@
 #include "panic.h"
 #include "dlist.h"
 
+//#define DEBUG_OUTPUT
+
 #define TEST_SIZE 200
 
 #ifdef TEST_AVL
@@ -27,6 +29,13 @@ class Node: public AVLNode_base<Node, int> {
 #include "avlhashtable.h"
 class Node: public AVLHashTableNode_base<Node, int> {
 #endif
+#ifdef TEST_BOUNDEDHASHTABLE
+// This turns on rather expensive internal consistancy checking
+#define DEBUG_BoundedHASHTABLE
+#include "boundedhashtable.h"
+class Node: public BoundedHashTableNode_base<Node, int> {
+#endif
+
 #ifdef TEST_OCHASHTABLE
 // This turns on rather expensive internal consistancy checking
 #define DEBUG_OCHASHTABLE
@@ -122,6 +131,10 @@ int main(int argc, char* argv[]) {
   printf("Begin AVL.h unittest\n");
   AVL<Node, int> dict;
   #endif
+  #ifdef TEST_BOUNDEDHASHTABLE
+  printf("Begin BoundedHashTable.h unittest\n");
+  BoundedHashTable<Node, int> dict;
+  #endif
   #ifdef TEST_REDBLACK
   printf("Begin RedBlack.h unittest\n");
   RedBlack<Node, int> dict;
@@ -145,17 +158,29 @@ int main(int argc, char* argv[]) {
         new_v = true;
         new_v = !tdict.get(r);
       }
+      #ifdef DEBUG_OUTPUT
+      printf("Inserting %d\n", r);
+      #endif
       // put it in thet dict
       Node *n = new Node(r);
       dict.insert(n);
       // and in the list
       tdict.insert(new TNode(r));
       // check that everything is in the list that should be
+      #ifdef DEBUG_OUTPUT
+      printf("tdict=");
+      tdict.print();
+      printf("\ndict=");
+      dict.print();
+      #endif
       check<decltype(dict)>(&dict, &tdict);
     }
     while (!tdict.isempty()) {
       // We're invalidating our iterator every round, by modifying the dict
       auto i = tdict.begin();
+      #ifdef DEBUG_OUTPUT
+      printf("Removing %d\n", i->val());
+      #endif
       auto n = dict.get(i->val());
       if (!n) {
         PANIC("Node not found\n");
@@ -171,6 +196,12 @@ int main(int argc, char* argv[]) {
       tdict.remove(tn);
       delete tn;
       // check that everything is in the list that should be
+      #ifdef DEBUG_OUTPUT
+      printf("tdict=");
+      tdict.print();
+      printf("\ndict=");
+      dict.print();
+      #endif
       check<decltype(dict)>(&dict, &tdict);
     }
     if (!dict.isempty()) {

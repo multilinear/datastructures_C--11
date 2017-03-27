@@ -11,7 +11,9 @@
 #include "heap.h"
 #include "array.h"
 
+#ifndef TEST_SIZE
 #define TEST_SIZE 100
+#endif
 #define PASSES 1000000
 
 #ifdef TEST_BHEAP

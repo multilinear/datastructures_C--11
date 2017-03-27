@@ -27,6 +27,10 @@ class Node: public AVLNode_base<Node, int> {
 #include "avlhashtable.h"
 class Node: public AVLHashTableNode_base<Node, int> {
 #endif
+#ifdef TEST_BOUNDEDHASHTABLE
+#include "boundedhashtable.h"
+class Node: public BoundedHashTableNode_base<Node, int> {
+#endif
 #ifdef TEST_DLIST
 #include "dlist.h"
 class Node: public DListNode_base<Node> {
@@ -82,6 +86,10 @@ int main(int argc, char* argv[]) {
   #ifdef TEST_AVL
   printf("AVL.h ");
   AVL<Node, int> hash;
+  #endif
+  #ifdef TEST_BOUNDEDHASHTABLE
+  printf("BoundedHashTable.h ");
+  BoundedHashTable<Node, int> hash;
   #endif
   #ifdef TEST_DLIST
   printf("DList.h ");

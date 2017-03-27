@@ -6,10 +6,10 @@ TEST_ITERATIONS=10000
 TEST_SIZE=10000
 
 # Build lists
-UNITTESTS=array avlhashtable avl bheap boundedheap btreehashtable btree dict dlist ochashtable heap list queue redblack ringbuffer rredblack set sort trivialdict ts_btree ts_ringbuffer ts_work_queue
+UNITTESTS=array avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable heap list queue redblack ringbuffer rredblack set sort trivialdict ts_btree ts_ringbuffer ts_work_queue
 HEAPS_BENCHMARKS=bheap.cpp boundedheap.cpp heap_dcarray.cpp
 # We leave out dlist 'cause it takes forever (you can add it for smaller tests)
-DICTS_BENCHMARKS=avlhashtable.cpp avl.cpp btreehashtable.cpp btree.cpp ochashtable.cpp redblack.cpp rredblack.cpp ts_btree.cpp
+DICTS_BENCHMARKS=avlhashtable.cpp avl.cpp boundedhashtable.cpp btreehashtable.cpp btree.cpp ochashtable.cpp redblack.cpp rredblack.cpp ts_btree.cpp
 BENCHMARKS=$(HEAPS_BENCHMARKS) $(DICTS_BENCHMARKS) dict_benchmark sort_benchmark
 
 UNITTEST_EXES=$(UNITTESTS:%=%_unittest) 
@@ -51,6 +51,9 @@ avlhashtable_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_AVLHASHTABLE -DTEST_I
 
 bheap_unittest: *.h *.cpp ; $(CC) $(CFLAGS) bheap_unittest.cpp -o bheap_unittest
 bheap_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BHEAP -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} heap_benchmark.cpp -o bheap_benchmark
+
+boundedhashtable_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BOUNDEDHASHTABLE externaldict_unittest.cpp -o boundedhashtable_unittest
+boundedhashtable_benchmark  : *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BOUNDEDHASHTABLE externaldict_benchmark.cpp -o boundedhashtable_benchmark
 
 boundedheap_unittest: *.h *.cpp ; $(CC) $(CFLAGS) boundedheap_unittest.cpp -o boundedheap_unittest
 boundedheap_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BOUNDEDHEAP -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} heap_benchmark.cpp -o boundedheap_benchmark

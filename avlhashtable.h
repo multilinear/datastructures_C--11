@@ -10,8 +10,6 @@
  * 1) linear rehash
  */ 
 
-// TODO: Add an iterator
-
 #include <stdio.h>
 #include <utility>
 #include "panic.h"
@@ -58,8 +56,11 @@ class AVLHashTable {
           } 
           iter = (*table)[index].begin();
           // Look for a valid element (if we don't have one)
-          while (index < table->len() && iter == (*table)[index].end()) {
+          while (iter == (*table)[index].end()) {
             index++;
+            if (index >= table->len()) {
+              break;
+            }
             iter = (*table)[index].begin();
           }
         }

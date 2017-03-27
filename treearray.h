@@ -62,7 +62,7 @@ class TreeArrayNode {
   }
 };
 
-//TODO(mbrewer): SizeBits makes for fast computation, but you can't set the block
+// Note: SizeBits makes for fast computation, but you can't set the block
 // Size in a sane way... If you want 100 items to fit, you can't do the math in
 // a machine independant manner (that I know of). We need to find a way to
 // either to "log_2()" in the preprocessor, or well... actually, I think we need that.
@@ -272,7 +272,6 @@ class TreeArray {
     void swap(size_t i, size_t j) {
       ARRAYTREE_CHECK(i);
       ARRAYTREE_CHECK(j);
-      // TODO(mbrewer): We can probably do better than this
       T tmp = get(i);
       get(i) = get(j);
       get(j) = tmp;

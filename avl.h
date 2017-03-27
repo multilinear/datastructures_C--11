@@ -425,8 +425,6 @@ bool AVL<Node_T, Val_T>::insert(Node_T *n) {
   // So, we start by just checking parent.
   // loop invariant is n and parent are done, we're working on grandparent
 
-  // TODO(mbrewer): we should be able to move this up to where we parented n
-  //   saving the duplicate parent->left = n test.
   // fix parent's balance
   if (parent->left == n) {
     parent->balance += 1;

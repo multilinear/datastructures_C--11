@@ -685,7 +685,6 @@ Node_T *RRedBlack<Node_T, Val_T>::_remove_balance_left(Node_T *n, bool *balanced
       a1->red = false;
       a2->red = true;
       // this case falls through to 6
-      // TODO(mbrewer): We can do this in one step, no more conditionals
       n->right = a1;
     } 
     // no else here, we need fallthrough
@@ -771,7 +770,6 @@ Node_T *RRedBlack<Node_T, Val_T>::_remove_balance_right(Node_T *n, bool *balance
       a1->red = false;
       a2->red = true;
       // this case falls through to 6
-      // TODO(mbrewer): We can do this in one step, no more conditionals
       n->left = a1;
     } 
     // no else here, we need fallthrough

@@ -32,7 +32,7 @@
 
 template<typename Node_T>
 class DListNode_base {
-  public: // TODO(mbrewer): make this private somehow
+  public:
     Node_T* next;
     Node_T* prev;
     // User must define
