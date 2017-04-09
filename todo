@@ -1,6 +1,3 @@
-Finish:
-  BoundedHashTable still not fully bounded, need Array with constant time zero
-
 New:
   Write hashtable using array (rather than dlist) for open chaining
   Write a skiplist

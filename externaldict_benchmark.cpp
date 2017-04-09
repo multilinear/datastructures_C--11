@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <stdint.h>
 #include "panic.h"
 
 #ifndef TEST_ITERATIONS
@@ -21,15 +22,15 @@
 
 #ifdef TEST_AVL
 #include "avl.h"
-class Node: public AVLNode_base<Node, int> {
+class Node: public AVLNode_base<Node, uint64_t> {
 #endif
 #ifdef TEST_AVLHASHTABLE
 #include "avlhashtable.h"
-class Node: public AVLHashTableNode_base<Node, int> {
+class Node: public AVLHashTableNode_base<Node, uint64_t> {
 #endif
 #ifdef TEST_BOUNDEDHASHTABLE
 #include "boundedhashtable.h"
-class Node: public BoundedHashTableNode_base<Node, int> {
+class Node: public BoundedHashTableNode_base<Node, uint64_t> {
 #endif
 #ifdef TEST_DLIST
 #include "dlist.h"
@@ -41,34 +42,37 @@ class Node: public OCHashTableNode_base<Node> {
 #endif
 #ifdef TEST_REDBLACK
 #include "redblack.h"
-class Node: public RedBlackNode_base<Node, int> {
+class Node: public RedBlackNode_base<Node, uint64_t> {
 #endif 
 #ifdef TEST_RREDBLACK
 #include "rredblack.h"
-class Node: public RRedBlackNode_base<Node, int> {
+class Node: public RRedBlackNode_base<Node, uint64_t> {
 #endif 
   public:
-    int value;
+    uint64_t value;
   public:
-    const int val(void) const {
+    const uint64_t val(void) const {
       return value;
     }
-    static size_t hash(int v) {
+    static size_t hash(uint64_t v) {
       return v;
     }
-    static int compare(const int v1, const int v2) {
-      return v1-v2;
+    static int compare(const uint64_t v1, const uint64_t v2) {
+      if (v1 > v2) return 1;
+      if (v1 < v2) return -1;
+      return 0;
+      //return v1-v2;
     }
     Node() {}
-    void set(int v) {
+    void set(uint64_t v) {
       value = v;
     }
-    Node(int v) {
+    Node(uint64_t v) {
       value = v;
     }
 };
 
-int ints[TEST_SIZE];
+uint64_t ints[TEST_SIZE];
 size_t ints_end;
 
 // necessary for external allocation datastructures
@@ -77,37 +81,38 @@ Node *nodes = new Node[TEST_SIZE];
 int main(int argc, char* argv[]) {
   #ifdef TEST_OCHASHTABLE
   printf("OCHashTable.h ");
-  OCHashTable<Node, int> hash;
+  OCHashTable<Node, uint64_t> hash;
   #endif
   #ifdef TEST_AVLHASHTABLE
   printf("AVLHashTable.h ");
-  AVLHashTable<Node, int> hash;
+  AVLHashTable<Node, uint64_t> hash;
   #endif
   #ifdef TEST_AVL
   printf("AVL.h ");
-  AVL<Node, int> hash;
+  AVL<Node, uint64_t> hash;
   #endif
   #ifdef TEST_BOUNDEDHASHTABLE
   printf("BoundedHashTable.h ");
-  BoundedHashTable<Node, int> hash;
+  BoundedHashTable<Node, uint64_t> hash;
   #endif
   #ifdef TEST_DLIST
   printf("DList.h ");
-  DList<Node, int> hash;
+  DList<Node, uint64_t> hash;
   #endif
   #ifdef TEST_REDBLACK
   printf("RedBlack.h ");
-  RedBlack<Node, int> hash;
+  RedBlack<Node, uint64_t> hash;
   #endif
   #ifdef TEST_RREDBLACK
   printf("RRedBlack.h ");
-  RRedBlack<Node, int> hash;
+  RRedBlack<Node, uint64_t> hash;
 	#endif 
   printf("test_size=%d test_iterations=%d ", TEST_SIZE, TEST_ITERATIONS); 
 
   time_t t1 = time(nullptr);
   size_t j;
-  int get_count=0;
+  uint64_t get_count=0;
+  uint64_t insert_count=0;
   for (j=0; j<TEST_ITERATIONS; j++) {
     ints_end=0;
     size_t i;
@@ -116,14 +121,19 @@ int main(int argc, char* argv[]) {
     #endif
     for (i=0; i<TEST_SIZE; i++) {
       bool new_v = false;
-      int r;
+      uint64_t r;
       // find a value we haven't used yet
+      // We assume collisions are rare enough that the difference between
+      // 2 or 100 thousand possible collisions is irrelevent
+      // This is why we use 64 bits
       while (!new_v) {
         // Note, we did not initialize rand, this is purposeful
-        r = rand();
+        // assumes RAND_MAX==MAX_INT (it usually does)
+        r = rand()*rand();
         new_v = (!hash.get(r)); 
         get_count++;
       }
+      insert_count++;
       // put it in thet hash
       #ifdef USE_MALLOC
       Node *n = new Node(); 
@@ -136,7 +146,7 @@ int main(int argc, char* argv[]) {
       ints[ints_end++] = r;
     }
     for(i=0; i<ints_end; i++) {
-      int v = ints[i];
+      uint64_t v = ints[i];
       #ifdef TEST_RREDBLACK
       // RRedblack is weird, it's the only external
       // datastructure we have where there's no advantage
@@ -154,5 +164,5 @@ int main(int argc, char* argv[]) {
     }
   }
   time_t t2 = time(nullptr);
-  printf("time=%ld\n", t2-t1);
+  printf("time=%ld insert=%ld get=%ld\n", t2-t1, insert_count, get_count);
 }

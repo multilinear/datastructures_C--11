@@ -3,8 +3,8 @@
  * A hashtable implementation, much like open chaining, but using a btree in place
  * of the standard linked-list.
  *
- * resizes up when size is < 2x data it contains
- * resizes down when size is > 4x data it contains
+ * resizes up when size is < x data it contains
+ * resizes down when size is > 2x data it contains
  *
  * Worst case operation is linear per op due to linear rehash
  * Next worst case is all elements hash collide, and operations are log(N)
@@ -18,7 +18,7 @@
 #ifndef BTREE_HASHTABLE_H
 #define BTREE_HASHTABLE_H
 
-#define MINSIZE 16
+#define MINSIZE 4
 #define ARITY 64
 
 // We need a wrapper node so we can track "hs" (hash size) that way we
@@ -274,7 +274,7 @@ void BTreeHashTable<Data_T, Val_T, HC>::resize(size_t s) {
 template <typename Data_T, typename Val_T, typename HC>
 void BTreeHashTable<Data_T, Val_T, HC>::check_sizedown(void) {
   // If it's under a quarter full resize down
-  if (table.len() > 4*count) {
+  if (table.len() > 2*count) {
     size_t s = table.len() / 2;
     if (s < MINSIZE) {
       s = MINSIZE;
@@ -286,7 +286,7 @@ void BTreeHashTable<Data_T, Val_T, HC>::check_sizedown(void) {
 template <typename Data_T, typename Val_T, typename HC>
 void BTreeHashTable<Data_T, Val_T, HC>::check_sizeup(void) {
   // If it's over half-full resize up
-  if (table.len() < 2*count) {
+  if (table.len() < count) {
     resize(table.len()*2); 
   } 
 }

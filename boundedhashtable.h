@@ -4,87 +4,82 @@
  * 1) It uses AVL trees instead of lists, this bounds worst case performance
  * for most operations
  * 2) Resizes rehash incrementally, thus bounding the worst-case performance
- * for resize as well
+ * for resize as well. To make finding the next element constant time we 
+ * additionally put elements in a list.
+ * 3) "zeroing" of new tables is constant time instead of linear, see
+ * zero_array.h for details
  * 
- * All operations on BoundedHashTable have the same worst-case run-time as an
- * AVL tree, but (hopefully) with average case runtimes similar to that of
+ * Assumption: malloc/free (not realloc or calloc) are constant time
+ * Given this assumption:
+ * All operations on BoundedHashTable have the same worst-case big O run-time
+ * as an AVL tree, but with average case runtimes (hopefully) similar to that of
  * a hashtable
- * TODO: With ONE exception! resizes still must initialize the array :(...
  *
  * This means worst case: O(log(n)) insert, remove, get
  * Average case: O(1) insert, remove, get
  *
- * resizes up when size is < 2x data it contains
- * resizes down when size is > 4x data it contains
+ * resizes up when size is < x data it contains
+ * resizes down when size is > 2x data it contains
  *
- * Worst case operation is linear per op due to
- * 1) linear rehash
+ * Algorithm:
+ * This is basically a hashtable except for 3 tricks
+ * #1: We use a
  */ 
 
 #include <stdio.h>
 #include <utility>
 #include "panic.h"
-#include "array.h"
+#include "zero_array.h"
 #include "avl.h"
 #include "dlist.h"
 
 #ifndef BOUNDED_HASHTABLE_H
 #define BOUNDED_HASHTABLE_H
 
-#define MINSIZE 16
+#define MINSIZE 4
 
 template <typename Node_T, typename Val_T>
 class FixedHashTable {
   private:
-    // TODO We need to replace this with an array that can zero itself
-    // in constant time
-    Array<AVL<Node_T, Val_T>> table;
+    ZeroArray<AVL<Node_T, Val_T>> table;
+    DList<Node_T, Val_T> l;
     size_t next;
   public:
+    typename DList<Node_T, Val_T>::Iterator begin(){
+      return l.begin();
+    }
+    typename DList<Node_T, Val_T>::Iterator end(){
+      return l.end();
+    }
     FixedHashTable();
     ~FixedHashTable();
     void reset(size_t s);
     bool insert(Node_T *n);
     Node_T* get(Val_T key);
+    Node_T* getOne(void);
     Node_T* remove(Node_T *n);
     void print(void);
     size_t len(void);
 };
 
 template <typename Node_T, typename Val_T>
-FixedHashTable<Node_T,Val_T>::FixedHashTable() {}
+FixedHashTable<Node_T,Val_T>::FixedHashTable() {
+  // Warning: There's a trick happening here!! 
+  // We create one empty AVL tree. That empty AVL tree
+  // is *copied* in to a node whenever one is accessed
+  // that hasn't been accessed before.
+  // Then, we actually never call the destructor!
+  // This is okay because an empty AVL tree has nothing to
+  // free... but it's an API violation, so be careful 
+  table.set_zero(AVL<Node_T, Val_T>());
+}
 
 template <typename Node_T, typename Val_T>
-FixedHashTable<Node_T,Val_T>::~FixedHashTable() {
-  for (size_t i=0; i<table.len(); ++i) {
-    if (!table[i].isempty()) {
-      PANIC("Hashtable not empty before destruction");
-    }
-    // explicitly destruct since array doesn't do that
-    table[i].~AVL();
-  }
-};
+FixedHashTable<Node_T,Val_T>::~FixedHashTable() {};
 
 template <typename Node_T, typename Val_T>
 void FixedHashTable<Node_T,Val_T>::reset(size_t s) {
-  size_t old_s = table.len();
-  if (old_s > s) {
-    // TODO This *ruins* our worst-case!... it's all linear!
-    for (size_t i=s; i<old_s; ++i) {
-      if (!table[i].isempty()) {
-        PANIC("Hashtable not empty before destruction");
-      }
-      // explicitly destruct since array doesn't do that
-      table[i].~AVL();
-    }
-  }
-  table.resize(s);
-  if (old_s < s) {
-    // TODO This *ruins* our worst-case!... it's all linear!
-    for (size_t i=old_s; i<s; ++i) {
-      table[i] = AVL<Node_T, Val_T>();
-    }
-  }
+  table.reset(s); // this is constant time
 }
  
 
@@ -92,20 +87,22 @@ template <typename Node_T, typename Val_T>
 bool FixedHashTable<Node_T, Val_T>::insert(Node_T *new_node) {
   // Hash it
   size_t i = Node_T::hash(new_node->val()) % table.len();
-  return table[i].insert(new_node);
+  bool b = table[i].insert(new_node); 
+  if (b) {
+    l.insert(new_node);
+  }
+  return b;
 }
 
 template <typename Node_T, typename Val_T>
 Node_T* FixedHashTable<Node_T,Val_T>::get(Val_T key) {
   size_t i = Node_T::hash(key) % table.len();
-  for (auto n = table[i].begin(); n != table[i].end(); ++n) {
-    // We check v rather than hash, this way correctness
-    // is preserved if hashes collide
-    if (n->val() == key) {
-      return &(*n);
-    }
-  }
-  return nullptr;
+  return table[i].get(key);
+}
+
+template <typename Node_T, typename Val_T>
+Node_T* FixedHashTable<Node_T,Val_T>::getOne(void) {
+  return l.peak();
 }
 
 template <typename Node_T, typename Val_T>
@@ -113,6 +110,7 @@ Node_T* FixedHashTable<Node_T,Val_T>::remove(Node_T *n) {
   Val_T v = n->val();
   size_t i = Node_T::hash(v) % table.len();
   table[i].remove(n);
+  l.remove(n);
   return n;
 }
 
@@ -135,17 +133,13 @@ template <typename Node_T, typename Val_T>
 class BoundedHashTable {
   private:
     FixedHashTable<Node_T, Val_T> at1;
-    DList<Node_T, Val_T> al1;
     FixedHashTable<Node_T, Val_T> at2;
-    DList<Node_T, Val_T> al2;
     FixedHashTable<Node_T, Val_T> *t1;
-    DList<Node_T, Val_T> *l1;
     FixedHashTable<Node_T, Val_T> *t2;
-    DList<Node_T, Val_T> *l2;
 
     size_t count;
     void resize(size_t s) {
-      if (l2->peak()) {
+      if (t2->getOne()) {
         PANIC("t2 not empty and we're trying to reset!\n");
       }
       t2->reset(s);
@@ -153,21 +147,15 @@ class BoundedHashTable {
       auto tmp = t2;
       t2 = t1;
       t1 = tmp;
-      // Swap the lists
-      auto ltmp = l2;
-      l2 = l1;
-      l1 = ltmp;
     }
     void inc() {
       // Frumious downcast... This lets us get around
       // issues with multiple inheritance
-      Node_T *n = l2->peak();
+      Node_T *n = t2->getOne();
       if (n) {
         t2->remove(n);
-        l2->remove(n);
         n->ht = t1;
         t1->insert(n);
-        l1->insert(n);
       }
     }
   public:
@@ -229,25 +217,23 @@ class BoundedHashTable {
         }
     };
     Iterator begin() {
-      return Iterator(l1->begin(), l1->end(), l2->begin(), false);
+      return Iterator(t1->begin(), t1->end(), t2->begin(), false);
     }
     Iterator end() {
-      return Iterator(l2->end(), l1->end(), l2->begin(), true);
+      return Iterator(t2->end(), t1->end(), t2->begin(), true);
     }
 
     BoundedHashTable() {
       count = 0;
       t1 = &at1;
       t2 = &at2;
-      l1 = &al1;
-      l2 = &al2;
       t1->reset(MINSIZE);
       t2->reset(MINSIZE);
     };
     ~BoundedHashTable() {}
     bool insert(Node_T *n) {
       inc();
-      // if it's over half-full resize up
+      // if it's over full resize up
       if (t1->len() < count+1) {
         resize(t1->len()*2);
       }
@@ -257,7 +243,6 @@ class BoundedHashTable {
       }
       n->ht = t1;
       if(t1->insert(n)) {
-        l1->insert(n);
         count++;
         return true;
       }
@@ -277,14 +262,9 @@ class BoundedHashTable {
       inc();
       inc();
       n->ht->remove(n);
-      if (n->ht == t1) {
-        l1->remove(n);
-      } else {
-        l2->remove(n);
-      }
       count--;
-      // if it's under a quarter full resize down
-      if (t1->len() > 2*count && !l2->peak()) {
+      // if it's under half full resize down
+      if (t1->len() > 2*count && !t2->getOne()) {
         resize(t1->len()/2);
       }
       return n;

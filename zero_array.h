@@ -9,6 +9,11 @@
  * to allocate a new array, but don't want the linear cost of zeroing the
  * whole thing.... e.g. you want to resize an array in constant time. 
  *
+ * API:
+ * Note that this has the same API as Array (in array.h) not UArray
+ * This algorithm is for random access, if you want something for stack-like
+ * usage, see DCUARRAY in delayed_copy_array.h
+ *
  * Algorithm:
  * Index array (used like a normal array)
  * Data array (used like a stack)
@@ -27,6 +32,7 @@
  */
 
 #include "panic.h"
+#include "array.h"
 
 #ifndef ZERO_ARRAY_H
 #define ZERR_ARRAY_H
@@ -41,67 +47,74 @@
 
 // This is just a dynamically allocated array, as you are used to using one.
 template<typename T>
-class Array {
+class ZeroArray {
   private:
     struct Data {
       T data;
       size_t index; 
-      Data(size_t i) {
+      Data(size_t i, const T& d) {
         index = i;
+        data = d;
       }
-    }
+    };
     Data* ar;
     size_t used;
     size_t* index;
     size_t length;
-    T zero;
+    T z;
     bool is_valid(size_t i) const {
-      return (index[i] < used)  && ar[index[i]] == i);
+      return (index[i] < used) && (ar[index[i]].index == i);
     }
   public:
-    Array(T &z) {
-      z = zero;
+    ZeroArray() {
       ar = nullptr;
       index = nullptr;
       length = 0;
+      used = 0;
     }
-    Array(T &z, size_t size) {
-      ar = malloc(size*sizeof(Data));
-      index = malloc(size*sizeof(size_t));
+    ZeroArray(T &z, size_t size) {
+      ar = (Data*) malloc(size*sizeof(Data));
+      index = (size_t*) malloc(size*sizeof(size_t));
       length = size;
+      used = 0;
     }
-    Array(T input[], size_t size) {
-      ar = malloc(size*sizeof(Data));
-      index = malloc(size*sizeof(size_t));
+    ZeroArray(T input[], size_t size) {
+      ar = (Data*) malloc(size*sizeof(Data));
+      index = (size_t*) malloc(size*sizeof(size_t));
       length = size;
+      used = 0;
       for (size_t i = 0; i<size; i++) {
         set(i, input[i]);
       }
     }
-    Array(Array<T>* input) {
-      ar = malloc(input.len()*sizeof(Data));
-      index = malloc(input.len()*sizeof(size_t));
+    ZeroArray(ZeroArray<T>* input) {
+      ar = (Data*) malloc(input.len()*sizeof(Data));
+      index = (size_t*) malloc(input.len()*sizeof(size_t));
       length = input.len();
-      array_copy<Array<T>, Array<T>>(this, input);
-    }
-    ~Array() {
-      if (ar) {
-        free(ar);
-        free(index);
-      }
-    }
-    void zero(T &z) {
       used = 0;
-      zero = z;
+      array_copy<ZeroArray<T>, ZeroArray<T>>(this, input);
     }
-    void resize(size_t new_size) {
+    ~ZeroArray() {
       if (ar) {
         free(ar);
         free(index);
       }
-      ar = malloc(size*sizeof(Data));
-      index = malloc(size*sizeof(size_t));
-      length = size;
+    }
+    void zero(T _z) {
+      used = 0;
+      z = _z;
+    }
+    void set_zero(T _z) {
+      z = _z;
+    }
+    void reset(const size_t new_size) {
+      if (ar) {
+        free(ar);
+        free(index);
+      }
+      ar = (Data*) malloc(new_size*sizeof(Data));
+      index = (size_t*) malloc(new_size*sizeof(size_t));
+      length = new_size;
       used = 0;
     }
     size_t len() const {
@@ -114,43 +127,53 @@ class Array {
       return length;
     }
     void swap(size_t i, size_t j) {
-      ARRAY_CHECK(i);
-      ARRAY_CHECK(j);
+      ZERO_ARRAY_CHECK(i);
+      ZERO_ARRAY_CHECK(j);
       T tmp = get(i);
       set(i, get(j));
       set(j, tmp);
     }
     const T& get(size_t i) const{
-      if (!is_valid()) {
-        return zero;
+      ZERO_ARRAY_CHECK(i);
+      if (!is_valid(i)) {
+        return z;
       }
       return ar[index[i]].data;
     }
-    void set(size_t i, T& d) {
-      if (is_valid()) {
+    void set(const size_t i, const T& d) {
+      ZERO_ARRAY_CHECK(i);
+      if (is_valid(i)) {
         ar[index[i]].data = d;
         return;
       }
-      ar[used++] = Data(i);
-      index[i] == ar.len()-1;
+      ar[used] = Data(i, d);
+      index[i] = used;
+      used++;
     }
-    T& operator[](size_t index) {
-      ARRAY_CHECK(index);
-      if (!is_valid()) {
-        set(i, zero);
+    const T& getDefault(size_t i, const T& d) const{
+      ZERO_ARRAY_CHECK(i);
+      if (!is_valid(i)) {
+        set(i, d);
+      }
+      return ar[index[i]].data;
+    }
+    T& operator[](size_t i) {
+      ZERO_ARRAY_CHECK(i);
+      if (!is_valid(i)) {
+        set(i, z);
       }
       return ar[index[i]].data;
     }
     // Works like negative indices in python (1 is last element)
     T& revi(size_t i) {
-      ARRAY_CHECK(_length-i);
+      ZERO_ARRAY_CHECK(length-i);
       return (*this)[length-i];
     }
     // ** Check
     void check(size_t i) const {
       if (i >= length) {
         printf("\nPANIC: index=%lu length=%lu\n", i, length);
-        PANIC("Array access out of bounds\n");
+        PANIC("ZeroArray access out of bounds\n");
       }
     }
 };

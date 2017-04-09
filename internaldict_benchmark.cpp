@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <stdint.h>
 #include "panic.h"
 
 #ifndef TEST_ITERATIONS
@@ -42,57 +43,61 @@
 class Comp {
   // For use with T=int, Val_T=int
   public:
-    static const int val(const int T) {
+    static const uint64_t val(const uint64_t T) {
       return T;
     }
-    static const int compare(const int val1, const int val2) {
-      return val1-val2;
+    static const int compare(const uint64_t v1, const uint64_t v2) {
+      if (v1 > v2) return 1;
+      if (v1 < v2) return -1;
+      return 0;
+      //return v1-v2;
     }
-    static size_t hash(int v) {
+    static size_t hash(uint64_t v) {
       return v;
     }
-    static void printT(const int t) {
-      printf("%d", t);
+    static void printT(const uint64_t t) {
+      printf("%ld", t);
     }
-    static void printV(const int v) {
-      printf("%d", v);
+    static void printV(const uint64_t v) {
+      printf("%ld", v);
     }
 };
 
 
-int ints[TEST_SIZE];
-int ints_end;
+uint64_t ints[TEST_SIZE];
+uint64_t ints_end;
 
 int main(int argc, char* argv[]) {
   #ifdef TEST_BTREE
   printf("BTree.h ");
-  BTree<int, int, Comp, ARITY> dict;
+  BTree<uint64_t, uint64_t, Comp, ARITY> dict;
   #endif
   #ifdef TEST_TS_BTREE
-  printf("BTree.h ");
-  TSBTree<int, int, Comp, ARITY> dict;
+  printf("TS_BTree.h ");
+  TSBTree<uint64_t, uint64_t, Comp, ARITY> dict;
   #endif
   #ifdef TEST_BTREEHASHTABLE
   printf("BTreeHashTable.h ");
-  BTreeHashTable<int, int, Comp> dict; 
+  BTreeHashTable<uint64_t, uint64_t, Comp> dict; 
   #endif
   printf("test_size=%d test_iterations=%d ", TEST_SIZE, TEST_ITERATIONS);
 
   time_t t1 = time(nullptr);
-  int j;
-  int get_count=0;
+  uint64_t j;
+  uint64_t get_count=0;
   for (j=0; j<TEST_ITERATIONS; j++) {
-    int i;
+    uint64_t i;
     ints_end=0;
     for (i=0; i<TEST_SIZE; i++) {
       bool new_v = false;
-      int r;
+      uint64_t r;
       // find a value we haven't used yet
       while (!new_v) {
         // Note, we did not initialize rand, this is purposeful
-        r = rand();
+        // Assumes RAND_MAX=INT_MAX and int=32 bits
+        r = rand()*rand();
         #ifdef TEST_TS_BTREE
-        int tmp;
+        uint64_t tmp;
         new_v = !dict.get(r, &tmp); 
         #else
         new_v = !dict.get(r); 
@@ -105,7 +110,7 @@ int main(int argc, char* argv[]) {
       ints[ints_end++] = r;
     }
     for(i=0; i<ints_end; i++) {
-      int junk;
+      uint64_t junk;
       dict.remove(ints[i], &junk);
     }
   }

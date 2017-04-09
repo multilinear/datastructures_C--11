@@ -31,16 +31,17 @@
  */
 
 #include "panic.h"
+#include "array.h"
 
-#ifndef ARRAYTREE_H
-#define ARRAYTREE_H
+#ifndef TREEARRAY_H
+#define TREEARRAY_H
 
-// Define "ARRAYTREE_DEBUG" to enable bounds-checking
+// Define "TREEARRAY_DEBUG" to enable bounds-checking
 // If enabled this makes these arrays far more expensive than C-style
-#ifdef ARRAYTREE_DEBUG
-#define ARRAYTREE_CHECK(i) check(i)
+#ifdef TREEARRAY_DEBUG
+#define TREEARRAY_CHECK(i) check(i)
 #else
-#define ARRAYTREE_CHECK(i)
+#define TREEARRAY_CHECK(i)
 #endif
 
 template<size_t SizeBits>
@@ -270,20 +271,20 @@ class TreeArray {
       return length;
     }
     void swap(size_t i, size_t j) {
-      ARRAYTREE_CHECK(i);
-      ARRAYTREE_CHECK(j);
+      TREEARRAY_CHECK(i);
+      TREEARRAY_CHECK(j);
       T tmp = get(i);
       get(i) = get(j);
       get(j) = tmp;
     }
     // ** Common functions
     T& operator[](size_t index) {
-      ARRAYTREE_CHECK(index);
+      TREEARRAY_CHECK(index);
       return get(index);
     }
     // Works like negative indices in python (1 is last element)
     T& revi(size_t index) {
-      ARRAYTREE_CHECK(length-index);
+      TREEARRAY_CHECK(length-index);
       return get(length-index);
     }
     // ** Check
@@ -452,8 +453,8 @@ class TreeUArray {
       return length;
     }
     void swap(size_t i, size_t j) {
-      ARRAYTREE_CHECK(i);
-      ARRAYTREE_CHECK(j);
+      TREEARRAY_CHECK(i);
+      TREEARRAY_CHECK(j);
       // TODO(mbrewer): We can probably do better than this
       T tmp = get(i);
       get(i) = get(j);
@@ -478,12 +479,12 @@ class TreeUArray {
     }
     // ** Common functions
     T& operator[](size_t index) {
-      ARRAYTREE_CHECK(index);
+      TREEARRAY_CHECK(index);
       return get(index);
     }
     // Works like negative indices in python (1 is last element)
     T& revi(size_t index) {
-      ARRAYTREE_CHECK(length-index);
+      TREEARRAY_CHECK(length-index);
       return get(length-index);
     }
     // ** Check
@@ -559,8 +560,8 @@ class TreeUArray {
       return ar.len();
     }
     void swap(size_t i, size_t j) {
-      ARRAY_CHECK(i);
-      ARRAY_CHECK(j);
+      TREEARRAY_CHECK(i);
+      TREEARRAY_CHECK(j);
       T tmp = ar[i];
       ar[i] = ar[j];
       ar[j] = tmp;

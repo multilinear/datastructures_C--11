@@ -6,10 +6,14 @@ TEST_ITERATIONS=10000
 TEST_SIZE=10000
 
 # Build lists
-UNITTESTS=array avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable heap list queue redblack ringbuffer rredblack set sort trivialdict ts_btree ts_ringbuffer ts_work_queue
+UNITTESTS=array uarray staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable heap list queue redblack ringbuffer rredblack set sort ts_btree ts_ringbuffer ts_work_queue
 HEAPS_BENCHMARKS=bheap.cpp boundedheap.cpp heap_dcarray.cpp
 # We leave out dlist 'cause it takes forever (you can add it for smaller tests)
-DICTS_BENCHMARKS=avlhashtable.cpp avl.cpp boundedhashtable.cpp btreehashtable.cpp btree.cpp ochashtable.cpp redblack.cpp rredblack.cpp ts_btree.cpp
+DICTS_BENCHMARKS=avlhashtable.cpp avl.cpp boundedhashtable.cpp btree.cpp ochashtable.cpp redblack.cpp 
+# These are less interesting, but you can add them in if you're curious
+#btreehashtable.cpp 
+#rredblack.cpp 
+#ts_btree.cpp
 BENCHMARKS=$(HEAPS_BENCHMARKS) $(DICTS_BENCHMARKS) dict_benchmark sort_benchmark
 
 UNITTEST_EXES=$(UNITTESTS:%=%_unittest) 
@@ -41,7 +45,15 @@ benchmark: benchmarks; $(BENCHMARKS:%.cpp=./%_benchmark &&) true
 
 # specific build rules
 
-array_unittest: *.h *.cpp ; $(CC) $(CFLAGS) array_unittest.cpp -o array_unittest
+array_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_ARRAY array_unittest.cpp -o array_unittest
+uarray_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_UARRAY array_unittest.cpp -o uarray_unittest
+staticarray_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_STATICARRAY array_unittest.cpp -o staticarray_unittest
+staticuarray_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_STATICUARRAY array_unittest.cpp -o staticuarray_unittest
+dictarray_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_DICTARRAY array_unittest.cpp -o dictarray_unittest
+treearray_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_TREEARRAY array_unittest.cpp -o treearray_unittest
+treeuarray_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_TREEUARRAY array_unittest.cpp -o treeuarray_unittest
+dcuarray_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_DCUARRAY array_unittest.cpp -o dcuarray_unittest
+zeroarray_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_ZEROARRAY array_unittest.cpp -o zeroarray_unittest
 
 avl_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_AVL externaldict_unittest.cpp -o avl_unittest
 avl_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_AVL -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} externaldict_benchmark.cpp -o avl_benchmark
@@ -53,7 +65,7 @@ bheap_unittest: *.h *.cpp ; $(CC) $(CFLAGS) bheap_unittest.cpp -o bheap_unittest
 bheap_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BHEAP -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} heap_benchmark.cpp -o bheap_benchmark
 
 boundedhashtable_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BOUNDEDHASHTABLE externaldict_unittest.cpp -o boundedhashtable_unittest
-boundedhashtable_benchmark  : *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BOUNDEDHASHTABLE externaldict_benchmark.cpp -o boundedhashtable_benchmark
+boundedhashtable_benchmark  : *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} -DTEST_BOUNDEDHASHTABLE externaldict_benchmark.cpp -o boundedhashtable_benchmark
 
 boundedheap_unittest: *.h *.cpp ; $(CC) $(CFLAGS) boundedheap_unittest.cpp -o boundedheap_unittest
 boundedheap_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BOUNDEDHEAP -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} heap_benchmark.cpp -o boundedheap_benchmark
@@ -91,8 +103,6 @@ ringbuffer_unittest: *.h *.cpp ; $(CC) $(CFLAGS) ringbuffer_unittest.cpp -o ring
 
 rredblack_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_RREDBLACK externaldict_unittest.cpp -o rredblack_unittest
 rredblack_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_RREDBLACK -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} externaldict_benchmark.cpp -o rredblack_benchmark
-
-trivialdict_unittest: *.h *.cpp ; $(CC) $(CFLAGS) trivialdict_unittest.cpp -o trivialdict_unittest
 
 set_unittest: *.h *.cpp ; $(CC) $(CFLAGS) set_unittest.cpp -o set_unittest
 

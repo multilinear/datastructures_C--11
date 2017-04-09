@@ -7,8 +7,8 @@
  * resize we take advantage of the dlist's queue ordering properties... if you
  * want to make one general take a look at avlhashtable
  *
- * resizes up when size is < 2x data it contains
- * resizes down when size is > 4x data it contains
+ * resizes up when size is < x data it contains
+ * resizes down when size is > 2x data it contains
  *
  * Faster average case than btree by ~2x
  *
@@ -26,7 +26,7 @@
 #ifndef OC_HASHTABLE_H
 #define OC_HASHTABLE_H
 
-#define MINSIZE 16
+#define MINSIZE 4
 
 template <typename Node_T>
 class OCHashTableNode_base: public DListNode_base<Node_T> {
@@ -233,8 +233,8 @@ void OCHashTable<Node_T,Val_T>::resize(size_t s) {
 
 template <typename Node_T, typename Val_T>
 void OCHashTable<Node_T,Val_T>::check_sizedown(void) {
-  // If it's under a quarter full resize down
-  if (table.len() > 4*count) {
+  // If it's under half full resize down
+  if (table.len() > 2*count) {
     size_t s = table.len() / 2;
     if (s < MINSIZE) {
       s = MINSIZE;
@@ -245,8 +245,8 @@ void OCHashTable<Node_T,Val_T>::check_sizedown(void) {
 
 template <typename Node_T, typename Val_T>
 void OCHashTable<Node_T,Val_T>::check_sizeup(void) {
-  // If it's over half-full resize up
-  if (table.len() < 2*count) {
+  // If it's over full resize up
+  if (table.len() < count) {
     resize(table.len()*2); 
   } 
 }

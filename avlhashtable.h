@@ -3,8 +3,8 @@
  * A standard open chaining hashtable implementation, using external allocation
  * for nodes.... EXCEPT that we use an avl tree instead of a linked-list
  *
- * resizes up when size is < 2x data it contains
- * resizes down when size is > 4x data it contains
+ * resizes up when size is < x data it contains
+ * resizes down when size is > 2x data it contains
  *
  * Worst case operation is linear per op due to
  * 1) linear rehash
@@ -19,7 +19,7 @@
 #ifndef AVL_HASHTABLE_H
 #define AVL_HASHTABLE_H
 
-#define MINSIZE 16
+#define MINSIZE 4
 
 template <typename Node_T, typename Val_T>
 class AVLHashTableNode_base: public AVLNode_base<Node_T, Val_T> {
@@ -177,14 +177,7 @@ bool AVLHashTable<Node_T, Val_T>::insert(Node_T *new_node) {
 template <typename Node_T, typename Val_T>
 Node_T* AVLHashTable<Node_T,Val_T>::get(Val_T key) {
   size_t i = Node_T::hash(key) % table.len();
-  for (auto n = table[i].begin(); n != table[i].end(); ++n) {
-    // We check v rather than hash, this way correctness
-    // is preserved if hashes collide
-    if (n->val() == key) {
-      return &(*n);
-    }
-  }
-  return nullptr;
+  return table[i].get(key);
 }
 
 template <typename Node_T, typename Val_T>
@@ -249,7 +242,7 @@ void AVLHashTable<Node_T,Val_T>::resize(size_t s) {
 template <typename Node_T, typename Val_T>
 void AVLHashTable<Node_T,Val_T>::check_sizedown(void) {
   // If it's under a quarter full resize down
-  if (table.len() > 4*count) {
+  if (table.len() > 2*count) {
     size_t s = table.len() / 2;
     if (s < MINSIZE) {
       s = MINSIZE;
@@ -261,7 +254,7 @@ void AVLHashTable<Node_T,Val_T>::check_sizedown(void) {
 template <typename Node_T, typename Val_T>
 void AVLHashTable<Node_T,Val_T>::check_sizeup(void) {
   // If it's over half-full resize up
-  if (table.len() < 2*count) {
+  if (table.len() < count) {
     resize(table.len()*2); 
   } 
 }

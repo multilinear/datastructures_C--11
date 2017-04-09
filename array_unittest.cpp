@@ -1,10 +1,57 @@
 #define ARRAY_DEBUG
 
 #include <stdio.h>
+
+#ifdef TEST_ARRAY
 #include "array.h"
-#include "treearray.h"
-#include "dictarray.h"
+#define RESIZABLE
+#endif
+
+#ifdef TEST_UARRAY
+#include "array.h"
+#define RESIZABLE
+#define UARRAY 
+#endif
+
+#ifdef TEST_STATICARRAY
+#include "array.h"
+#endif
+
+#ifdef TEST_STATICUARRAY
+#include "array.h"
+#define RESIZABLE
+#define UARRAY 
+#endif
+
+#ifdef TEST_DCUARRAY
 #include "delayed_copy_array.h"
+#define RESIZABLE
+#define UARRAY 
+#endif
+
+#ifdef TEST_DICTARRAY
+#include "dictarray.h"
+//#define RESIZABLE (tests fail, 'cause we don't REALLY resize)
+#define UARRAY 
+#endif
+
+#ifdef TEST_TREEARRAY
+#include "treearray.h"
+#define RESIZABLE
+#endif
+#ifdef TEST_TREEUARRAY
+#include "treearray.h"
+#define RESIZABLE
+#define USED
+#endif
+
+
+
+#ifdef TEST_ZEROARRAY
+#include "zero_array.h"
+#endif
+
+
 
 template<typename AT>
 void base_test(void) {
@@ -17,6 +64,7 @@ void base_test(void) {
   }
   for (int i=0;i<4;i++) {
     if (test_data[i] != a[i]) {
+      printf("index %d is %d not %d\n", i,  a[i], test_data[i]);
       PANIC("data is wrong");
     }
   }
@@ -102,32 +150,54 @@ void used_test(void) {
 }
 
 int main(void) {
-  printf("Begin Array.h TreeArray.h DictArray.h unittest\n");
-  base_test<StaticArray<int,4>>();
-  base_test<StaticUArray<int,4>>();
-  base_test<Array<int>>();
-  base_test<UArray<int>>();
-  base_test<TreeArray<int,1>>();
-  base_test<TreeUArray<int,1>>();
-  base_test<DictUArray<int>>();
-  base_test<DCUArray<int>>();
-  resizable_test<StaticUArray<int,4>>();
-  resizable_test<Array<int>>();
-  resizable_test<UArray<int>>();
-  resizable_test<TreeArray<int,1>>();
-  resizable_test<TreeUArray<int,1>>();
-  resizable_test<DCUArray<int>>();
-  used_test<StaticUArray<int,4>>();
-  used_test<UArray<int>>();
-  used_test<TreeUArray<int,1>>();
-  used_test<DictUArray<int>>();
-  used_test<DCUArray<int>>();
+  #ifdef TEST_STATICARRAY
+  printf("Begin StaticArray unittest\n");
+  StaticArray<int,4> a;
+  #endif
+  #ifdef TEST_STATICUARRAY
+  printf("Begin StaticUArray unittest\n");
+  StaticUArray<int,4> a;
+  #endif
+  #ifdef TEST_ARRAY 
+  printf("Begin Array unittest\n");
+  Array<int> a;
+  #endif
+  #ifdef TEST_UARRAY
+  printf("Begin UArray unittest\n");
+  UArray<int> a;
+  #endif
+  #ifdef TEST_DCUARRAY
+  printf("Begin DCUArray unittest\n");
+  DCUArray<int> a;
+  #endif
+  #ifdef TEST_DICTARRAY
+  printf("Begin DictArray unittest\n");
+  DictUArray<int> a;
+  #endif
+  #ifdef TEST_TREEARRAY
+  printf("Begin TreeArray unittest\n");
+  TreeArray<int,4> a;
+  #endif
+  #ifdef TEST_TREEUARRAY
+  printf("Begin TreeUArray unittest\n");
+  TreeUArray<int,4> a;
+  #endif
+  #ifdef TEST_ZEROARRAY
+  printf("Begin ZeroArray unittest\n");
+  ZeroArray<int> a;
+  #endif
+
+  base_test<decltype(a)>(); 
+  #ifdef RESIZABLE
+  resizable_test<decltype(a)>();
+  #endif
+  #ifdef USED
+  used_test<decltype(a)>();
+  #endif
+
+  // ***** Now for extra tests specific to a given structure
+  #ifdef TEST_UARRAY
   int test_data[] = {1};
-  // Static used array specific tests
-  StaticUArray<int,1> sa(test_data, 1);
-  if (!sa.isfull()) {
-    PANIC("StaticUArray should be full");
-  }
   // Used Array specific tests
   UArray<int> ua(test_data, 1);
   if (ua.isfull()) {
@@ -137,7 +207,15 @@ int main(void) {
   if (ua.len() != 10) {
     PANIC("Used array resize up failed");
   }
-  // TreeArray specific tests
+  #endif
+  #ifdef TEST_STATICUARRAY
+  int test_data[] = {1};
+  StaticUArray<int,1> sa(test_data, 1);
+  if (!sa.isfull()) {
+    PANIC("StaticUArray should be full");
+  }
+  #endif
+  #ifdef TEST_TREEARRAY
   TreeArray<int,2> at(10);
   at.resize(100);
   for (int i=0;i<100;i++) {
@@ -163,6 +241,8 @@ int main(void) {
       PANIC("ArrayTree is corrupt");
     }
   }
+  #endif
+
   printf("PASS\n");
   return 0;
 }

@@ -27,6 +27,7 @@
 
 
 #include "panic.h"
+#include "array.h"
 
 #ifndef DELAYED_COPY_ARRAY_H
 #define DELAYED_COPY_ARRAY_H
