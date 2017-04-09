@@ -12,6 +12,7 @@
 #include <time.h>
 #include <stdint.h>
 #include "panic.h"
+#include "timer.h"
 
 #ifndef TEST_ITERATIONS
 #define TEST_ITERATIONS 1000000
@@ -82,7 +83,8 @@ int main(int argc, char* argv[]) {
   #endif
   printf("test_size=%d test_iterations=%d ", TEST_SIZE, TEST_ITERATIONS);
 
-  time_t t1 = time(nullptr);
+  timeb t1, t2;
+  ftime(&t1);
   uint64_t j;
   uint64_t get_count=0;
   for (j=0; j<TEST_ITERATIONS; j++) {
@@ -114,7 +116,7 @@ int main(int argc, char* argv[]) {
       dict.remove(ints[i], &junk);
     }
   }
-  time_t t2 = time(nullptr);
-  printf("time=%ld\n", t2-t1);
+  ftime(&t2);
+  printf("time=%lf\n", tdiff(t2,t1));
 }
 

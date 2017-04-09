@@ -1,4 +1,4 @@
-logfile=dict_benchmark_log
+logfile=log
 
 echo -n "plot " >  plotfile
 for l in $(cat ${logfile} | awk '/time=/{print $1}' | sort -u); do

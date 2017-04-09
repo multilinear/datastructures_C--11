@@ -12,6 +12,7 @@
 #include <time.h>
 #include <stdint.h>
 #include "panic.h"
+#include "timer.h"
 
 #ifndef TEST_ITERATIONS
 #define TEST_ITERATIONS 1000000
@@ -109,7 +110,9 @@ int main(int argc, char* argv[]) {
 	#endif 
   printf("test_size=%d test_iterations=%d ", TEST_SIZE, TEST_ITERATIONS); 
 
-  time_t t1 = time(nullptr);
+  timeb t1, t2;
+  ftime(&t1);
+  //time_t t1 = time(nullptr);
   size_t j;
   uint64_t get_count=0;
   uint64_t insert_count=0;
@@ -163,6 +166,8 @@ int main(int argc, char* argv[]) {
       #endif
     }
   }
-  time_t t2 = time(nullptr);
-  printf("time=%ld insert=%ld get=%ld\n", t2-t1, insert_count, get_count);
+  ftime(&t2);
+  double t = tdiff(t2,t1); 
+  //time_t t2 = time(nullptr);
+  printf("time=%lf insert=%ld get=%ld\n", t, insert_count, get_count);
 }
