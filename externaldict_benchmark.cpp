@@ -170,4 +170,5 @@ int main(int argc, char* argv[]) {
   double t = tdiff(t2,t1); 
   //time_t t2 = time(nullptr);
   printf("time=%lf insert=%ld get=%ld\n", t, insert_count, get_count);
+  return 0;
 }

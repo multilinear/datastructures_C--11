@@ -6,10 +6,10 @@ TEST_ITERATIONS=10000
 TEST_SIZE=10000
 
 # Build lists
-UNITTESTS=array uarray staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable heap list queue redblack ringbuffer rredblack set sort ts_btree ts_ringbuffer ts_work_queue
+UNITTESTS=array uarray staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set sort ts_btree ts_ringbuffer ts_work_queue
 HEAPS_BENCHMARKS=bheap.cpp boundedheap.cpp heap_dcarray.cpp
 # We leave out dlist 'cause it takes forever (you can add it for smaller tests)
-DICTS_BENCHMARKS=avlhashtable.cpp avl.cpp boundedhashtable.cpp btree.cpp ochashtable.cpp redblack.cpp 
+DICTS_BENCHMARKS=avlhashtable.cpp avl.cpp boundedhashtable.cpp btree.cpp ochashtable.cpp redblack.cpp hashtable.cpp
 # These are less interesting, but you can add them in if you're curious
 #btreehashtable.cpp 
 #rredblack.cpp 
@@ -78,7 +78,6 @@ btree_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREE -DTEST_ITERATIONS=${TE
 btreehashtable_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREEHASHTABLE internaldict_unittest.cpp -o btreehashtable_unittest
 btreehashtable_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} internaldict_benchmark.cpp -o btreehashtable_benchmark
 
-
 dict_unittest: *.h *.cpp ; $(CC) $(CFLAGS) dict_unittest.cpp -o dict_unittest
 dict_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} dict_benchmark.cpp -o dict_benchmark
 
@@ -87,6 +86,10 @@ dlist_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_DLIST -DTEST_ITERATIONS=${TE
 
 ochashtable_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_OCHASHTABLE externaldict_unittest.cpp -o ochashtable_unittest
 ochashtable_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_OCHASHTABLE -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} externaldict_benchmark.cpp -o ochashtable_benchmark
+
+hashtable_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_HASHTABLE internaldict_unittest.cpp -o hashtable_unittest
+hashtable_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_HASHTABLE -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} internaldict_benchmark.cpp -o hashtable_benchmark
+
 
 heap_unittest: *.h *.cpp ; $(CC) $(CFLAGS) heap_unittest.cpp -o heap_unittest
 heap_dictarray_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_HEAP_DICTARRAY -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} heap_benchmark.cpp -o heap_dictarray_benchmark

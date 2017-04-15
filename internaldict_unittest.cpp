@@ -23,6 +23,10 @@
 #include "btreehashtable.h"
 #endif
 
+#ifdef TEST_HASHTABLE
+#include "hashtable.h"
+#endif
+
 class Comp {
   // For use with T=int, Val_T=int
   public:
@@ -93,12 +97,17 @@ int main(int argc, char* argv[]) {
   printf("Begin BTreeHashTable.h unittest\n");
   BTreeHashTable<int, int, Comp> dict;
   #endif
+  #ifdef TEST_HASHTABLE
+  printf("Begin HashTable.h unittest\n");
+  HashTable<int, int, Comp> dict;
+  #endif
 
   int i;
   // insert in order, then remove
   int k;
   for (k=1; k<TEST_SIZE; k++) {
     //printf("**** Adding elements\n");
+    //dict.print();
     for (i=0; i<k; i++) {
       bool new_v = false;
       int r;
@@ -112,8 +121,10 @@ int main(int argc, char* argv[]) {
       dict.insert(r);
       tdict.insert(new TNode(r));
       check<decltype(dict)>(&dict, &tdict);
+      //dict.print();
     }
     //printf("**** Draining\n");
+    //dict.print();
     while (!tdict.isempty()) {
       // We're invalidating our iterator every round, by modifying the dict
       // but we removed the first element, so we just start over again
@@ -144,9 +155,11 @@ int main(int argc, char* argv[]) {
       tdict.remove(tn);
 			delete tn;
       check<decltype(dict)>(&dict, &tdict);
+      //dict.print();
     }
     //printf("Checking  that things are empty\n");
     if (!dict.isempty()) {
+      dict.print();
       PANIC("Dict should be empty here, but isn't");
     }
     //printf("************ size %d complete\n", k);

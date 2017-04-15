@@ -313,11 +313,10 @@ class UArray {
     Array<T> ar;
     size_t _used;
   public:
-    UArray() {
+    UArray():ar() {
       _used = 0;
     }
-    UArray(size_t size) {
-      ar.resize(size);
+    UArray(size_t size):ar(size) {
       _used = size;
     }
     UArray(T input[], size_t input_l): ar(input, input_l) {

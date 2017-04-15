@@ -41,6 +41,10 @@
 #include "btreehashtable.h"
 #endif
 
+#ifdef TEST_HASHTABLE
+#include "hashtable.h"
+#endif
+
 class Comp {
   // For use with T=int, Val_T=int
   public:
@@ -80,6 +84,10 @@ int main(int argc, char* argv[]) {
   #ifdef TEST_BTREEHASHTABLE
   printf("BTreeHashTable.h ");
   BTreeHashTable<uint64_t, uint64_t, Comp> dict; 
+  #endif
+  #ifdef TEST_HASHTABLE
+  printf("HashTable.h ");
+  HashTable<uint64_t, uint64_t, Comp> dict; 
   #endif
   printf("test_size=%d test_iterations=%d ", TEST_SIZE, TEST_ITERATIONS);
 
