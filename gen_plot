@@ -1,6 +1,17 @@
-logfile=log
+logfile=$1
 
-echo -n "plot " >  plotfile
+
+cat > plotfile << EOF
+set title "Time to run a K/Test_Size Iterations for Various Test Sizes"
+set xlabel "Test size"
+set yrange [0:300]
+set ylabel "Seconds to run"
+set logscale x
+set key autotitle columnheader
+EOF
+
+
+echo -n "plot " >>  plotfile
 for l in $(cat ${logfile} | awk '/time=/{print $1}' | sort -u); do
   echo ${l}
   # get out the actual runtime for $l *only*
@@ -8,15 +19,8 @@ for l in $(cat ${logfile} | awk '/time=/{print $1}' | sort -u); do
   cat ${logfile} | tr = ' ' | awk "/^${l}/{print \$3,\$7}" >> ${l}_data
   echo -n -e "'${l}_data' using 1:2 with lines," >> plotfile
 done
-echo >> plotfile
 
-cat >> plotfile << EOF
-set title "Time to run a K/Test_Size Iterations for Various Test Sizes"
-set xlabel "Test size"
-set ylabel "Seconds to run"
-set logscale x
-set key autotitle columnheader
-pause -1
-EOF
+echo >> plotfile
+echo "pause -1" >> plotfile
 
 gnuplot "plotfile"

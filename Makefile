@@ -9,11 +9,14 @@ TEST_SIZE=10000
 UNITTESTS=array uarray staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set sort ts_btree ts_ringbuffer ts_work_queue
 HEAPS_BENCHMARKS=bheap.cpp boundedheap.cpp heap_dcarray.cpp
 # We leave out dlist 'cause it takes forever (you can add it for smaller tests)
-DICTS_BENCHMARKS=avlhashtable.cpp avl.cpp boundedhashtable.cpp btree.cpp ochashtable.cpp redblack.cpp hashtable.cpp
+DICTS_BENCHMARKS=avlhashtable.cpp btree.cpp ochashtable.cpp hashtable.cpp
 # These are less interesting, but you can add them in if you're curious
 #btreehashtable.cpp 
 #rredblack.cpp 
 #ts_btree.cpp
+#boundedhashtable.cpp 
+#avl.cpp
+#redblack.cpp
 BENCHMARKS=$(HEAPS_BENCHMARKS) $(DICTS_BENCHMARKS) dict_benchmark sort_benchmark
 
 UNITTEST_EXES=$(UNITTESTS:%=%_unittest) 
