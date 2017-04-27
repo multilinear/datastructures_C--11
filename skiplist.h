@@ -2,7 +2,7 @@
  * Copywrite: Matthew Brewer 2014-04-26
  *
  * When to use:
- *   Not benchmarked yet, but unlikely to beat AVL
+ *   Don't, avl.h and hashtable.h are strictly better in every way
  *
  * Simple randomized skiplist implementation.
  * We randomly select the number of levels for each node

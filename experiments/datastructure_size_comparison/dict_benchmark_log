@@ -1,0 +1,394 @@
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=25000000 -DTEST_SIZE=4 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=25000000 -DTEST_SIZE=4 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_DLIST -DTEST_ITERATIONS=25000000 -DTEST_SIZE=4 externaldict_benchmark.cpp -o dlist_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=25000000 -DTEST_SIZE=4 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=25000000 -DTEST_SIZE=4 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=25000000 -DTEST_SIZE=4 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=25000000 -DTEST_SIZE=4 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=25000000 -DTEST_SIZE=4 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=25000000 -DTEST_SIZE=4 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./dlist_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=4 test_iterations=25000000 time=5
+AVL.h test_size=4 test_iterations=25000000 time=3
+DList.h test_size=4 test_iterations=25000000 time=1
+BTreeHashTable.h test_size=4 test_iterations=25000000 time=5
+BTree.h test_size=4 test_iterations=25000000 time=4
+OCHashTable.h test_size=4 test_iterations=25000000 time=4
+RedBlack.h test_size=4 test_iterations=25000000 time=3
+RRedBlack.h test_size=4 test_iterations=25000000 time=2
+BTree.h test_size=4 test_iterations=25000000 time=5
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=12500000 -DTEST_SIZE=8 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=12500000 -DTEST_SIZE=8 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_DLIST -DTEST_ITERATIONS=12500000 -DTEST_SIZE=8 externaldict_benchmark.cpp -o dlist_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=12500000 -DTEST_SIZE=8 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=12500000 -DTEST_SIZE=8 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=12500000 -DTEST_SIZE=8 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=12500000 -DTEST_SIZE=8 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=12500000 -DTEST_SIZE=8 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=12500000 -DTEST_SIZE=8 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./dlist_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=8 test_iterations=12500000 time=6
+AVL.h test_size=8 test_iterations=12500000 time=5
+DList.h test_size=8 test_iterations=12500000 time=1
+BTreeHashTable.h test_size=8 test_iterations=12500000 time=6
+BTree.h test_size=8 test_iterations=12500000 time=5
+OCHashTable.h test_size=8 test_iterations=12500000 time=5
+RedBlack.h test_size=8 test_iterations=12500000 time=4
+RRedBlack.h test_size=8 test_iterations=12500000 time=5
+BTree.h test_size=8 test_iterations=12500000 time=5
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=6250000 -DTEST_SIZE=16 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=6250000 -DTEST_SIZE=16 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_DLIST -DTEST_ITERATIONS=6250000 -DTEST_SIZE=16 externaldict_benchmark.cpp -o dlist_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=6250000 -DTEST_SIZE=16 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=6250000 -DTEST_SIZE=16 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=6250000 -DTEST_SIZE=16 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=6250000 -DTEST_SIZE=16 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=6250000 -DTEST_SIZE=16 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=6250000 -DTEST_SIZE=16 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./dlist_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=16 test_iterations=6250000 time=10
+AVL.h test_size=16 test_iterations=6250000 time=7
+DList.h test_size=16 test_iterations=6250000 time=2
+BTreeHashTable.h test_size=16 test_iterations=6250000 time=16
+BTree.h test_size=16 test_iterations=6250000 time=7
+OCHashTable.h test_size=16 test_iterations=6250000 time=8
+RedBlack.h test_size=16 test_iterations=6250000 time=6
+RRedBlack.h test_size=16 test_iterations=6250000 time=7
+BTree.h test_size=16 test_iterations=6250000 time=7
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=3125000 -DTEST_SIZE=32 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=3125000 -DTEST_SIZE=32 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_DLIST -DTEST_ITERATIONS=3125000 -DTEST_SIZE=32 externaldict_benchmark.cpp -o dlist_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=3125000 -DTEST_SIZE=32 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=3125000 -DTEST_SIZE=32 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=3125000 -DTEST_SIZE=32 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=3125000 -DTEST_SIZE=32 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=3125000 -DTEST_SIZE=32 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=3125000 -DTEST_SIZE=32 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./dlist_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=32 test_iterations=3125000 time=11
+AVL.h test_size=32 test_iterations=3125000 time=10
+DList.h test_size=32 test_iterations=3125000 time=3
+BTreeHashTable.h test_size=32 test_iterations=3125000 time=24
+BTree.h test_size=32 test_iterations=3125000 time=7
+OCHashTable.h test_size=32 test_iterations=3125000 time=10
+RedBlack.h test_size=32 test_iterations=3125000 time=9
+RRedBlack.h test_size=32 test_iterations=3125000 time=9
+BTree.h test_size=32 test_iterations=3125000 time=8
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=1562500 -DTEST_SIZE=64 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=1562500 -DTEST_SIZE=64 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_DLIST -DTEST_ITERATIONS=1562500 -DTEST_SIZE=64 externaldict_benchmark.cpp -o dlist_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=1562500 -DTEST_SIZE=64 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=1562500 -DTEST_SIZE=64 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=1562500 -DTEST_SIZE=64 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=1562500 -DTEST_SIZE=64 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=1562500 -DTEST_SIZE=64 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=1562500 -DTEST_SIZE=64 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./dlist_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=64 test_iterations=1562500 time=13
+AVL.h test_size=64 test_iterations=1562500 time=11
+DList.h test_size=64 test_iterations=1562500 time=6
+BTreeHashTable.h test_size=64 test_iterations=1562500 time=27
+BTree.h test_size=64 test_iterations=1562500 time=9
+OCHashTable.h test_size=64 test_iterations=1562500 time=10
+RedBlack.h test_size=64 test_iterations=1562500 time=11
+RRedBlack.h test_size=64 test_iterations=1562500 time=12
+BTree.h test_size=64 test_iterations=1562500 time=9
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=781250 -DTEST_SIZE=128 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=781250 -DTEST_SIZE=128 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_DLIST -DTEST_ITERATIONS=781250 -DTEST_SIZE=128 externaldict_benchmark.cpp -o dlist_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=781250 -DTEST_SIZE=128 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=781250 -DTEST_SIZE=128 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=781250 -DTEST_SIZE=128 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=781250 -DTEST_SIZE=128 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=781250 -DTEST_SIZE=128 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=781250 -DTEST_SIZE=128 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./dlist_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=128 test_iterations=781250 time=12
+AVL.h test_size=128 test_iterations=781250 time=14
+DList.h test_size=128 test_iterations=781250 time=9
+BTreeHashTable.h test_size=128 test_iterations=781250 time=27
+BTree.h test_size=128 test_iterations=781250 time=13
+OCHashTable.h test_size=128 test_iterations=781250 time=10
+RedBlack.h test_size=128 test_iterations=781250 time=13
+RRedBlack.h test_size=128 test_iterations=781250 time=16
+BTree.h test_size=128 test_iterations=781250 time=13
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=390625 -DTEST_SIZE=256 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=390625 -DTEST_SIZE=256 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_DLIST -DTEST_ITERATIONS=390625 -DTEST_SIZE=256 externaldict_benchmark.cpp -o dlist_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=390625 -DTEST_SIZE=256 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=390625 -DTEST_SIZE=256 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=390625 -DTEST_SIZE=256 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=390625 -DTEST_SIZE=256 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=390625 -DTEST_SIZE=256 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=390625 -DTEST_SIZE=256 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./dlist_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=256 test_iterations=390625 time=12
+AVL.h test_size=256 test_iterations=390625 time=16
+DList.h test_size=256 test_iterations=390625 time=17
+BTreeHashTable.h test_size=256 test_iterations=390625 time=29
+BTree.h test_size=256 test_iterations=390625 time=16
+OCHashTable.h test_size=256 test_iterations=390625 time=10
+RedBlack.h test_size=256 test_iterations=390625 time=15
+RRedBlack.h test_size=256 test_iterations=390625 time=20
+BTree.h test_size=256 test_iterations=390625 time=15
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=195312 -DTEST_SIZE=512 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=195312 -DTEST_SIZE=512 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_DLIST -DTEST_ITERATIONS=195312 -DTEST_SIZE=512 externaldict_benchmark.cpp -o dlist_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=195312 -DTEST_SIZE=512 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=195312 -DTEST_SIZE=512 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=195312 -DTEST_SIZE=512 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=195312 -DTEST_SIZE=512 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=195312 -DTEST_SIZE=512 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=195312 -DTEST_SIZE=512 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./dlist_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=512 test_iterations=195312 time=12
+AVL.h test_size=512 test_iterations=195312 time=18
+DList.h test_size=512 test_iterations=195312 time=32
+BTreeHashTable.h test_size=512 test_iterations=195312 time=43
+BTree.h test_size=512 test_iterations=195312 time=17
+OCHashTable.h test_size=512 test_iterations=195312 time=10
+RedBlack.h test_size=512 test_iterations=195312 time=17
+RRedBlack.h test_size=512 test_iterations=195312 time=22
+BTree.h test_size=512 test_iterations=195312 time=17
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=97656 -DTEST_SIZE=1024 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=97656 -DTEST_SIZE=1024 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_DLIST -DTEST_ITERATIONS=97656 -DTEST_SIZE=1024 externaldict_benchmark.cpp -o dlist_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=97656 -DTEST_SIZE=1024 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=97656 -DTEST_SIZE=1024 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=97656 -DTEST_SIZE=1024 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=97656 -DTEST_SIZE=1024 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=97656 -DTEST_SIZE=1024 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=97656 -DTEST_SIZE=1024 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./dlist_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=1024 test_iterations=97656 time=13
+AVL.h test_size=1024 test_iterations=97656 time=18
+DList.h test_size=1024 test_iterations=97656 time=64
+BTreeHashTable.h test_size=1024 test_iterations=97656 time=32
+BTree.h test_size=1024 test_iterations=97656 time=18
+OCHashTable.h test_size=1024 test_iterations=97656 time=11
+RedBlack.h test_size=1024 test_iterations=97656 time=18
+RRedBlack.h test_size=1024 test_iterations=97656 time=25
+BTree.h test_size=1024 test_iterations=97656 time=19
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=48828 -DTEST_SIZE=2048 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=48828 -DTEST_SIZE=2048 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_DLIST -DTEST_ITERATIONS=48828 -DTEST_SIZE=2048 externaldict_benchmark.cpp -o dlist_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=48828 -DTEST_SIZE=2048 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=48828 -DTEST_SIZE=2048 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=48828 -DTEST_SIZE=2048 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=48828 -DTEST_SIZE=2048 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=48828 -DTEST_SIZE=2048 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=48828 -DTEST_SIZE=2048 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./dlist_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=2048 test_iterations=48828 time=13
+AVL.h test_size=2048 test_iterations=48828 time=21
+DList.h test_size=2048 test_iterations=48828 time=137
+BTreeHashTable.h test_size=2048 test_iterations=48828 time=36
+BTree.h test_size=2048 test_iterations=48828 time=21
+OCHashTable.h test_size=2048 test_iterations=48828 time=10
+RedBlack.h test_size=2048 test_iterations=48828 time=20
+RRedBlack.h test_size=2048 test_iterations=48828 time=29
+BTree.h test_size=2048 test_iterations=48828 time=20
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=24414 -DTEST_SIZE=4096 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=24414 -DTEST_SIZE=4096 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_DLIST -DTEST_ITERATIONS=24414 -DTEST_SIZE=4096 externaldict_benchmark.cpp -o dlist_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=24414 -DTEST_SIZE=4096 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=24414 -DTEST_SIZE=4096 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=24414 -DTEST_SIZE=4096 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=24414 -DTEST_SIZE=4096 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=24414 -DTEST_SIZE=4096 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=24414 -DTEST_SIZE=4096 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./dlist_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=4096 test_iterations=24414 time=12
+AVL.h test_size=4096 test_iterations=24414 time=23
+DList.h test_size=4096 test_iterations=24414 time=289
+BTreeHashTable.h test_size=4096 test_iterations=24414 time=42
+BTree.h test_size=4096 test_iterations=24414 time=22
+OCHashTable.h test_size=4096 test_iterations=24414 time=11
+RedBlack.h test_size=4096 test_iterations=24414 time=22
+RRedBlack.h test_size=4096 test_iterations=24414 time=31
+BTree.h test_size=4096 test_iterations=24414 time=22
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=12207 -DTEST_SIZE=8192 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=12207 -DTEST_SIZE=8192 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_DLIST -DTEST_ITERATIONS=12207 -DTEST_SIZE=8192 externaldict_benchmark.cpp -o dlist_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=12207 -DTEST_SIZE=8192 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=12207 -DTEST_SIZE=8192 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=12207 -DTEST_SIZE=8192 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=12207 -DTEST_SIZE=8192 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=12207 -DTEST_SIZE=8192 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=12207 -DTEST_SIZE=8192 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./dlist_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=8192 test_iterations=12207 time=13
+AVL.h test_size=8192 test_iterations=12207 time=26
+DList.h test_size=8192 test_iterations=12207 time=582
+BTreeHashTable.h test_size=8192 test_iterations=12207 time=65
+BTree.h test_size=8192 test_iterations=12207 time=25
+OCHashTable.h test_size=8192 test_iterations=12207 time=11
+RedBlack.h test_size=8192 test_iterations=12207 time=25
+RRedBlack.h test_size=8192 test_iterations=12207 time=34
+BTree.h test_size=8192 test_iterations=12207 time=25
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=6103 -DTEST_SIZE=16384 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=6103 -DTEST_SIZE=16384 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=6103 -DTEST_SIZE=16384 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=6103 -DTEST_SIZE=16384 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=6103 -DTEST_SIZE=16384 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=6103 -DTEST_SIZE=16384 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=6103 -DTEST_SIZE=16384 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=6103 -DTEST_SIZE=16384 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=16384 test_iterations=6103 time=14
+AVL.h test_size=16384 test_iterations=6103 time=30
+BTreeHashTable.h test_size=16384 test_iterations=6103 time=84
+BTree.h test_size=16384 test_iterations=6103 time=27
+OCHashTable.h test_size=16384 test_iterations=6103 time=12
+RedBlack.h test_size=16384 test_iterations=6103 time=29
+RRedBlack.h test_size=16384 test_iterations=6103 time=39
+BTree.h test_size=16384 test_iterations=6103 time=27
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=3051 -DTEST_SIZE=32768 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=3051 -DTEST_SIZE=32768 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=3051 -DTEST_SIZE=32768 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=3051 -DTEST_SIZE=32768 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=3051 -DTEST_SIZE=32768 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=3051 -DTEST_SIZE=32768 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=3051 -DTEST_SIZE=32768 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=3051 -DTEST_SIZE=32768 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=32768 test_iterations=3051 time=13
+AVL.h test_size=32768 test_iterations=3051 time=35
+BTreeHashTable.h test_size=32768 test_iterations=3051 time=103
+BTree.h test_size=32768 test_iterations=3051 time=29
+OCHashTable.h test_size=32768 test_iterations=3051 time=12
+RedBlack.h test_size=32768 test_iterations=3051 time=34
+RRedBlack.h test_size=32768 test_iterations=3051 time=46
+BTree.h test_size=32768 test_iterations=3051 time=29
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=1525 -DTEST_SIZE=65536 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=1525 -DTEST_SIZE=65536 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=1525 -DTEST_SIZE=65536 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=1525 -DTEST_SIZE=65536 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=1525 -DTEST_SIZE=65536 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=1525 -DTEST_SIZE=65536 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=1525 -DTEST_SIZE=65536 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=1525 -DTEST_SIZE=65536 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=65536 test_iterations=1525 time=15
+AVL.h test_size=65536 test_iterations=1525 time=39
+BTreeHashTable.h test_size=65536 test_iterations=1525 time=114
+BTree.h test_size=65536 test_iterations=1525 time=32
+OCHashTable.h test_size=65536 test_iterations=1525 time=14
+RedBlack.h test_size=65536 test_iterations=1525 time=39
+RRedBlack.h test_size=65536 test_iterations=1525 time=53
+BTree.h test_size=65536 test_iterations=1525 time=32
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=762 -DTEST_SIZE=131072 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=762 -DTEST_SIZE=131072 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=762 -DTEST_SIZE=131072 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=762 -DTEST_SIZE=131072 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=762 -DTEST_SIZE=131072 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=762 -DTEST_SIZE=131072 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=762 -DTEST_SIZE=131072 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=762 -DTEST_SIZE=131072 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=131072 test_iterations=762 time=20
+AVL.h test_size=131072 test_iterations=762 time=49
+BTreeHashTable.h test_size=131072 test_iterations=762 time=122
+BTree.h test_size=131072 test_iterations=762 time=35
+OCHashTable.h test_size=131072 test_iterations=762 time=20
+RedBlack.h test_size=131072 test_iterations=762 time=48
+RRedBlack.h test_size=131072 test_iterations=762 time=62
+BTree.h test_size=131072 test_iterations=762 time=35
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=381 -DTEST_SIZE=262144 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=381 -DTEST_SIZE=262144 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=381 -DTEST_SIZE=262144 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=381 -DTEST_SIZE=262144 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=381 -DTEST_SIZE=262144 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=381 -DTEST_SIZE=262144 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=381 -DTEST_SIZE=262144 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=381 -DTEST_SIZE=262144 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=262144 test_iterations=381 time=28
+AVL.h test_size=262144 test_iterations=381 time=68
+BTreeHashTable.h test_size=262144 test_iterations=381 time=129
+BTree.h test_size=262144 test_iterations=381 time=39
+OCHashTable.h test_size=262144 test_iterations=381 time=27
+RedBlack.h test_size=262144 test_iterations=381 time=70
+RRedBlack.h test_size=262144 test_iterations=381 time=82
+BTree.h test_size=262144 test_iterations=381 time=40
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=190 -DTEST_SIZE=524288 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=190 -DTEST_SIZE=524288 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=190 -DTEST_SIZE=524288 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=190 -DTEST_SIZE=524288 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=190 -DTEST_SIZE=524288 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=190 -DTEST_SIZE=524288 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=190 -DTEST_SIZE=524288 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=190 -DTEST_SIZE=524288 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=524288 test_iterations=190 time=34
+AVL.h test_size=524288 test_iterations=190 time=84
+BTreeHashTable.h test_size=524288 test_iterations=190 time=126
+BTree.h test_size=524288 test_iterations=190 time=48
+OCHashTable.h test_size=524288 test_iterations=190 time=30
+RedBlack.h test_size=524288 test_iterations=190 time=85
+RRedBlack.h test_size=524288 test_iterations=190 time=110
+BTree.h test_size=524288 test_iterations=190 time=50
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=95 -DTEST_SIZE=1048576 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=95 -DTEST_SIZE=1048576 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=95 -DTEST_SIZE=1048576 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=95 -DTEST_SIZE=1048576 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=95 -DTEST_SIZE=1048576 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=95 -DTEST_SIZE=1048576 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=95 -DTEST_SIZE=1048576 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=95 -DTEST_SIZE=1048576 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=1048576 test_iterations=95 time=35
+AVL.h test_size=1048576 test_iterations=95 time=118
+BTreeHashTable.h test_size=1048576 test_iterations=95 time=142
+BTree.h test_size=1048576 test_iterations=95 time=59
+OCHashTable.h test_size=1048576 test_iterations=95 time=33
+RedBlack.h test_size=1048576 test_iterations=95 time=107
+RRedBlack.h test_size=1048576 test_iterations=95 time=147
+BTree.h test_size=1048576 test_iterations=95 time=62
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=47 -DTEST_SIZE=2097152 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=47 -DTEST_SIZE=2097152 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=47 -DTEST_SIZE=2097152 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=47 -DTEST_SIZE=2097152 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=47 -DTEST_SIZE=2097152 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=47 -DTEST_SIZE=2097152 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=47 -DTEST_SIZE=2097152 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=47 -DTEST_SIZE=2097152 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=2097152 test_iterations=47 time=42
+AVL.h test_size=2097152 test_iterations=47 time=145
+BTreeHashTable.h test_size=2097152 test_iterations=47 time=148
+BTree.h test_size=2097152 test_iterations=47 time=69
+OCHashTable.h test_size=2097152 test_iterations=47 time=35
+RedBlack.h test_size=2097152 test_iterations=47 time=129
+RRedBlack.h test_size=2097152 test_iterations=47 time=182
+BTree.h test_size=2097152 test_iterations=47 time=70
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=23 -DTEST_SIZE=4194304 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=23 -DTEST_SIZE=4194304 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=23 -DTEST_SIZE=4194304 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=23 -DTEST_SIZE=4194304 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=23 -DTEST_SIZE=4194304 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=23 -DTEST_SIZE=4194304 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=23 -DTEST_SIZE=4194304 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=23 -DTEST_SIZE=4194304 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=4194304 test_iterations=23 time=39
+AVL.h test_size=4194304 test_iterations=23 time=147
+BTreeHashTable.h test_size=4194304 test_iterations=23 time=153
+BTree.h test_size=4194304 test_iterations=23 time=81
+OCHashTable.h test_size=4194304 test_iterations=23 time=41
+RedBlack.h test_size=4194304 test_iterations=23 time=150
+RRedBlack.h test_size=4194304 test_iterations=23 time=186
+BTree.h test_size=4194304 test_iterations=23 time=77
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVLHASHTABLE -DTEST_ITERATIONS=11 -DTEST_SIZE=8388608 externaldict_benchmark.cpp -o avlhashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_AVL -DTEST_ITERATIONS=11 -DTEST_SIZE=8388608 externaldict_benchmark.cpp -o avl_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=11 -DTEST_SIZE=8388608 internaldict_benchmark.cpp -o btreehashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_BTREE -DTEST_ITERATIONS=11 -DTEST_SIZE=8388608 internaldict_benchmark.cpp -o btree_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_OCHASHTABLE -DTEST_ITERATIONS=11 -DTEST_SIZE=8388608 externaldict_benchmark.cpp -o ochashtable_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_REDBLACK -DTEST_ITERATIONS=11 -DTEST_SIZE=8388608 externaldict_benchmark.cpp -o redblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_RREDBLACK -DTEST_ITERATIONS=11 -DTEST_SIZE=8388608 externaldict_benchmark.cpp -o rredblack_benchmark
+g++  -O3 -std=c++11 -Wall -Werror -DTEST_TS_BTREE -DTEST_ITERATIONS=11 -DTEST_SIZE=8388608 internaldict_benchmark.cpp -o ts_btree_benchmark
+./avlhashtable_benchmark && ./avl_benchmark && ./btreehashtable_benchmark && ./btree_benchmark && ./ochashtable_benchmark && ./redblack_benchmark && ./rredblack_benchmark && ./ts_btree_benchmark && true
+AVLHashTable.h test_size=8388608 test_iterations=11 time=43
+AVL.h test_size=8388608 test_iterations=11 time=193
+Makefile:36: recipe for target 'dicts_benchmark' failed
+make: *** [dicts_benchmark] Interrupt

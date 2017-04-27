@@ -6,7 +6,7 @@ set title "Time to run a K/Test_Size Iterations for Various Test Sizes"
 set xlabel "Test size"
 set yrange [0:300]
 set ylabel "Seconds to run"
-#set logscale x
+set logscale x
 set key autotitle columnheader
 EOF
 
