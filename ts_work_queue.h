@@ -14,7 +14,7 @@
  *
  * Priority Inversions:
  *   This structure is NOT safe if priority inversions between producers and
- *   consumers are not safe. Mutices are shared between producurs and
+ *   consumers are not safe. Mutices are shared between producures and
  *   consumers.
  */
 

@@ -3,12 +3,21 @@
  * A hashtable implementation, much like open chaining, but using a btree in place
  * of the standard linked-list.
  *
+ * When to use this:
+ * Don't, it's incredibly slow with no advantages. Use btree.h or avlhashtable,
+ * or ochashtable.h instead
+ *
+ * This algorithm turned out to be a very bad idea, due to btree's poor
+ * performance on small dictionaries. avlhashtable
+ *
  * resizes up when size is < x data it contains
  * resizes down when size is > 2x data it contains
  *
  * Worst case operation is linear per op due to linear rehash
  * Next worst case is all elements hash collide, and operations are log(N)
  * 
+ * Threadsafety:
+ *   thread compatible
  */ 
 
 #include "panic.h"

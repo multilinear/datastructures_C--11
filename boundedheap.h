@@ -2,12 +2,12 @@
  *
  * This is a Minheap, implemented as a Tree.
  *
- * THIS IMPLEMENTATION IS SLOW 
- * For better speed use Heap.h or Bheap.h
- *
- * Reasons to use this:
- * 1) external allocation, this 
- * 2) tight bounds on worst-case runtime... without concerns for how realloc works
+ * When to use this:
+ * Most likely don't.
+ * The exception is if you you want external allocation (you allocate memory,
+ * and not the algorithm)
+ * It's slow, it gives tight bounds on worst-case runtime, but heap with a delayed copy array
+ * is faster with the same bounds.
  *
  * A tree implementation of a heap is undoubtably slower than an array
  * implementation. This was implemented to find out how much slower.
@@ -15,18 +15,15 @@
  * A tree implementation also has one major advantage. In an array
  * implementation, if you outstrip your array size, you have to
  * double the size of the array. This is an O(N) operation on push
- * which should ostensibly be O(log(N)).
+ * which should ostensibly be O(log(N)). (Though again, delayed copy array
+ * as a backing store for heap solves this).
  *
  * With a tree implementation all operations are O(log(N))... always.
  * This is why I call it a "Bounded Heap" because it has a tighter
  * bound on the maximum runtime than a standard heap does.
  *
- * We'll see, but in practice it's likely slower for most workloads,
- * So only worry about it if you a) don't know how large your heap
- * might get and need the space and b) have a need for a tight bound
- * on *every* operation, not the net speed of many operations. In
- * particular to use this implementation you have to need that bound
- * for push().
+ * Threadsafety:
+ *   Thread compatible
  */
 
 #include <cstring>

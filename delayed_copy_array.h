@@ -23,6 +23,9 @@
  * ~15% time overhead over a normal doubling array on large heaps
  * Theoretical memory costs are:
  * ~1/2 max memory usage overhead of a normal doubling array
+ *
+ * Threadsafety:
+ *   thread compatible
  */
 
 

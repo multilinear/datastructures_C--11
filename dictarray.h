@@ -3,10 +3,15 @@
  *
  * When to use this:
  * For normal operations this is ludicrously slow, don't use it.
- * I've left it here for 2 reasons:
+ *
+ * Array.h is a fine basic array impl, if you want something weird
+ * delayed_copy_array.h or zero_array.h may fit your needs
+ * 
+ * I've left this here for 2 reasons:
  * 1) It lazilly allocates cells, so might be useful for extremely
  * sparse data-sets while still using normal array-based algorithms
  * 2) For demonstration and testing purposes
+ * 
  *
  * Design Decisions:
  * Resizing an array sometimes requires copying the memory

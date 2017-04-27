@@ -3,6 +3,10 @@
  * A standard open chaining hashtable implementation, using external allocation
  * for nodes.
  *
+ * When to use this:
+ *   If you want a dictionary, want the fastest average case, and don't care
+ *   about worst case. avlhashtable.h seems to be equivelent in performance.
+ *
  * Note: This could be generalized to use any dict-type structure, but during
  * resize we take advantage of the dlist's queue ordering properties... if you
  * want to make one general take a look at avlhashtable
@@ -15,6 +19,9 @@
  * Worst case operation is linear per op due to
  * 1) linear rehash
  * 2) possability of every item hash colliding
+ *
+ * Threadsafety:
+ *   thread compatible
  */ 
 
 // TODO: Add an iterator

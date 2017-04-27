@@ -9,6 +9,11 @@
  * to allocate a new array, but don't want the linear cost of zeroing the
  * whole thing.... e.g. you want to resize an array in constant time. 
  *
+ * When to use:
+ * If you want an array, but want to "set all elements to a value" in constant
+ * time. All operations are thus constant time, but with rather large
+ * constant factors.
+ *
  * API:
  * Note that this has the same API as Array (in array.h) not UArray
  * This algorithm is for random access, if you want something for stack-like

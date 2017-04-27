@@ -4,21 +4,21 @@
  * combines the concepts of a B-tree and a Heap.
  *
  * When to use this:
- * Probably don't, it's slow.
- * This is the best heap I've yet written in relation to worst-case runtimes...
- * but I think a cycle-steeling-copy heap would work better.
- * heap.h is faster average time., more detail below
+ * don't, it's slow.
+ * heap.h is faster, to get the same bounds as bheap use heap.h with a delayed copy array
  *
- * Reasons to use this:
- * Gives a bound on worst-case run-time without concern for realloc implementation
+ * Threadsafety:
+ *   Thread compatible
+ * 
+ * This gives a bound on worst-case run-time without concern for realloc implementation
  * A good realloc should avoid copying all data on an array resize for for a
  * Normal heap, but your depending on it to do that. With this impl, it doesn't matter
  * Cost relative to heap.h is ~20%
  *
  * Originally I had hoped it would have a better average case runtime than
- * a normal heap... It does not.
- * BUT... it still has a *bounded* worst-case runtime! at ~20% average case cost
- * That said... a good re-alloc makes this irrelevent.
+ * a normal heap... It does not. It still has a *bounded* worst-case runtime.
+ * at ~20% average case cost, but using delayed copy on the backing store does
+ * better
  *
  * Concept:
  * A standard Heap implementation is flat in memory, comparisons (jumps) are

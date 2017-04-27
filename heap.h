@@ -1,3 +1,19 @@
+/*
+ * Copyright: Matthew Brewer (mbrewer@smalladventures.net) 
+ * (this header added 2017-04-27)
+ * 
+ * This is a simple heap implementation
+ *
+ * When to use this:
+ * Any time you want a heap! (a priority queue)
+ * 
+ * How to use this:
+ * We suggest using a DCUArray from delayed_copy_array.h for the backing store
+ * (first argument). This will give a log(n) bound on all operations for a small
+ * overhead. If you are okay with a linear bound for a little better average case
+ * use UArray from array.h instead.
+ */
+
 #include <stdio.h>
 #include "panic.h"
 

@@ -8,6 +8,10 @@
  * additionally put elements in a list.
  * 3) "zeroing" of new tables is constant time instead of linear, see
  * zero_array.h for details
+ 
+ * When to use this:
+ * Don't, it's REALLY slow, just a neat proof of concept
+ * Use btree.h or avl.h for good bounds, ochashtable.h for good average runtime
  * 
  * Assumption: malloc/free (not realloc or calloc) are constant time
  * Given this assumption:
@@ -21,9 +25,8 @@
  * resizes up when size is < x data it contains
  * resizes down when size is > 2x data it contains
  *
- * Algorithm:
- * This is basically a hashtable except for 3 tricks
- * #1: We use a
+ * Threadsafety:
+ *   thead compatible
  */ 
 
 #include <stdio.h>

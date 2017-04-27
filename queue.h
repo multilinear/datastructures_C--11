@@ -11,7 +11,7 @@
  *   stricter properties you can use list.h dlist.h or ringbuffer.h
  *
  * Threadsafety:
- *  Thread compatible
+ *   Thread compatible
  */
 
 

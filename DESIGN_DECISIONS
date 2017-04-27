@@ -22,20 +22,38 @@ externally, you can use the iterator to do it, like so:
   }
 
 Note that deletion invalidates the iterator, as it mutates the structure, so we
-call "begin" again each iteration.
+call "begin" again each iteration (wich can be log time for some structures).
+
 Structures with external allocation will panic on deletion if they are not empty
 (e.g. an AVL tree or a linklist), the user is required to free the memory, since
 the user allocated it. Structures with internal allocation (e.g. btrees or arrays)
 will free their own memory, but as noted will not call delete on it.
 
-ABSTRACT STRUCTURES:
-(See files for most cases)
+While we realize this breaks a lot of the standard programming paradigm of C++
+Doing these deletions can be extremely onorous. In particular it can make some
+algorithms linear in nature when they can otherwise be logorithmic or similar.
+When I allocate an array of nodes I expect it to take whatever time malloc takes
+NOT linear in the length of the array... that's the point of lazy zero in
+kernel. If there is one goal with these algorithms it's to have the time
+bounds be well understood.
+
+ABSTRACT ALGORTHIMS:
+dict.h, set.h, queue.h
 
 Stack:
   we do not provide a seperate stack interface, because delayed copy array works
   well for quick-hacking use-cases as is. For more involved uses you can use any
   of delayed copy array, array, list, or dlist
 
-CONCRETE STRUCTURES:
-(See files for most cases)
+CONCRETE ALGORTHIMS:
+Arrays: array.h, delayed_copy_array.h, dictarray.h, treearray.h, zero_array.h
+Lists: dlist.h, list.h
+Dicts: avl.h, avlhashtable.h, boundedhashtable.h, btree.h, btreehashtable.h, hashtable.h, ocheashtable.h, skiplist.h, redblack.h rredblack.h
+Heaps: bheap.h, boundedheap.h, heap.h 
+Ringbuffer: ringbuffer.h 
+Sort: sort.h
+Threadsafe Dicts: ts_btree.h
+Threadsafe Queue: ts_ringbuffer.h
+Threadsafe Work Queue: ts_work_queue.h
+
 

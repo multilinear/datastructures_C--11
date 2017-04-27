@@ -2,12 +2,16 @@
  * Copyright: Matthew Brewer (mbrewer@smalladventures.net) 2014-05-12
  * 
  * When to use this:
- * Any time you want a dictionary style structure, this is a good choice.
- *
+ * Any time you want a mid to large sized dictionary structure, this is a good
+ * choice
+ * ochashtable.h outperforms btree on all sizes, but has worse worst-case bounds
+ * avl.h outperforms btree on the smallest sizes with the same worst-case bounds
+ * 
  * This is an implementation of a binary B-tree, with lazy split/merge.
  * If SIZE is set to 5, this implements a 2-3-4 tree with lazy split/merge.
  *
- * In this configuration, the tree is quite performant. See PERFORMANCE
+ * If you use this impl directly, test for the ideal arity. for hints on what
+ * arity to use see dict.h and set.h which both use this as a backing store
  *
  * Design Decisions:
  *   Lazy split/merge: if SIZE=5, then 1 and 5 are legal sizes temporarilly.

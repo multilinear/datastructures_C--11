@@ -1,6 +1,6 @@
 /* Copyright:  Matthew Brewer (mbrewer@smalladventures.net)  2014-03-22 
  *
- * Simple doubly linked C++ list
+ * Simple doubley linked C++ list
  * 
  * Use:
  *  Build a "node" class yourself which inherits DListNode_base.

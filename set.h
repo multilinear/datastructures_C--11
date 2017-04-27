@@ -1,3 +1,25 @@
+/*
+ * Copyright: Matthew Brewer (mbrewer@smalladventures.net) 
+ * (this header added 2017-02-04)
+ * 
+ * This is a simple wrapper creating a "set" type interface (value store).
+ * It can be ported to use basically any of the various dictionary style
+ * structures in this library, but has been implemented using the best for
+ * for most use cases (the btree). 
+ * 
+ * There is a reasonable argument to be made for changing it to avl.h or 
+ * hashtable.h, the former due to it's tight bounds and faster performance
+ * on *small* dictionaries, the latter due to it's faster average performance
+ * at the cost of bounds.
+ *
+ * For now we assume dict.h is going to be used on medium to large dictionaries
+ * in which case btree.h is a nice default
+ *
+ * Threadsafety:
+ *  Thread compatible
+ */
+
+
 #include "btree.h"
 
 #ifndef SET_H

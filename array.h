@@ -1,3 +1,7 @@
+/*
+ * Copywrite: Matthew Brewer 2014-04-27 (Actually written by me  much earlier)
+ */
+
 #include "panic.h"
 
 #ifndef ARRAY_H
@@ -15,8 +19,12 @@ We do not use an abstract class and inheritence to make these fully
 interoperable as that would require virtual inheritence and thus
 virtual dispatch. Instead, code that uses Arrays should be templated
 on the specific array type.
+
 Swap is here so that "sort" doesn't have to care what type it's working on
 only what array type, this makes practical usage of sorts less cluttered.
+
+We do not construct or delete objects in the array... This keeps allocation
+and deletion at constant time (or malloc() time anyway), rather than linear.
 
 All Array implementations share a similar meaning for:
 - Constructor()
@@ -41,6 +49,9 @@ All UArray (Standing for Used Array) implementations further share
 (len for these means "length of the active portion of the array")
 
 Code that templatizes on Array type can take advantage of these
+
+Threadsafety:
+  Thread compatible
 */
 
 // Define "ARRAY_DEBUG" to enable bounds-checking

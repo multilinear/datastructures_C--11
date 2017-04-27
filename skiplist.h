@@ -1,9 +1,19 @@
 /*
- * Copywrite: Matthew Brewer 2014-04-19
+ * Copywrite: Matthew Brewer 2014-04-26
+ *
+ * When to use:
+ *   Not benchmarked yet, but unlikely to beat AVL
  *
  * Simple randomized skiplist implementation.
  * We randomly select the number of levels for each node
  * so on average it comes out somewhere close to balanced.
+ *
+ * Time bounds:
+ * Average log time for all operations
+ * Worst case linear for all operations (because balance is probabalistic)
+ *
+ * Threadsafety:
+ *   Thread compatible
  */
 
 #include "array.h"

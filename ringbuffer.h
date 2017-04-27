@@ -1,3 +1,16 @@
+/*
+ * Copyright: Matthew Brewer (mbrewer@smalladventures.net) 
+ * (this header added 2017-02-04)
+ * 
+ * When to use this:
+ *   If you want a ringbuffer with no locking etc.
+ *   (e.g. producer consumer with greenthreads)
+ *
+ * Threadsafety:
+ *   Thread compatible
+ */
+ 
+
 #include "panic.h"
 #include "array.h"
 

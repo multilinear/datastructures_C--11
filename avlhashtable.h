@@ -6,8 +6,14 @@
  * resizes up when size is < x data it contains
  * resizes down when size is > 2x data it contains
  *
- * Worst case operation is linear per op due to
- * 1) linear rehash
+ * Worst case operation is linear per op due to linear rehash
+ *
+ * When to use this:
+ * This is comparable with ochashtable, but taking a little more space
+ * This is a reasonable algorithm to use if worst-case isn't your biggest concern
+ *
+ * Threadsafety:
+ *   Thread compatible
  */ 
 
 #include <stdio.h>

@@ -3,10 +3,16 @@
  * A hashtable implementation, much like open chaining, but using a btree in place
  * of the standard linked-list.
  *
+ * When to use this:
+ *  Don't, ochashtable and avlhasthable are strictly better
+ *
  * resizes up when size is < x data it contains
  * resizes down when size is > 2x data it contains
  * 
  * Worst case for all operations is linear
+ *
+ * Threadsafety:
+ *   thread compatible
  */ 
 
 #include "panic.h"
