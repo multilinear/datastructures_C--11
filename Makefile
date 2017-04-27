@@ -6,10 +6,11 @@ TEST_ITERATIONS=10000
 TEST_SIZE=10000
 
 # Build lists
-UNITTESTS=array uarray staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set sort ts_btree ts_ringbuffer ts_work_queue
+UNITTESTS=array uarray staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set skiplist sort ts_btree ts_ringbuffer ts_work_queue
 HEAPS_BENCHMARKS=bheap.cpp boundedheap.cpp heap_dcarray.cpp
 # We leave out dlist 'cause it takes forever (you can add it for smaller tests)
-DICTS_BENCHMARKS=avlhashtable.cpp btree.cpp ochashtable.cpp hashtable.cpp
+DICTS_BENCHMARKS=skiplist.cpp
+#avlhashtable.cpp btree.cpp ochashtable.cpp hashtable.cpp
 # These are less interesting, but you can add them in if you're curious
 #btreehashtable.cpp 
 #rredblack.cpp 
@@ -111,6 +112,9 @@ rredblack_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_RREDBLACK externaldict_un
 rredblack_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_RREDBLACK -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} externaldict_benchmark.cpp -o rredblack_benchmark
 
 set_unittest: *.h *.cpp ; $(CC) $(CFLAGS) set_unittest.cpp -o set_unittest
+
+skiplist_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_SKIPLIST externaldict_unittest.cpp -o skiplist_unittest
+skiplist_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_SKIPLIST -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} externaldict_benchmark.cpp -o skiplist_benchmark
 
 sort_unittest: *.h *.cpp ; $(CC) $(CFLAGS) sort_unittest.cpp -o sort_unittest
 sort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o sort_benchmark

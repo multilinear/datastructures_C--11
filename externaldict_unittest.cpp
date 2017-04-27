@@ -56,6 +56,14 @@ class Node: public RedBlackNode_base<Node, int> {
 #define SORTED_ITERATOR
 class Node: public RRedBlackNode_base<Node, int> {
 #endif
+#ifdef TEST_SKIPLIST
+// This turns on rather expensive internal consistancy checking
+#define DEBUG_SKIPLIST
+#define ARRAY_DEBUG
+#include "skiplist.h"
+#define SORTED_ITERATOR
+class Node: public SkipListNode_base<Node> {
+#endif
   public:
     int value;
   public:
@@ -143,6 +151,10 @@ int main(int argc, char* argv[]) {
   printf("Begin RRedBlack.h unittest\n");
   RRedBlack<Node, int> dict;
   #endif
+  #ifdef TEST_SKIPLIST
+  printf("Begin SkipList.h unittest\n");
+  SkipList<Node, int> dict;
+  #endif
 
   int i;
   // insert in order, then remove
@@ -225,6 +237,7 @@ int main(int argc, char* argv[]) {
   n = new Node(1);
   inserted = dict.insert(n);
   if (inserted) {
+    dict.print();
     PANIC("Double insertion succeeded");
   }
   #endif

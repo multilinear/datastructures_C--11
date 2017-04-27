@@ -1,5 +1,4 @@
 New:
-  Write hashtable using array (rather than dlist) for open chaining
   Write a skiplist
   Write medianfind (and variants)
 

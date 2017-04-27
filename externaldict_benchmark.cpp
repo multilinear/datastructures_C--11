@@ -49,6 +49,10 @@ class Node: public RedBlackNode_base<Node, uint64_t> {
 #include "rredblack.h"
 class Node: public RRedBlackNode_base<Node, uint64_t> {
 #endif 
+#ifdef TEST_SKIPLIST
+#include "skiplist.h"
+class Node: public SkipListNode_base<Node> {
+#endif 
   public:
     uint64_t value;
   public:
@@ -108,6 +112,11 @@ int main(int argc, char* argv[]) {
   printf("RRedBlack.h ");
   RRedBlack<Node, uint64_t> hash;
 	#endif 
+  #ifdef TEST_SKIPLIST
+  printf("SkipList.h ");
+  SkipList<Node, uint64_t> hash;
+	#endif 
+
   printf("test_size=%d test_iterations=%d ", TEST_SIZE, TEST_ITERATIONS); 
 
   timeb t1, t2;

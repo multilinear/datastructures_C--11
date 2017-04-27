@@ -46,7 +46,8 @@ template<typename Node_T> class List{
           n = other.n;
         }
         Iterator& operator=(const Iterator& other) {
-          n = other->_head;
+          n = other.n;
+          return *this;
         }
         bool operator==(const Iterator& other) const {
           return n == other.n;
