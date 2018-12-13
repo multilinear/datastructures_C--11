@@ -1,0 +1,7 @@
+set title "Time to run a K/Test_Size Iterations for Various Test Sizes"
+set xlabel "Test size"
+set ylabel "Seconds to run"
+set logscale x
+set key autotitle columnheader
+plot 'BRadixSort_data' using 1:2 with lines,'HeapSort_data' using 1:2 with lines,'MergeSort_data' using 1:2 with lines,'QuickSort_data' using 1:2 with lines,'RadixSort_data' using 1:2 with lines,
+pause -1

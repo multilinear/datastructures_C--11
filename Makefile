@@ -1,16 +1,16 @@
 CC=g++ 
-CFLAGS=-O3 -std=c++11 -Wall -Werror
+CFLAGS=-O3 -std=c++11 -Wall
 CFLAGS_THREAD=-pthread
 
-TEST_ITERATIONS=10000
-TEST_SIZE=10000
+TEST_ITERATIONS ?= 10000
+TEST_SIZE ?= 10000
 
 # Build lists
 UNITTESTS=array uarray staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set skiplist sort ts_btree ts_ringbuffer ts_work_queue
 HEAPS_BENCHMARKS=bheap.cpp boundedheap.cpp heap_dcarray.cpp
+
 # We leave out dlist 'cause it takes forever (you can add it for smaller tests)
-DICTS_BENCHMARKS=skiplist.cpp
-#avlhashtable.cpp btree.cpp ochashtable.cpp hashtable.cpp
+DICTS_BENCHMARKS=skiplist.cpp avlhashtable.cpp btree.cpp ochashtable.cpp hashtable.cpp
 # These are less interesting, but you can add them in if you're curious
 #btreehashtable.cpp 
 #rredblack.cpp 
@@ -18,7 +18,14 @@ DICTS_BENCHMARKS=skiplist.cpp
 #boundedhashtable.cpp 
 #avl.cpp
 #redblack.cpp
-BENCHMARKS=$(HEAPS_BENCHMARKS) $(DICTS_BENCHMARKS) dict_benchmark sort_benchmark
+
+# sort benchmarks 
+SORTS_BENCHMARKS=quicksort.cpp heapsort.cpp mergesort.cpp bradixsort.cpp radixsort.cpp
+
+# These are less interesting, but you can add them in if you're curious
+# selectsort.cpp bubblesort.cpp 
+
+BENCHMARKS=$(HEAPS_BENCHMARKS) $(DICTS_BENCHMARKS) ${SORTS_BENCHMARKS} dict_benchmark
 
 UNITTEST_EXES=$(UNITTESTS:%=%_unittest) 
 BENCHMARK_EXES=$(BENCHMARKS:.cpp=_benchmark)
@@ -42,6 +49,11 @@ heaps_benchmark: heaps_benchmarks; $(HEAPS_BENCHMARKS:%.cpp=./%_benchmark &&) tr
 dicts_benchmarks: $(DICTS_BENCHMARKS:.cpp=_benchmark)
 
 dicts_benchmark: dicts_benchmarks; $(DICTS_BENCHMARKS:%.cpp=./%_benchmark &&) true
+
+sorts_benchmarks: $(SORTS_BENCHMARKS:.cpp=_benchmark)
+
+sorts_benchmark: sorts_benchmarks; $(SORTS_BENCHMARKS:%.cpp=./%_benchmark &&) true
+
 
 benchmarks: $(BENCHMARK_EXES)
 
@@ -117,7 +129,13 @@ skiplist_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_SKIPLIST externaldict_unit
 skiplist_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_SKIPLIST -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} externaldict_benchmark.cpp -o skiplist_benchmark
 
 sort_unittest: *.h *.cpp ; $(CC) $(CFLAGS) sort_unittest.cpp -o sort_unittest
-sort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o sort_benchmark
+selectsort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_SELECTSORT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o selectsort_benchmark
+bubblesort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BUBBLESORT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o bubblesort_benchmark
+quicksort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_QUICKSORT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o quicksort_benchmark
+heapsort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_HEAPSORT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o heapsort_benchmark
+mergesort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_MERGESORT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o mergesort_benchmark
+bradixsort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BRADIXSORT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o bradixsort_benchmark
+radixsort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_RADIXSORT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o radixsort_benchmark
 
 ts_btree_unittest: *.h *.cpp ;  $(CC) $(CFLAGS) $(CFLAGS_THREAD) -DTEST_TS_BTREE internaldict_unittest.cpp -o ts_btree_unittest
 ts_btree_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_TS_BTREE -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} internaldict_benchmark.cpp -o ts_btree_benchmark

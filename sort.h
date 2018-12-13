@@ -5,6 +5,8 @@
  
 #include "panic.h"
 #include "array.h"
+#include <cstdint>
+#include "math.h"
 
 #ifndef SORT_H
 #define SORT_H
@@ -22,6 +24,8 @@ void sort(AT *a) {
 // Implemented mostly for correctness tests
 // Though might be useful on some smaller data
 // This sort is stable, and in place
+// Use this if:
+//   You probably shouldn't, but it might be faster on very small datasets
 template <typename AT, typename C>
 void selection_sort(AT *a) {
   size_t smallest;
@@ -42,6 +46,8 @@ void selection_sort(AT *a) {
 // expected O(N^2) on random list
 // On list with constant number of inversions O(N)
 // This sort is stable, and in place
+// Use this if:
+//   You know your list is almost sorted, it just has some inversions
 template <typename AT, typename C>
 void bubble_sort(AT *a) {
   size_t i;
@@ -97,6 +103,8 @@ void quick_sort_helper(AT *a, size_t bottom, size_t top) {
 // O(N^2), \Omega(Nlog(N))
 // expected O(Nlog(N)) on random list
 // Fastest average runtime (tested)
+// Use this if:
+//   Your not worried about worst-case runtime, just average
 template <typename AT, typename C>
 void quick_sort(AT *a) {
   if (a->len() <= 0) {
@@ -143,6 +151,8 @@ void merge_sort_helper(AAT *a, BAT *b, size_t chunk, size_t len) {
 // \Theta(Nlog(N))
 // Second fastest average runtime (tested)
 // Believed to be the fastest worst-case runtime
+// Use this if:
+//   You care about worst-case runtime, and not-in-place is okay
 template <typename AT, typename TAT, typename C>
 void merge_sort(AT *in, TAT *tmp) {
   size_t chunk = 1;
@@ -171,7 +181,10 @@ void merge_sort(AT *in, TAT *tmp) {
 
 // This sort is not stable, but is in place
 // \Theta(Nlog(N))
-// Slow in practice, bad constant factors
+// This is the slowest of the Nlog(N) sorts
+// Use this only if you:
+// 1: need a stable, in place sort OR
+// 2: need an in-place, comparison-based sort, and are prioritizing worst-case
 template <typename AT, typename C>
 void heap_sort(AT *in) {
 	// *** first we build the heap
@@ -232,5 +245,113 @@ void heap_sort(AT *in) {
 		}
 	}
 }
- 
+
+template <typename AT, typename VT>
+void bradix_sort_helper(AT *in, size_t o_low, size_t o_high, VT bit) {
+  //printf("%li, %li, %i\n", o_low, o_high, bit);
+  size_t low = o_low;
+  size_t high = o_high;
+  // Note: We sort assuming an unsigned type
+  do {
+    if((*in)[low] & bit) {
+      in->swap(low, high); 
+      high--;
+    } else {
+      low++;
+    }
+  } while (low != high);
+  // At this point we haven't actually looked at the value of in[low] yet
+  if ((*in)[low] & bit) {
+    if (low > 0) {
+      low--;
+    }
+  } else {
+    high++;
+  }
+  bit >>= 1;
+  if (!bit) {
+    return;
+  }
+  if (o_low < low) {
+    bradix_sort_helper<AT,VT>(in, o_low, low, bit);
+  }
+  if (high < o_high) {
+    bradix_sort_helper<AT,VT>(in, high, o_high, bit);
+  }
+}
+
+// Average and worst-case are O(log(sozeof(VT))N)
+// VT is the type of the values stored inside AT
+// Testing with random 32-bit unsigned integers:
+//   This is slower than quicksort average case, but it's faster worst-case
+//   This is slower than mergesort average case, but it's in-place
+//   This is faster than heapsort average case on large datA
+// So: Use this if you are sorting numbers and need an in-place sort
+// and care about worst-case performance
+// 
+// This is a simple binary radix sort, it is NOT stable (stability was thrown
+// out in favor of being in place).
+// Note that this is designed for primative *unsigned* types. It will not
+// Work correctly on signed types. This is both due to the meaning of
+// two's compliment, as well as sign extension.
+template <typename AT, typename VT>
+void bradix_sort(AT *in) {
+  if (in->len() <= 1) {
+    return;
+  }
+  bradix_sort_helper<AT,VT>(in, 0, in->len()-1, 1 << (8*sizeof(VT)-1));
+}
+
+template <typename AAT, typename BAT, uint32_t mod>
+void radix_sort_helper(AAT *in, BAT *out, uint32_t shift) {
+  size_t arena[mod+1];
+  size_t in_len = in->len();
+  // Zero the count table
+  for (size_t i=0; i<mod+1; i++) {
+    arena[i] = 0; 
+  }
+  // Count occurences
+  // Note the "+1" here, this makes summation much simpler later
+  for (size_t i=0; i<in_len; i++) {
+    arena[(((uint32_t) (*in)[i] >> shift) & (mod-1)) + 1]++;
+  }
+  // Sum the account table to make indices
+  size_t sum = arena[0];
+  for (size_t i=1; i<mod+1; i++) {
+    sum += arena[i];
+    arena[i] = sum;
+  }
+  // Place everything at those indices
+  for (size_t i=0; i<in_len; i++) {
+    size_t index = ((uint32_t)((*in)[i] >> shift)) & (mod-1); 
+    index = arena[index]++;
+    (*out)[index] = (*in)[i];
+  }
+}
+
+template <typename AAT, typename BAT, typename VT>
+void radix_sort(AAT *in, BAT *buf) {
+  const uint32_t base_shift = 5;
+  // Assuming you won't use 32 bits of radix :P
+  // We could use 16, but 32 bit computations are faster
+  const uint32_t mod = (1<<base_shift);
+  uint32_t shift = 0;
+  if (in->len() < 2) {
+    return;
+  }
+  while(true) {
+    radix_sort_helper<AAT,BAT,mod>(in, buf, shift);
+    shift += base_shift;
+    if (!(VT)(1l<<shift)) {
+      array_copy<AAT, BAT>(in, buf) ;
+      break;
+    }
+    radix_sort_helper<BAT,AAT,mod>(buf, in, shift);
+    shift += base_shift;
+    if (!(VT)(1l<<shift)) {
+      break;
+    }
+  }
+}
+
 #endif // SORT_H

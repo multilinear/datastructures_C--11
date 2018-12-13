@@ -1,0 +1,297 @@
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=33554432 -DTEST_SIZE=4 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=33554432 -DTEST_SIZE=4 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=33554432 -DTEST_SIZE=4 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=33554432 -DTEST_SIZE=4 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=33554432 -DTEST_SIZE=4 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=4 test_iterations=33554432 time=2.182000
+HeapSort test_size=4 test_iterations=33554432 time=2.127000
+MergeSort test_size=4 test_iterations=33554432 time=2.559000
+BRadixSort test_size=4 test_iterations=33554432 time=3.897000
+RadixSort test_size=4 test_iterations=33554432 time=9.487000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=16777216 -DTEST_SIZE=8 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=16777216 -DTEST_SIZE=8 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=16777216 -DTEST_SIZE=8 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=16777216 -DTEST_SIZE=8 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=16777216 -DTEST_SIZE=8 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=8 test_iterations=16777216 time=2.898000
+HeapSort test_size=8 test_iterations=16777216 time=2.826000
+MergeSort test_size=8 test_iterations=16777216 time=3.060000
+BRadixSort test_size=8 test_iterations=16777216 time=4.850000
+RadixSort test_size=8 test_iterations=16777216 time=6.835000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=8388608 -DTEST_SIZE=16 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=8388608 -DTEST_SIZE=16 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=8388608 -DTEST_SIZE=16 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=8388608 -DTEST_SIZE=16 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=8388608 -DTEST_SIZE=16 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=16 test_iterations=8388608 time=3.998000
+HeapSort test_size=16 test_iterations=8388608 time=3.621000
+MergeSort test_size=16 test_iterations=8388608 time=3.782000
+BRadixSort test_size=16 test_iterations=8388608 time=5.731000
+RadixSort test_size=16 test_iterations=8388608 time=4.873000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=4194304 -DTEST_SIZE=32 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=4194304 -DTEST_SIZE=32 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=4194304 -DTEST_SIZE=32 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=4194304 -DTEST_SIZE=32 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=4194304 -DTEST_SIZE=32 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=32 test_iterations=4194304 time=4.283000
+HeapSort test_size=32 test_iterations=4194304 time=4.234000
+MergeSort test_size=32 test_iterations=4194304 time=4.715000
+BRadixSort test_size=32 test_iterations=4194304 time=6.348000
+RadixSort test_size=32 test_iterations=4194304 time=4.010000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=2097152 -DTEST_SIZE=64 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=2097152 -DTEST_SIZE=64 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=2097152 -DTEST_SIZE=64 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=2097152 -DTEST_SIZE=64 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=2097152 -DTEST_SIZE=64 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=64 test_iterations=2097152 time=4.811000
+HeapSort test_size=64 test_iterations=2097152 time=4.691000
+MergeSort test_size=64 test_iterations=2097152 time=5.484000
+BRadixSort test_size=64 test_iterations=2097152 time=7.167000
+RadixSort test_size=64 test_iterations=2097152 time=3.470000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=1048576 -DTEST_SIZE=128 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=1048576 -DTEST_SIZE=128 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=1048576 -DTEST_SIZE=128 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=1048576 -DTEST_SIZE=128 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=1048576 -DTEST_SIZE=128 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=128 test_iterations=1048576 time=5.387000
+HeapSort test_size=128 test_iterations=1048576 time=5.185000
+MergeSort test_size=128 test_iterations=1048576 time=6.187000
+BRadixSort test_size=128 test_iterations=1048576 time=7.520000
+RadixSort test_size=128 test_iterations=1048576 time=3.320000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=524288 -DTEST_SIZE=256 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=524288 -DTEST_SIZE=256 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=524288 -DTEST_SIZE=256 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=524288 -DTEST_SIZE=256 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=524288 -DTEST_SIZE=256 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=256 test_iterations=524288 time=5.870000
+HeapSort test_size=256 test_iterations=524288 time=5.703000
+MergeSort test_size=256 test_iterations=524288 time=6.714000
+BRadixSort test_size=256 test_iterations=524288 time=8.189000
+RadixSort test_size=256 test_iterations=524288 time=3.314000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=262144 -DTEST_SIZE=512 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=262144 -DTEST_SIZE=512 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=262144 -DTEST_SIZE=512 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=262144 -DTEST_SIZE=512 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=262144 -DTEST_SIZE=512 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=512 test_iterations=262144 time=6.420000
+HeapSort test_size=512 test_iterations=262144 time=6.263000
+MergeSort test_size=512 test_iterations=262144 time=7.426000
+BRadixSort test_size=512 test_iterations=262144 time=8.771000
+RadixSort test_size=512 test_iterations=262144 time=3.092000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=131072 -DTEST_SIZE=1024 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=131072 -DTEST_SIZE=1024 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=131072 -DTEST_SIZE=1024 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=131072 -DTEST_SIZE=1024 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=131072 -DTEST_SIZE=1024 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=1024 test_iterations=131072 time=6.966000
+HeapSort test_size=1024 test_iterations=131072 time=6.782000
+MergeSort test_size=1024 test_iterations=131072 time=8.132000
+BRadixSort test_size=1024 test_iterations=131072 time=9.365000
+RadixSort test_size=1024 test_iterations=131072 time=3.069000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=65536 -DTEST_SIZE=2048 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=65536 -DTEST_SIZE=2048 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=65536 -DTEST_SIZE=2048 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=65536 -DTEST_SIZE=2048 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=65536 -DTEST_SIZE=2048 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=2048 test_iterations=65536 time=7.457000
+HeapSort test_size=2048 test_iterations=65536 time=7.351000
+MergeSort test_size=2048 test_iterations=65536 time=8.798000
+BRadixSort test_size=2048 test_iterations=65536 time=9.972000
+RadixSort test_size=2048 test_iterations=65536 time=3.040000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=32768 -DTEST_SIZE=4096 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=32768 -DTEST_SIZE=4096 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=32768 -DTEST_SIZE=4096 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=32768 -DTEST_SIZE=4096 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=32768 -DTEST_SIZE=4096 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=4096 test_iterations=32768 time=7.990000
+HeapSort test_size=4096 test_iterations=32768 time=7.904000
+MergeSort test_size=4096 test_iterations=32768 time=9.322000
+BRadixSort test_size=4096 test_iterations=32768 time=10.645000
+RadixSort test_size=4096 test_iterations=32768 time=3.129000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=16384 -DTEST_SIZE=8192 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=16384 -DTEST_SIZE=8192 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=16384 -DTEST_SIZE=8192 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=16384 -DTEST_SIZE=8192 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=16384 -DTEST_SIZE=8192 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=8192 test_iterations=16384 time=8.576000
+HeapSort test_size=8192 test_iterations=16384 time=8.463000
+MergeSort test_size=8192 test_iterations=16384 time=10.239000
+BRadixSort test_size=8192 test_iterations=16384 time=11.287000
+RadixSort test_size=8192 test_iterations=16384 time=3.098000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=8192 -DTEST_SIZE=16384 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=8192 -DTEST_SIZE=16384 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=8192 -DTEST_SIZE=16384 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=8192 -DTEST_SIZE=16384 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=8192 -DTEST_SIZE=16384 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=16384 test_iterations=8192 time=9.023000
+HeapSort test_size=16384 test_iterations=8192 time=9.220000
+MergeSort test_size=16384 test_iterations=8192 time=10.600000
+BRadixSort test_size=16384 test_iterations=8192 time=11.923000
+RadixSort test_size=16384 test_iterations=8192 time=3.162000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=4096 -DTEST_SIZE=32768 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=4096 -DTEST_SIZE=32768 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=4096 -DTEST_SIZE=32768 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=4096 -DTEST_SIZE=32768 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=4096 -DTEST_SIZE=32768 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=32768 test_iterations=4096 time=9.599000
+HeapSort test_size=32768 test_iterations=4096 time=10.254000
+MergeSort test_size=32768 test_iterations=4096 time=11.370000
+BRadixSort test_size=32768 test_iterations=4096 time=12.548000
+RadixSort test_size=32768 test_iterations=4096 time=3.177000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=2048 -DTEST_SIZE=65536 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=2048 -DTEST_SIZE=65536 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=2048 -DTEST_SIZE=65536 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=2048 -DTEST_SIZE=65536 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=2048 -DTEST_SIZE=65536 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=65536 test_iterations=2048 time=10.069000
+HeapSort test_size=65536 test_iterations=2048 time=11.218000
+MergeSort test_size=65536 test_iterations=2048 time=11.968000
+BRadixSort test_size=65536 test_iterations=2048 time=13.169000
+RadixSort test_size=65536 test_iterations=2048 time=3.148000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=1024 -DTEST_SIZE=131072 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=1024 -DTEST_SIZE=131072 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=1024 -DTEST_SIZE=131072 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=1024 -DTEST_SIZE=131072 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=1024 -DTEST_SIZE=131072 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=131072 test_iterations=1024 time=10.625000
+HeapSort test_size=131072 test_iterations=1024 time=12.850000
+MergeSort test_size=131072 test_iterations=1024 time=12.674000
+BRadixSort test_size=131072 test_iterations=1024 time=13.746000
+RadixSort test_size=131072 test_iterations=1024 time=3.191000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=512 -DTEST_SIZE=262144 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=512 -DTEST_SIZE=262144 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=512 -DTEST_SIZE=262144 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=512 -DTEST_SIZE=262144 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=512 -DTEST_SIZE=262144 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=262144 test_iterations=512 time=11.102000
+HeapSort test_size=262144 test_iterations=512 time=14.612000
+MergeSort test_size=262144 test_iterations=512 time=13.253000
+BRadixSort test_size=262144 test_iterations=512 time=14.438000
+RadixSort test_size=262144 test_iterations=512 time=3.175000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=256 -DTEST_SIZE=524288 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=256 -DTEST_SIZE=524288 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=256 -DTEST_SIZE=524288 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=256 -DTEST_SIZE=524288 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=256 -DTEST_SIZE=524288 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=524288 test_iterations=256 time=11.738000
+HeapSort test_size=524288 test_iterations=256 time=17.489000
+MergeSort test_size=524288 test_iterations=256 time=14.179000
+BRadixSort test_size=524288 test_iterations=256 time=15.008000
+RadixSort test_size=524288 test_iterations=256 time=3.280000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=128 -DTEST_SIZE=1048576 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=128 -DTEST_SIZE=1048576 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=128 -DTEST_SIZE=1048576 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=128 -DTEST_SIZE=1048576 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=128 -DTEST_SIZE=1048576 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=1048576 test_iterations=128 time=12.373000
+HeapSort test_size=1048576 test_iterations=128 time=20.731000
+MergeSort test_size=1048576 test_iterations=128 time=15.398000
+BRadixSort test_size=1048576 test_iterations=128 time=15.731000
+RadixSort test_size=1048576 test_iterations=128 time=3.556000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=64 -DTEST_SIZE=2097152 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=64 -DTEST_SIZE=2097152 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=64 -DTEST_SIZE=2097152 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=64 -DTEST_SIZE=2097152 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=64 -DTEST_SIZE=2097152 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=2097152 test_iterations=64 time=12.682000
+HeapSort test_size=2097152 test_iterations=64 time=29.054000
+MergeSort test_size=2097152 test_iterations=64 time=15.578000
+BRadixSort test_size=2097152 test_iterations=64 time=16.256000
+RadixSort test_size=2097152 test_iterations=64 time=3.408000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=32 -DTEST_SIZE=4194304 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=32 -DTEST_SIZE=4194304 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=32 -DTEST_SIZE=4194304 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=32 -DTEST_SIZE=4194304 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=32 -DTEST_SIZE=4194304 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=4194304 test_iterations=32 time=13.186000
+HeapSort test_size=4194304 test_iterations=32 time=37.497000
+MergeSort test_size=4194304 test_iterations=32 time=16.013000
+BRadixSort test_size=4194304 test_iterations=32 time=17.206000
+RadixSort test_size=4194304 test_iterations=32 time=3.392000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=16 -DTEST_SIZE=8388608 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=16 -DTEST_SIZE=8388608 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=16 -DTEST_SIZE=8388608 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=16 -DTEST_SIZE=8388608 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=16 -DTEST_SIZE=8388608 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=8388608 test_iterations=16 time=13.712000
+HeapSort test_size=8388608 test_iterations=16 time=51.813000
+MergeSort test_size=8388608 test_iterations=16 time=16.832000
+BRadixSort test_size=8388608 test_iterations=16 time=18.030000
+RadixSort test_size=8388608 test_iterations=16 time=3.408000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=8 -DTEST_SIZE=16777216 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=8 -DTEST_SIZE=16777216 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=8 -DTEST_SIZE=16777216 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=8 -DTEST_SIZE=16777216 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=8 -DTEST_SIZE=16777216 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=16777216 test_iterations=8 time=14.189000
+HeapSort test_size=16777216 test_iterations=8 time=61.101000
+MergeSort test_size=16777216 test_iterations=8 time=17.314000
+BRadixSort test_size=16777216 test_iterations=8 time=18.558000
+RadixSort test_size=16777216 test_iterations=8 time=3.469000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=4 -DTEST_SIZE=33554432 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=4 -DTEST_SIZE=33554432 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=4 -DTEST_SIZE=33554432 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=4 -DTEST_SIZE=33554432 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=4 -DTEST_SIZE=33554432 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=33554432 test_iterations=4 time=14.703000
+HeapSort test_size=33554432 test_iterations=4 time=77.092000
+MergeSort test_size=33554432 test_iterations=4 time=18.167000
+BRadixSort test_size=33554432 test_iterations=4 time=19.382000
+RadixSort test_size=33554432 test_iterations=4 time=3.557000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=2 -DTEST_SIZE=67108864 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=2 -DTEST_SIZE=67108864 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=2 -DTEST_SIZE=67108864 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=2 -DTEST_SIZE=67108864 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=2 -DTEST_SIZE=67108864 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=67108864 test_iterations=2 time=15.552000
+HeapSort test_size=67108864 test_iterations=2 time=89.914000
+MergeSort test_size=67108864 test_iterations=2 time=18.698000
+BRadixSort test_size=67108864 test_iterations=2 time=19.528000
+RadixSort test_size=67108864 test_iterations=2 time=3.588000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=1 -DTEST_SIZE=134217728 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=1 -DTEST_SIZE=134217728 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=1 -DTEST_SIZE=134217728 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=1 -DTEST_SIZE=134217728 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=1 -DTEST_SIZE=134217728 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=134217728 test_iterations=1 time=15.884000
+HeapSort test_size=134217728 test_iterations=1 time=100.645000
+MergeSort test_size=134217728 test_iterations=1 time=19.942000
+BRadixSort test_size=134217728 test_iterations=1 time=20.134000
+RadixSort test_size=134217728 test_iterations=1 time=3.763000
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSORT -DTEST_ITERATIONS=0 -DTEST_SIZE=268435456 sort_benchmark.cpp -o quicksort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_HEAPSORT -DTEST_ITERATIONS=0 -DTEST_SIZE=268435456 sort_benchmark.cpp -o heapsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_MERGESORT -DTEST_ITERATIONS=0 -DTEST_SIZE=268435456 sort_benchmark.cpp -o mergesort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_BRADIXSORT -DTEST_ITERATIONS=0 -DTEST_SIZE=268435456 sort_benchmark.cpp -o bradixsort_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DTEST_ITERATIONS=0 -DTEST_SIZE=268435456 sort_benchmark.cpp -o radixsort_benchmark
+./quicksort_benchmark && ./heapsort_benchmark && ./mergesort_benchmark && ./bradixsort_benchmark && ./radixsort_benchmark && true
+QuickSort test_size=268435456 test_iterations=0 time=0.000000
+HeapSort test_size=268435456 test_iterations=0 time=0.000000
+MergeSort test_size=268435456 test_iterations=0 time=0.000000
+BRadixSort test_size=268435456 test_iterations=0 time=0.000000
+RadixSort test_size=268435456 test_iterations=0 time=0.000000
