@@ -1,0 +1,43 @@
+logfile=$1
+
+
+cat > plotfile << EOF
+set title "Time to run a K/Test_Size Iterations for Various Test Sizes"
+set xlabel "Test size"
+set ylabel "Seconds to run"
+set logscale x
+set key autotitle columnheader
+EOF
+
+
+echo -n "plot " >>  plotfile
+# Now, for each algorithm
+for algo in $(cat ${logfile} | awk '/time=/{print $1}' | sort -u); do
+  #if [[ "${algo}" == "QuickSort" ]]; then
+  #  continue;
+  #fi
+  echo ${algo}
+  # get out the actual runtime for $l *only*
+  echo -e "${algo} ${algo}" > ${algo}_data
+  # Figure out what arity's (Z's) we have
+  cat ${logfile} | tr = ' ' | awk "/^${algo}/{print \$3,\$7,\$9}" | 
+  while read x y z; do
+    # this'll overwrite it many times, but who cares
+    echo ${algo}_${z} ${algo}_${z} > ${algo}_${z}_data
+  done
+  # Now actually load the data in to the files
+  cat ${logfile} | tr = ' ' | awk "/^${algo}/{print \$3,\$7,\$9}" | 
+  while read x y z; do  
+    echo $x $y >> ${algo}_${z}_data
+  done
+  # Then generate a plot for each file
+  ls ${algo}_*_data | sort -u |
+  while read f; do
+    echo -n -e "'${f}' using 1:2 with lines, " >> plotfile
+  done
+done
+
+echo >> plotfile
+echo "pause -1" >> plotfile
+
+gnuplot "plotfile"
