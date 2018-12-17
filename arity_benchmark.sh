@@ -13,6 +13,6 @@ while [[ ${iterations} != 0 ]]; do
   export TEST_SIZE=${size}
   for ((arity=2;arity<9;arity++)); do
     make clean
-    TEST_ITERATIONS=${iterations} TEST_SIZE=${size} ARITY=${arity} make -e ${1} &>> log
+    TEST_ITERATIONS=${iterations} TEST_SIZE=${size} RADIX=${arity} make -e ${1} &>> log
   done
 done

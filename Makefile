@@ -4,7 +4,8 @@ CFLAGS_THREAD=-pthread
 
 TEST_ITERATIONS ?= 10000
 TEST_SIZE ?= 10000
-ARITY ?= 5
+RADIX ?= 5
+BTREE_ARITY ?= 32 
 
 # Build lists
 UNITTESTS=array uarray staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set skiplist sort ts_btree ts_ringbuffer ts_work_queue
@@ -91,7 +92,7 @@ boundedheap_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BOUNDEDHEAP -DTEST_ITE
 queue_unittest: *.h *.cpp ; $(CC) $(CFLAGS) queue_unittest.cpp -o queue_unittest
 
 btree_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREE internaldict_unittest.cpp -o btree_unittest
-btree_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREE -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} internaldict_benchmark.cpp -o btree_benchmark
+btree_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREE -DARITY=BTREE_ARITY -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} internaldict_benchmark.cpp -o btree_benchmark
 
 btreehashtable_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREEHASHTABLE internaldict_unittest.cpp -o btreehashtable_unittest
 btreehashtable_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} internaldict_benchmark.cpp -o btreehashtable_benchmark

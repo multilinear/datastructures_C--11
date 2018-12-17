@@ -52,6 +52,13 @@ To run them at a series of test sizes run "benchmark.sh dicts_benchmark"
 this simply automates running make over and over again with different arguments.
 This will output a logfile, run "gen_plot" to generate a plot using gnuplot.
 For my results see my blog, blog.computersarehard.net.
+Some algorithms have tweak values, to test these at various sizes use
+"arity_benchmark.sh". e.g. "arity_benchmark.sh sorts_unittest". For these tests
+you'll probably want just one algorithm, so set e.g. "SORTS_BENCHMARKS" to just
+radixsort. To plot this type of test use "gen_arity_plot".
+You'll probably need to tweak arity_benchmark.sh slightly to set the approriate
+variable. e.g. RADIX vs. BTREE_ARITY. Also, RADIX is in bit count where ARITY
+is actual size (I didn't feel like computing log_2 in C++ templates). 
 
 What this library is NOT:
 Readability is often secondary to speed in this library. To compare algorithms
