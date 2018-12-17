@@ -22,8 +22,7 @@ DICTS_BENCHMARKS=skiplist.cpp avlhashtable.cpp btree.cpp ochashtable.cpp hashtab
 #redblack.cpp
 
 # sort benchmarks 
-#SORTS_BENCHMARKS=quicksort.cpp heapsort.cpp mergesort.cpp bradixsort.cpp radixsort.cpp
-SORTS_BENCHMARKS=heapsort.cpp mergesort.cpp radixsort.cpp
+SORTS_BENCHMARKS=quicksort.cpp heapsort.cpp mergesort.cpp bradixsort.cpp radixsort.cpp fastsort.cpp
 
 # These are less interesting, but you can add them in if you're curious
 # selectsort.cpp bubblesort.cpp 
@@ -139,6 +138,7 @@ heapsort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_HEAPSORT -DTEST_ITERATION
 mergesort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_MERGESORT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o mergesort_benchmark
 bradixsort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BRADIXSORT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o bradixsort_benchmark
 radixsort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_RADIXSORT -DRADIX_BITS=${RADIX_BITS} -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o radixsort_benchmark
+fastsort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_FASTSORT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} sort_benchmark.cpp -o fastsort_benchmark
 
 ts_btree_unittest: *.h *.cpp ;  $(CC) $(CFLAGS) $(CFLAGS_THREAD) -DTEST_TS_BTREE internaldict_unittest.cpp -o ts_btree_unittest
 ts_btree_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_TS_BTREE -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} internaldict_benchmark.cpp -o ts_btree_benchmark

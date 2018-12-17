@@ -11,7 +11,7 @@
 #define TEST_SIZE 100
 #endif
 #ifndef RADIX_BITS
-#define RADIX_BITS 5
+#define RADIX_BITS 6
 #endif
 
 class IntComparitor {
@@ -45,6 +45,10 @@ int main(int argc, char **argv) {
   printf("RadixSort ");
   Array<uint32_t> b(TEST_SIZE);
   #endif
+  #ifdef TEST_FASTSORT
+  printf("FastSort ");
+  Array<uint32_t> b(TEST_SIZE);
+  #endif
   Array<uint32_t> a(TEST_SIZE);
   timeb t1, t2;
   ftime(&t1);
@@ -72,6 +76,9 @@ int main(int argc, char **argv) {
     #endif
     #ifdef TEST_RADIXSORT
     radix_sort<Array<uint32_t>,Array<uint32_t>, uint32_t, RADIX_BITS>(&a, &b);
+    #endif
+    #ifdef TEST_FASTSORT
+    fast_sort<Array<uint32_t>, uint32_t>(&a);
     #endif
   }
   ftime(&t2);

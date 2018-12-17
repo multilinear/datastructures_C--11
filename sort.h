@@ -11,13 +11,6 @@
 #ifndef SORT_H
 #define SORT_H
 
-// Default sorting algorithm
-template <typename AT, typename C>
-void sort(AT *a) {
-  AT b(a->len());
-  merge_sort(a, &b);
-}
-
 // Sorts are smallest -> largest
 // Comparitors are a-b (so if a < b then result is negative)
 
@@ -352,5 +345,29 @@ void radix_sort(AAT *in, BAT *buf) {
     }
   }
 }
+
+// Default sorting algorithms
+template <typename AT, typename C>
+void sort(AT *a) {
+  AT b(a->len());
+  merge_sort(a, &b);
+}
+
+template <typename AT, typename T>
+void fast_sort(AT *a) {
+  class IntCompare {
+  public:
+    static int32_t compare(uint32_t v1, uint32_t v2) {
+      return v1 - v2;
+    }
+  };
+  if (a->len() <=20) {
+    heap_sort<AT, IntCompare>(a);
+  } else {
+    Array<T> b(a->len());
+    radix_sort<AT, Array<T>, T, 6>(a, &b);
+  }
+}
+
 
 #endif // SORT_H

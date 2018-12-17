@@ -31,6 +31,7 @@ void run(Array<uint32_t>* input, void* _unused){
   Array<uint32_t> h_a(input);  
   Array<uint32_t> br_a(input);  
   Array<uint32_t> r_a(input);  
+  Array<uint32_t> fast_a(input);  
   Array<uint32_t> tmp_a(m_a.len());  
   //printf("testing: ");
   //print_array(input);
@@ -53,6 +54,7 @@ void run(Array<uint32_t>* input, void* _unused){
   bradix_sort<Array<uint32_t>,uint32_t>(&br_a);
   //printf("bradix_sort output\n");
   radix_sort<Array<uint32_t>,Array<uint32_t>,uint32_t, 5>(&r_a, &tmp_a);
+  fast_sort<Array<uint32_t>, uint32_t>(&fast_a);
   for (size_t i=0; i<s_a.len(); i++) {
     if (s_a[i] != b_a[i]) {
       bad = &b_a;
@@ -71,6 +73,9 @@ void run(Array<uint32_t>* input, void* _unused){
     }
     if (s_a[i] != r_a[i]) {
       bad = &r_a;
+    }
+    if (s_a[i] != fast_a[i]) {
+      bad = &fast_a;
     }
   }
   if (bad) {

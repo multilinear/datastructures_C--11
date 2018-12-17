@@ -3,5 +3,5 @@ set xlabel "Test size"
 set ylabel "Seconds to run"
 set logscale x
 set key autotitle columnheader
-plot 'BRadixSort_data' using 1:2 with lines,'HeapSort_data' using 1:2 with lines,'MergeSort_data' using 1:2 with lines,'QuickSort_data' using 1:2 with lines,'RadixSort_data' using 1:2 with lines,
+plot 'BRadixSort__data' using 1:2 with lines, 'HeapSort__data' using 1:2 with lines, 'MergeSort__data' using 1:2 with lines, 'QuickSort__data' using 1:2 with lines, 'RadixSort__data' using 1:2 with lines, 
 pause -1
