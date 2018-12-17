@@ -329,25 +329,24 @@ void radix_sort_helper(AAT *in, BAT *out, uint32_t shift) {
   }
 }
 
-template <typename AAT, typename BAT, typename VT>
+template <typename AAT, typename BAT, typename VT, const uint32_t arity_bits>
 void radix_sort(AAT *in, BAT *buf) {
-  const uint32_t base_shift = 5;
   // Assuming you won't use 32 bits of radix :P
   // We could use 16, but 32 bit computations are faster
-  const uint32_t mod = (1<<base_shift);
+  const uint32_t mod = 1<<arity_bits;
   uint32_t shift = 0;
   if (in->len() < 2) {
     return;
   }
   while(true) {
     radix_sort_helper<AAT,BAT,mod>(in, buf, shift);
-    shift += base_shift;
+    shift += arity_bits;
     if (!(VT)(1l<<shift)) {
       array_copy<AAT, BAT>(in, buf) ;
       break;
     }
     radix_sort_helper<BAT,AAT,mod>(buf, in, shift);
-    shift += base_shift;
+    shift += arity_bits;
     if (!(VT)(1l<<shift)) {
       break;
     }

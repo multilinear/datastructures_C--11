@@ -23,6 +23,7 @@
 #include "panic.h"
 #include "array.h"
 #include "btree.h"
+#include "stdio.h"
 
 #ifndef BTREE_HASHTABLE_H
 #define BTREE_HASHTABLE_H
@@ -87,11 +88,18 @@ class BTreeHashTable {
         Iterator(Array<BTree<BTreeHashTableNode<Data_T>, Val_T, BTreeHashTableComp<Data_T,Val_T, HC>, ARITY>> *t, size_t ind) {
           table = t;
           index = ind;
-          iter = (*table)[index].begin();
-          // Look for a valid element (if we don't have one)
+          // Make sure iter is valid at least
+          if (index < table->len()) {
+            iter = (*table)[index].begin();
+          }else  {
+            iter = (*table)[index-1].end();
+          }
+          // Look for for an actual element (where iter != end)
           while (index < table->len() && iter == (*table)[index].end()) {
             index++;
-            iter = (*table)[index].begin();
+            if (index < table->len()) {
+              iter = (*table)[index].begin();
+            }
           }
         }
         Iterator(const Iterator& other) {
@@ -123,7 +131,9 @@ class BTreeHashTable {
           iter++;
           while (iter == (*table)[index].end() && index < (*table).len()) {
             index++;
-            iter = (*table)[index].begin();
+            if (index < table->len()) {
+              iter = (*table)[index].begin();
+            }
           }
           return *this;
         }
