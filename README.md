@@ -50,8 +50,15 @@ build and run all the dict benchmarks listed in "DICTS_BENCHMARKS" at the
 default test sizes.
 To run them at a series of test sizes run "benchmark.sh dicts_benchmark"
 this simply automates running make over and over again with different arguments.
-This will output a logfile, run "gen_plot" to generate a plot using gnuplot.
+This will output a logfile, run "gen_plot log" to generate a plot using gnuplot.
 For my results see my blog, blog.computersarehard.net.
+To test btree use "arity_benchmark.sh dicts_benchmark" and "gen_arity_plot".
+For radixsort use "radix_benchmark.sh sorts_benchmark" and "gen_arity_plot".
+Radix and arity scripts are similar, but it's easy to typo the changes, and I
+wanted my results to be easy to reproduce. For both of these scripts make sure
+you edit the makefile so "DICTS_BENCHMARK" or "SORTS_BENCHMARK" only have 1 entry,
+otherwise you'll benchmark *every* algorithm at every arity/radix.
+
 Some algorithms have tweak values, to test these at various sizes use
 "arity_benchmark.sh". e.g. "arity_benchmark.sh sorts_unittest". For these tests
 you'll probably want just one algorithm, so set e.g. "SORTS_BENCHMARKS" to just

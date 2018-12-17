@@ -10,8 +10,8 @@
 #ifndef TEST_SIZE
 #define TEST_SIZE 100
 #endif
-#ifndef ARITY
-#define ARITY 5
+#ifndef RADIX_BITS
+#define RADIX_BITS 5
 #endif
 
 class IntComparitor {
@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
     bradix_sort<Array<uint32_t>,uint32_t>(&a);
     #endif
     #ifdef TEST_RADIXSORT
-    radix_sort<Array<uint32_t>,Array<uint32_t>, uint32_t, ARITY>(&a, &b);
+    radix_sort<Array<uint32_t>,Array<uint32_t>, uint32_t, RADIX_BITS>(&a, &b);
     #endif
   }
   ftime(&t2);
@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
 			PANIC("Sort isn't sorting!");
 		}
 	}
-  printf("test_size=%i test_iterations=%i time=%lf arity=%u\n", TEST_SIZE, TEST_ITERATIONS, t, ARITY);
+  printf("test_size=%i test_iterations=%i time=%lf radix_bits=%u\n", TEST_SIZE, TEST_ITERATIONS, t, RADIX_BITS);
   return 0;
 }
 

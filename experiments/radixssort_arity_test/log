@@ -1,0 +1,324 @@
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=67108864 -DTEST_SIZE=4 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=4 test_iterations=67108864 time=17.817000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=67108864 -DTEST_SIZE=4 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=4 test_iterations=67108864 time=13.179000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=67108864 -DTEST_SIZE=4 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=4 test_iterations=67108864 time=29.839000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=67108864 -DTEST_SIZE=4 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=4 test_iterations=67108864 time=49.119000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=33554432 -DTEST_SIZE=8 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=8 test_iterations=33554432 time=12.744000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=33554432 -DTEST_SIZE=8 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=8 test_iterations=33554432 time=11.409000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=33554432 -DTEST_SIZE=8 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=8 test_iterations=33554432 time=16.705000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=33554432 -DTEST_SIZE=8 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=8 test_iterations=33554432 time=27.449000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=16777216 -DTEST_SIZE=16 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=16 test_iterations=16777216 time=13.438000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=16777216 -DTEST_SIZE=16 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=16 test_iterations=16777216 time=9.148000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=16777216 -DTEST_SIZE=16 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=16 test_iterations=16777216 time=11.492000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=16777216 -DTEST_SIZE=16 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=16 test_iterations=16777216 time=15.855000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=8388608 -DTEST_SIZE=32 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=32 test_iterations=8388608 time=11.364000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=8388608 -DTEST_SIZE=32 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=32 test_iterations=8388608 time=8.796000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=8388608 -DTEST_SIZE=32 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=32 test_iterations=8388608 time=8.104000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=8388608 -DTEST_SIZE=32 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=32 test_iterations=8388608 time=10.043000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=4194304 -DTEST_SIZE=64 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=64 test_iterations=4194304 time=12.997000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=4194304 -DTEST_SIZE=64 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=64 test_iterations=4194304 time=7.516000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=4194304 -DTEST_SIZE=64 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=64 test_iterations=4194304 time=7.152000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=4194304 -DTEST_SIZE=64 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=64 test_iterations=4194304 time=7.058000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=2097152 -DTEST_SIZE=128 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=128 test_iterations=2097152 time=10.814000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=2097152 -DTEST_SIZE=128 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=128 test_iterations=2097152 time=7.076000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=2097152 -DTEST_SIZE=128 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=128 test_iterations=2097152 time=6.259000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=2097152 -DTEST_SIZE=128 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=128 test_iterations=2097152 time=5.766000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=1048576 -DTEST_SIZE=256 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=256 test_iterations=1048576 time=10.591000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=1048576 -DTEST_SIZE=256 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=256 test_iterations=1048576 time=6.638000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=1048576 -DTEST_SIZE=256 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=256 test_iterations=1048576 time=5.822000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=1048576 -DTEST_SIZE=256 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=256 test_iterations=1048576 time=5.015000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=524288 -DTEST_SIZE=512 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=512 test_iterations=524288 time=10.585000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=524288 -DTEST_SIZE=512 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=512 test_iterations=524288 time=6.501000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=524288 -DTEST_SIZE=512 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=512 test_iterations=524288 time=5.604000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=524288 -DTEST_SIZE=512 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=512 test_iterations=524288 time=4.620000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=262144 -DTEST_SIZE=1024 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=1024 test_iterations=262144 time=10.710000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=262144 -DTEST_SIZE=1024 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=1024 test_iterations=262144 time=6.581000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=262144 -DTEST_SIZE=1024 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=1024 test_iterations=262144 time=5.616000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=262144 -DTEST_SIZE=1024 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=1024 test_iterations=262144 time=4.507000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=131072 -DTEST_SIZE=2048 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=2048 test_iterations=131072 time=10.706000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=131072 -DTEST_SIZE=2048 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=2048 test_iterations=131072 time=6.534000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=131072 -DTEST_SIZE=2048 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=2048 test_iterations=131072 time=5.477000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=131072 -DTEST_SIZE=2048 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=2048 test_iterations=131072 time=4.325000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=65536 -DTEST_SIZE=4096 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=4096 test_iterations=65536 time=10.871000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=65536 -DTEST_SIZE=4096 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=4096 test_iterations=65536 time=6.718000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=65536 -DTEST_SIZE=4096 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=4096 test_iterations=65536 time=5.769000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=65536 -DTEST_SIZE=4096 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=4096 test_iterations=65536 time=4.392000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=32768 -DTEST_SIZE=8192 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=8192 test_iterations=32768 time=11.015000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=32768 -DTEST_SIZE=8192 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=8192 test_iterations=32768 time=6.774000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=32768 -DTEST_SIZE=8192 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=8192 test_iterations=32768 time=5.612000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=32768 -DTEST_SIZE=8192 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=8192 test_iterations=32768 time=4.511000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=16384 -DTEST_SIZE=16384 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=16384 test_iterations=16384 time=10.972000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=16384 -DTEST_SIZE=16384 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=16384 test_iterations=16384 time=6.766000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=16384 -DTEST_SIZE=16384 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=16384 test_iterations=16384 time=5.679000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=16384 -DTEST_SIZE=16384 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=16384 test_iterations=16384 time=4.551000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=8192 -DTEST_SIZE=32768 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=32768 test_iterations=8192 time=11.181000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=8192 -DTEST_SIZE=32768 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=32768 test_iterations=8192 time=6.819000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=8192 -DTEST_SIZE=32768 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=32768 test_iterations=8192 time=5.742000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=8192 -DTEST_SIZE=32768 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=32768 test_iterations=8192 time=4.603000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=4096 -DTEST_SIZE=65536 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=65536 test_iterations=4096 time=11.487000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=4096 -DTEST_SIZE=65536 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=65536 test_iterations=4096 time=6.971000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=4096 -DTEST_SIZE=65536 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=65536 test_iterations=4096 time=6.281000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=4096 -DTEST_SIZE=65536 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=65536 test_iterations=4096 time=5.072000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=2048 -DTEST_SIZE=131072 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=131072 test_iterations=2048 time=11.329000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=2048 -DTEST_SIZE=131072 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=131072 test_iterations=2048 time=6.939000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=2048 -DTEST_SIZE=131072 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=131072 test_iterations=2048 time=6.136000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=2048 -DTEST_SIZE=131072 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=131072 test_iterations=2048 time=5.386000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=1024 -DTEST_SIZE=262144 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=262144 test_iterations=1024 time=11.351000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=1024 -DTEST_SIZE=262144 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=262144 test_iterations=1024 time=7.072000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=1024 -DTEST_SIZE=262144 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=262144 test_iterations=1024 time=6.161000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=1024 -DTEST_SIZE=262144 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=262144 test_iterations=1024 time=5.706000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=512 -DTEST_SIZE=524288 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=524288 test_iterations=512 time=11.628000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=512 -DTEST_SIZE=524288 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=524288 test_iterations=512 time=7.120000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=512 -DTEST_SIZE=524288 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=524288 test_iterations=512 time=6.285000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=512 -DTEST_SIZE=524288 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=524288 test_iterations=512 time=5.406000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=256 -DTEST_SIZE=1048576 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=1048576 test_iterations=256 time=12.194000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=256 -DTEST_SIZE=1048576 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=1048576 test_iterations=256 time=7.283000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=256 -DTEST_SIZE=1048576 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=1048576 test_iterations=256 time=6.709000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=256 -DTEST_SIZE=1048576 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=1048576 test_iterations=256 time=5.470000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=128 -DTEST_SIZE=2097152 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=2097152 test_iterations=128 time=12.366000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=128 -DTEST_SIZE=2097152 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=2097152 test_iterations=128 time=7.365000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=128 -DTEST_SIZE=2097152 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=2097152 test_iterations=128 time=6.700000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=128 -DTEST_SIZE=2097152 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=2097152 test_iterations=128 time=5.636000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=64 -DTEST_SIZE=4194304 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=4194304 test_iterations=64 time=12.401000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=64 -DTEST_SIZE=4194304 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=4194304 test_iterations=64 time=7.438000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=64 -DTEST_SIZE=4194304 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=4194304 test_iterations=64 time=6.814000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=64 -DTEST_SIZE=4194304 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=4194304 test_iterations=64 time=5.682000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=32 -DTEST_SIZE=8388608 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=8388608 test_iterations=32 time=12.611000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=32 -DTEST_SIZE=8388608 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=8388608 test_iterations=32 time=7.472000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=32 -DTEST_SIZE=8388608 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=8388608 test_iterations=32 time=7.115000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=32 -DTEST_SIZE=8388608 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=8388608 test_iterations=32 time=5.795000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=16 -DTEST_SIZE=16777216 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=16777216 test_iterations=16 time=12.648000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=16 -DTEST_SIZE=16777216 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=16777216 test_iterations=16 time=7.605000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=16 -DTEST_SIZE=16777216 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=16777216 test_iterations=16 time=8.262000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=16 -DTEST_SIZE=16777216 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=16777216 test_iterations=16 time=7.634000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=8 -DTEST_SIZE=33554432 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=33554432 test_iterations=8 time=12.578000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=8 -DTEST_SIZE=33554432 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=33554432 test_iterations=8 time=7.838000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=8 -DTEST_SIZE=33554432 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=33554432 test_iterations=8 time=8.088000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=8 -DTEST_SIZE=33554432 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=33554432 test_iterations=8 time=9.596000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=4 -DTEST_SIZE=67108864 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=67108864 test_iterations=4 time=12.613000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=4 -DTEST_SIZE=67108864 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=67108864 test_iterations=4 time=7.618000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=4 -DTEST_SIZE=67108864 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=67108864 test_iterations=4 time=7.632000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=4 -DTEST_SIZE=67108864 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=67108864 test_iterations=4 time=10.703000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=2 -DTEST_SIZE=134217728 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=134217728 test_iterations=2 time=12.618000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=2 -DTEST_SIZE=134217728 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=134217728 test_iterations=2 time=7.719000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=2 -DTEST_SIZE=134217728 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=134217728 test_iterations=2 time=7.490000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=2 -DTEST_SIZE=134217728 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=134217728 test_iterations=2 time=13.178000 radix_bits=8
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=2 -DTEST_ITERATIONS=1 -DTEST_SIZE=268435456 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=268435456 test_iterations=1 time=12.818000 radix_bits=2
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=4 -DTEST_ITERATIONS=1 -DTEST_SIZE=268435456 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=268435456 test_iterations=1 time=7.802000 radix_bits=4
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=6 -DTEST_ITERATIONS=1 -DTEST_SIZE=268435456 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=268435456 test_iterations=1 time=7.333000 radix_bits=6
+g++  -O3 -std=c++11 -Wall -DTEST_RADIXSORT -DRADIX_BITS=8 -DTEST_ITERATIONS=1 -DTEST_SIZE=268435456 sort_benchmark.cpp -o radixsort_benchmark
+./radixsort_benchmark && true
+RadixSort test_size=268435456 test_iterations=1 time=12.424000 radix_bits=8
