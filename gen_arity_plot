@@ -23,15 +23,15 @@ for algo in $(cat ${logfile} | awk '/time=/{print $1}' | sort -u); do
   cat ${logfile} | tr = ' ' | awk "/^${algo}/{print \$3,\$7,\$9}" | 
   while read x y z; do
     # this'll overwrite it many times, but who cares
-    echo ${algo}_${z} ${algo}_${z} > ${algo}_${z}_data
+    echo ${algo}-${z} ${algo}-${z} > ${z}_${algo}_data
   done
   # Now actually load the data in to the files
   cat ${logfile} | tr = ' ' | awk "/^${algo}/{print \$3,\$7,\$9}" | 
   while read x y z; do  
-    echo $x $y >> ${algo}_${z}_data
+    echo $x $y >> ${z}_${algo}_data
   done
   # Then generate a plot for each file
-  ls ${algo}_*_data | sort -u |
+  ls *_${algo}_data | sort -u | sort -n |
   while read f; do
     echo -n -e "'${f}' using 1:2 with lines, " >> plotfile
   done

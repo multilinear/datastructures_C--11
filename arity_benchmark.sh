@@ -2,7 +2,7 @@
 set -x
 target=$1 
 
-total=134217728
+total=33554432
 size=4;
 iterations=$((total/size))
 rm log

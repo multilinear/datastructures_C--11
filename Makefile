@@ -11,17 +11,8 @@ BTREE_ARITY ?= 32
 UNITTESTS=array uarray staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set skiplist sort ts_btree ts_ringbuffer ts_work_queue
 HEAPS_BENCHMARKS=bheap.cpp boundedheap.cpp heap_dcarray.cpp
 
-# We leave out dlist 'cause it takes forever (you can add it for smaller tests)
-DICTS_BENCHMARKS=skiplist.cpp avlhashtable.cpp btree.cpp ochashtable.cpp hashtable.cpp
-# These are less interesting, but you can add them in if you're curious
-#btreehashtable.cpp 
-#rredblack.cpp 
-#ts_btree.cpp
-#boundedhashtable.cpp 
-#avl.cpp
-#redblack.cpp
+DICTS_BENCHMARKS=skiplist.cpp avlhashtable.cpp btree.cpp ochashtable.cpp hashtable.cpp btreehashtable.cpp rredblack.cpp ts_btree.cpp boundedhashtable.cpp avl.cpp redblack.cpp dlist.cpp
 
-# sort benchmarks 
 SORTS_BENCHMARKS=quicksort.cpp heapsort.cpp mergesort.cpp bradixsort.cpp radixsort.cpp fastsort.cpp
 
 # These are less interesting, but you can add them in if you're curious
@@ -91,7 +82,7 @@ boundedheap_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BOUNDEDHEAP -DTEST_ITE
 queue_unittest: *.h *.cpp ; $(CC) $(CFLAGS) queue_unittest.cpp -o queue_unittest
 
 btree_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREE internaldict_unittest.cpp -o btree_unittest
-btree_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREE -DARITY=BTREE_ARITY -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} internaldict_benchmark.cpp -o btree_benchmark
+btree_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREE -DARITY=${BTREE_ARITY} -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} internaldict_benchmark.cpp -o btree_benchmark
 
 btreehashtable_unittest: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREEHASHTABLE internaldict_unittest.cpp -o btreehashtable_unittest
 btreehashtable_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_BTREEHASHTABLE -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} internaldict_benchmark.cpp -o btreehashtable_benchmark

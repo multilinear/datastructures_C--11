@@ -89,7 +89,6 @@ int main(int argc, char* argv[]) {
   printf("HashTable.h ");
   HashTable<uint64_t, uint64_t, Comp> dict; 
   #endif
-  printf("test_size=%d test_iterations=%d ", TEST_SIZE, TEST_ITERATIONS);
 
   timeb t1, t2;
   ftime(&t1);
@@ -125,6 +124,7 @@ int main(int argc, char* argv[]) {
     }
   }
   ftime(&t2);
-  printf("time=%lf\n", tdiff(t2,t1));
+  printf("test_size=%d test_iterations=%d ", TEST_SIZE, TEST_ITERATIONS);
+  printf("time=%lf arity=%u\n", tdiff(t2,t1), ARITY);
 }
 
