@@ -190,7 +190,6 @@ int main(int argc, char* argv[]) {
   for (size_t i=0; i<100; i++) {
     dict.insert(i);
   }
-  printf("test iterator\n");
   i = 0;
   for (auto i2 = dict.begin(); i2 != dict.end(); ++i2) {
     if (*i2 != i) {
@@ -199,7 +198,6 @@ int main(int argc, char* argv[]) {
     }
     ++i;
   }
-  printf("done test iterator\n");
   int val;
   auto a = dict.begin();
   while (a != dict.end() && dict.remove(*a, &val)) {

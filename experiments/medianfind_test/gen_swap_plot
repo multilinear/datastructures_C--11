@@ -1,0 +1,31 @@
+logfile=$1
+
+
+cat > plotfile << EOF
+set title "Time to run a K/Test_Size Iterations for Various Test Sizes"
+set xlabel "Test size"
+#set ylabel "Seconds to run"
+set ylabel "Total Swaps"
+set logscale x
+set key autotitle columnheader
+EOF
+
+
+echo -n "plot " >>  plotfile
+# Now, for each algorithm
+for algo in $(cat ${logfile} | awk '/time=/{print $1}' | sort -u); do
+  #if [[ "${algo}" == "QuickSort" ]]; then
+  #  continue;
+  #fi
+  echo ${algo}
+  # get out the actual runtime for $l *only*
+  echo -e "${algo} ${algo}" > ${algo}_data
+  #cat ${logfile} | tr = ' ' | awk "/^${algo}/{print \$3,\$7}" >> ${algo}_data
+  cat ${logfile} | tr = ' ' | awk "/^${algo}/{print \$3,\$9}" >> ${algo}_data
+  echo -n -e "'${algo}_data' using 1:2 with lines," >> plotfile
+done
+
+echo >> plotfile
+echo "pause -1" >> plotfile
+
+gnuplot "plotfile"

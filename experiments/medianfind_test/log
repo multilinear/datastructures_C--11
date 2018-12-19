@@ -1,0 +1,189 @@
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=67108864 -DTEST_SIZE=2 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=67108864 -DTEST_SIZE=2 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=67108864 -DTEST_SIZE=2 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=2 test_iterations=67108864 time=0.244000 swaps=0
+QuickSelect test_size=2 test_iterations=67108864 time=1.228000 swaps=67108864
+LinearQuickSelect test_size=2 test_iterations=67108864 time=1.318000 swaps=134217728
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=33554432 -DTEST_SIZE=4 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=33554432 -DTEST_SIZE=4 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=33554432 -DTEST_SIZE=4 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=4 test_iterations=33554432 time=0.981000 swaps=50333996
+QuickSelect test_size=4 test_iterations=33554432 time=1.260000 swaps=67108864
+LinearQuickSelect test_size=4 test_iterations=33554432 time=1.257000 swaps=100663296
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=16777216 -DTEST_SIZE=8 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=16777216 -DTEST_SIZE=8 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=16777216 -DTEST_SIZE=8 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=8 test_iterations=16777216 time=2.072000 swaps=87052895
+QuickSelect test_size=8 test_iterations=16777216 time=2.192000 swaps=191108579
+LinearQuickSelect test_size=8 test_iterations=16777216 time=2.265000 swaps=248984759
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=8388608 -DTEST_SIZE=16 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=8388608 -DTEST_SIZE=16 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=8388608 -DTEST_SIZE=16 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=16 test_iterations=8388608 time=3.364000 swaps=118907889
+QuickSelect test_size=16 test_iterations=8388608 time=2.790000 swaps=260252420
+LinearQuickSelect test_size=16 test_iterations=8388608 time=3.221000 swaps=303069039
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=4194304 -DTEST_SIZE=32 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=4194304 -DTEST_SIZE=32 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=4194304 -DTEST_SIZE=32 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=32 test_iterations=4194304 time=4.189000 swaps=151350536
+QuickSelect test_size=32 test_iterations=4194304 time=2.920000 swaps=302605047
+LinearQuickSelect test_size=32 test_iterations=4194304 time=4.375000 swaps=420924024
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=2097152 -DTEST_SIZE=64 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=2097152 -DTEST_SIZE=64 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=2097152 -DTEST_SIZE=64 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=64 test_iterations=2097152 time=4.857000 swaps=183577365
+QuickSelect test_size=64 test_iterations=2097152 time=3.019000 swaps=327848885
+LinearQuickSelect test_size=64 test_iterations=2097152 time=5.110000 swaps=480849710
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=1048576 -DTEST_SIZE=128 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=1048576 -DTEST_SIZE=128 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=1048576 -DTEST_SIZE=128 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=128 test_iterations=1048576 time=5.481000 swaps=215464223
+QuickSelect test_size=128 test_iterations=1048576 time=3.016000 swaps=342434244
+LinearQuickSelect test_size=128 test_iterations=1048576 time=5.386000 swaps=536458834
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=524288 -DTEST_SIZE=256 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=524288 -DTEST_SIZE=256 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=524288 -DTEST_SIZE=256 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=256 test_iterations=524288 time=6.059000 swaps=247024821
+QuickSelect test_size=256 test_iterations=524288 time=3.038000 swaps=350961866
+LinearQuickSelect test_size=256 test_iterations=524288 time=5.741000 swaps=584208563
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=262144 -DTEST_SIZE=512 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=262144 -DTEST_SIZE=512 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=262144 -DTEST_SIZE=512 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=512 test_iterations=262144 time=6.579000 swaps=278353661
+QuickSelect test_size=512 test_iterations=262144 time=3.049000 swaps=355643065
+LinearQuickSelect test_size=512 test_iterations=262144 time=5.961000 swaps=621612802
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=131072 -DTEST_SIZE=1024 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=131072 -DTEST_SIZE=1024 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=131072 -DTEST_SIZE=1024 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=1024 test_iterations=131072 time=7.147000 swaps=309588784
+QuickSelect test_size=1024 test_iterations=131072 time=3.033000 swaps=358233938
+LinearQuickSelect test_size=1024 test_iterations=131072 time=6.077000 swaps=650216919
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=65536 -DTEST_SIZE=2048 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=65536 -DTEST_SIZE=2048 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=65536 -DTEST_SIZE=2048 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=2048 test_iterations=65536 time=7.661000 swaps=340680128
+QuickSelect test_size=2048 test_iterations=65536 time=3.017000 swaps=359223075
+LinearQuickSelect test_size=2048 test_iterations=65536 time=6.173000 swaps=672950190
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=32768 -DTEST_SIZE=4096 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=32768 -DTEST_SIZE=4096 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=32768 -DTEST_SIZE=4096 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=4096 test_iterations=32768 time=8.237000 swaps=371741452
+QuickSelect test_size=4096 test_iterations=32768 time=3.009000 swaps=360844271
+LinearQuickSelect test_size=4096 test_iterations=32768 time=6.259000 swaps=690570146
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=16384 -DTEST_SIZE=8192 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=16384 -DTEST_SIZE=8192 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=16384 -DTEST_SIZE=8192 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=8192 test_iterations=16384 time=8.789000 swaps=402792667
+QuickSelect test_size=8192 test_iterations=16384 time=3.021000 swaps=360649019
+LinearQuickSelect test_size=8192 test_iterations=16384 time=6.359000 swaps=705536944
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=8192 -DTEST_SIZE=16384 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=8192 -DTEST_SIZE=16384 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=8192 -DTEST_SIZE=16384 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=16384 test_iterations=8192 time=9.333000 swaps=433867656
+QuickSelect test_size=16384 test_iterations=8192 time=2.989000 swaps=359847972
+LinearQuickSelect test_size=16384 test_iterations=8192 time=6.437000 swaps=716525983
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=4096 -DTEST_SIZE=32768 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=4096 -DTEST_SIZE=32768 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=4096 -DTEST_SIZE=32768 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=32768 test_iterations=4096 time=9.836000 swaps=464897177
+QuickSelect test_size=32768 test_iterations=4096 time=2.992000 swaps=360216633
+LinearQuickSelect test_size=32768 test_iterations=4096 time=6.550000 swaps=726297779
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=2048 -DTEST_SIZE=65536 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=2048 -DTEST_SIZE=65536 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=2048 -DTEST_SIZE=65536 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=65536 test_iterations=2048 time=10.335000 swaps=495907994
+QuickSelect test_size=65536 test_iterations=2048 time=2.998000 swaps=362417542
+LinearQuickSelect test_size=65536 test_iterations=2048 time=6.784000 swaps=733425295
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=1024 -DTEST_SIZE=131072 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=1024 -DTEST_SIZE=131072 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=1024 -DTEST_SIZE=131072 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=131072 test_iterations=1024 time=11.141000 swaps=526792230
+QuickSelect test_size=131072 test_iterations=1024 time=2.994000 swaps=359873253
+LinearQuickSelect test_size=131072 test_iterations=1024 time=6.914000 swaps=738782229
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=512 -DTEST_SIZE=262144 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=512 -DTEST_SIZE=262144 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=512 -DTEST_SIZE=262144 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=262144 test_iterations=512 time=11.501000 swaps=557808714
+QuickSelect test_size=262144 test_iterations=512 time=2.998000 swaps=359138630
+LinearQuickSelect test_size=262144 test_iterations=512 time=7.093000 swaps=743213767
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=256 -DTEST_SIZE=524288 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=256 -DTEST_SIZE=524288 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=256 -DTEST_SIZE=524288 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=524288 test_iterations=256 time=11.908000 swaps=588831265
+QuickSelect test_size=524288 test_iterations=256 time=3.290000 swaps=362372252
+LinearQuickSelect test_size=524288 test_iterations=256 time=7.697000 swaps=748005238
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=128 -DTEST_SIZE=1048576 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=128 -DTEST_SIZE=1048576 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=128 -DTEST_SIZE=1048576 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=1048576 test_iterations=128 time=12.497000 swaps=619629000
+QuickSelect test_size=1048576 test_iterations=128 time=3.341000 swaps=369586762
+LinearQuickSelect test_size=1048576 test_iterations=128 time=8.456000 swaps=749177538
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=64 -DTEST_SIZE=2097152 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=64 -DTEST_SIZE=2097152 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=64 -DTEST_SIZE=2097152 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=2097152 test_iterations=64 time=12.977000 swaps=650258081
+QuickSelect test_size=2097152 test_iterations=64 time=3.325000 swaps=357110745
+LinearQuickSelect test_size=2097152 test_iterations=64 time=9.177000 swaps=750628145
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=32 -DTEST_SIZE=4194304 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=32 -DTEST_SIZE=4194304 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=32 -DTEST_SIZE=4194304 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=4194304 test_iterations=32 time=13.537000 swaps=682507902
+QuickSelect test_size=4194304 test_iterations=32 time=3.461000 swaps=370146780
+LinearQuickSelect test_size=4194304 test_iterations=32 time=9.774000 swaps=755071914
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=16 -DTEST_SIZE=8388608 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=16 -DTEST_SIZE=8388608 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=16 -DTEST_SIZE=8388608 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=8388608 test_iterations=16 time=13.987000 swaps=712225020
+QuickSelect test_size=8388608 test_iterations=16 time=3.215000 swaps=323695621
+LinearQuickSelect test_size=8388608 test_iterations=16 time=10.482000 swaps=759220674
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=8 -DTEST_SIZE=16777216 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=8 -DTEST_SIZE=16777216 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=8 -DTEST_SIZE=16777216 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=16777216 test_iterations=8 time=14.627000 swaps=744343544
+QuickSelect test_size=16777216 test_iterations=8 time=3.688000 swaps=360419212
+LinearQuickSelect test_size=16777216 test_iterations=8 time=10.761000 swaps=759212229
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=4 -DTEST_SIZE=33554432 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=4 -DTEST_SIZE=33554432 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=4 -DTEST_SIZE=33554432 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=33554432 test_iterations=4 time=15.248000 swaps=775771298
+QuickSelect test_size=33554432 test_iterations=4 time=3.872000 swaps=343997711
+LinearQuickSelect test_size=33554432 test_iterations=4 time=11.405000 swaps=757821537
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=2 -DTEST_SIZE=67108864 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=2 -DTEST_SIZE=67108864 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=2 -DTEST_SIZE=67108864 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=67108864 test_iterations=2 time=15.696000 swaps=806943412
+QuickSelect test_size=67108864 test_iterations=2 time=3.981000 swaps=345768699
+LinearQuickSelect test_size=67108864 test_iterations=2 time=12.595000 swaps=758895409
+g++  -O3 -std=c++11 -Wall -DTEST_SORTSELECT -DTEST_ITERATIONS=1 -DTEST_SIZE=134217728 medianfind_benchmark.cpp -o sortselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_QUICKSELECT -DTEST_ITERATIONS=1 -DTEST_SIZE=134217728 medianfind_benchmark.cpp -o quickselect_benchmark
+g++  -O3 -std=c++11 -Wall -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=1 -DTEST_SIZE=134217728 medianfind_benchmark.cpp -o linearquickselect_benchmark
+./sortselect_benchmark && ./quickselect_benchmark && ./linearquickselect_benchmark && true
+Sort test_size=134217728 test_iterations=1 time=16.357000 swaps=838552799
+QuickSelect test_size=134217728 test_iterations=1 time=3.060000 swaps=310267076
+LinearQuickSelect test_size=134217728 test_iterations=1 time=12.684000 swaps=763704872

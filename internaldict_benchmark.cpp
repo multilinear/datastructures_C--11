@@ -20,21 +20,18 @@
 #ifndef TEST_SIZE
 #define TEST_SIZE 100
 #endif
+#ifndef ARITY
+#define ARITY 64 
+#endif
 
 #ifdef TEST_BTREE
 // This is so we can script sets of tests at different arities
 #include "btree.h"
-#ifndef ARITY
-#define ARITY 64 
-#endif
 #endif
 
 #ifdef TEST_TS_BTREE
 // This is so we can script sets of tests at different arities
 #include "ts_btree.h"
-#ifndef ARITY
-#define ARITY 64 
-#endif
 #endif
 
 #ifdef TEST_BTREEHASHTABLE
