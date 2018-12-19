@@ -121,6 +121,9 @@ size_t findkth_helper(AT *a, Array<size_t> *ind, size_t k, size_t orig_bottom, s
   }
 } 
 
+// When to use this:
+// Use it with linear=false, if worst-case isn't an issue
+// If it is fast_sort is actually a better bet... This is crazy slow.
 template<typename AT, typename C, bool linear>
 size_t findkth(AT *a, size_t k) {
   // Build an index array
