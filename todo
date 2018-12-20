@@ -1,9 +1,9 @@
 New:
+  perfect hash
 
 Cleanup:
   move semantics for Iterator construction
   review for move semantics (arrays especially)
-  drop arrays in favor of vector due to "emplace"
 
 Usability:
   Write translations from Array -> Set, dict

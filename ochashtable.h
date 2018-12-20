@@ -24,8 +24,6 @@
  *   thread compatible
  */ 
 
-// TODO: Add an iterator
-
 #include "panic.h"
 #include "array.h"
 #include "dlist.h"
