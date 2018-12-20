@@ -29,6 +29,7 @@
 #include "panic.h"
 #include "array.h"
 #include "dlist.h"
+#include <vector>
 
 #ifndef OC_HASHTABLE_H
 #define OC_HASHTABLE_H
@@ -49,23 +50,23 @@ class OCHashTableNode_base: public DListNode_base<Node_T> {
 template <typename Node_T, typename Val_T>
 class OCHashTable {
   private:
-    Array<DList<Node_T, Val_T>> table;
+    std::vector<DList<Node_T, Val_T>> table;
     size_t count = 0;
     void check_sizeup(void);
     void check_sizedown(void);
   public:
     class Iterator {
       private:
-        Array<DList<Node_T,Val_T>> *table;
+        std::vector<DList<Node_T,Val_T>> *table;
         size_t index;
         typename DList<Node_T,Val_T>::Iterator iter;
       public:
-        Iterator(Array<DList<Node_T,Val_T>> *t, size_t ind) {
+        Iterator(std::vector<DList<Node_T,Val_T>> *t, size_t ind) {
           table = t;
           index = ind;
           iter = (*table)[index].begin();
           // Look for a valid element (if we don't have one)
-          while (index < table->len() && iter == (*table)[index].end()) {
+          while (index < table->size() && iter == (*table)[index].end()) {
             index++;
             iter = (*table)[index].begin();
           }
@@ -81,22 +82,22 @@ class OCHashTable {
           return *this;
         }
         bool operator==(const Iterator& other) {
-          return (index >= table->len() && other.index >= other.table->len()) ||
+          return (index >= table->size() && other.index >= other.table->size()) ||
             index == other.index && iter == other.iter;
         }
         bool operator!=(const Iterator& other) {
-          return !(index >= table->len() && other.index >= other.table->len()) && 
+          return !(index >= table->size() && other.index >= other.table->size()) && 
             (index != other.index || iter != other.iter);
         }
         Iterator operator++() {
           // If we're at the end, we're done
-          if (index >= table->len()) {
+          if (index >= table->size()) {
             return *this;
           }
           // We were at a valid element (or the end of the array)
           // so iter++ makes sense
           iter++;
-          while (iter == (*table)[index].end() && index < table->len()) {
+          while (iter == (*table)[index].end() && index < table->size()) {
             index++;
             iter = (*table)[index].begin();
           }
@@ -120,7 +121,7 @@ class OCHashTable {
       return Iterator(&table, 0);
     }
     Iterator end() {
-      return Iterator(&table, table.len());
+      return Iterator(&table, table.size());
     }
     OCHashTable();
     OCHashTable(size_t s);
@@ -138,7 +139,7 @@ OCHashTable<Node_T,Val_T>::OCHashTable():table(MINSIZE) {
   // We have to initialize the lists since
   // array doesn't construct objects it contains
   for (size_t i=0; i<MINSIZE; ++i) {
-    table[i] = DList<Node_T,Val_T>();
+    table.emplace_back(DList<Node_T,Val_T>());
   }
 }
 
@@ -153,7 +154,7 @@ OCHashTable<Node_T,Val_T>::OCHashTable(size_t s):table(s) {
 
 template <typename Node_T, typename Val_T>
 OCHashTable<Node_T,Val_T>::~OCHashTable() {
-  for (size_t i=0; i<table.len(); ++i) {
+  for (size_t i=0; i<table.size(); ++i) {
     if (!table[i].isempty()) {
       PANIC("Hashtable not empty before destruction");
     }
@@ -166,8 +167,8 @@ template <typename Node_T, typename Val_T>
 bool OCHashTable<Node_T,Val_T>::insert(Node_T *new_node) {
   check_sizeup();
   Val_T v = new_node->val();
-  new_node->hs = table.len();
-  size_t i = Node_T::hash(v) % table.len();
+  new_node->hs = table.size();
+  size_t i = Node_T::hash(v) % table.size();
   if (table[i].get(v)) {
     return false;
   }
@@ -178,7 +179,7 @@ bool OCHashTable<Node_T,Val_T>::insert(Node_T *new_node) {
 
 template <typename Node_T, typename Val_T>
 Node_T* OCHashTable<Node_T,Val_T>::get(Val_T key) {
-  size_t i = Node_T::hash(key) % table.len();
+  size_t i = Node_T::hash(key) % table.size();
   auto n = table[i].get(key);
   if (n) {
     return &(*n);
@@ -191,7 +192,7 @@ void OCHashTable<Node_T,Val_T>::remove(Node_T *n) {
   // Note, if n is not in the hashtable, this will cause
   // some nasty corruption.
   Val_T v = n->val();
-  size_t i = Node_T::hash(v) % table.len();
+  size_t i = Node_T::hash(v) % table.size();
   table[i].remove(&(*n)); 
   count--;
   check_sizedown();
@@ -205,21 +206,15 @@ bool OCHashTable<Node_T,Val_T>::isempty(void) const {
 template <typename Node_T, typename Val_T>
 void OCHashTable<Node_T,Val_T>::resize(size_t s) {
   // nothing to do
-  if (s == table.len()) {
+  if (s == table.size()) {
     return;
   }
   // If increasing size, we resize before we rehash
-  if (s > table.len()) {
-    size_t old_size = table.len();
+  if (s > table.size()) {
     table.resize(s);
-    // We have to initialize the lists since
-    // array doesn't construct objects it contains
-    for (size_t i=old_size; i<s; ++i) {
-      table[i] = DList<Node_T,Val_T>(); 
-    }
   }
   // Rehash everything based on "s"
-  for (size_t i=0; i<table.len(); ++i) {
+  for (size_t i=0; i<table.size(); ++i) {
     // because dlist is a *queue* we can cheat!
     // everything we've rehashed will be on one end
     // so we can just peak 'til we hit one!
@@ -233,7 +228,7 @@ void OCHashTable<Node_T,Val_T>::resize(size_t s) {
     }
   }
   // If decreasing we resize after
-  if (s < table.len()) {
+  if (s < table.size()) {
     table.resize(s);
   }
 }
@@ -241,8 +236,8 @@ void OCHashTable<Node_T,Val_T>::resize(size_t s) {
 template <typename Node_T, typename Val_T>
 void OCHashTable<Node_T,Val_T>::check_sizedown(void) {
   // If it's under half full resize down
-  if (table.len() > 2*count) {
-    size_t s = table.len() / 2;
+  if (table.size() > 2*count) {
+    size_t s = table.size() / 2;
     if (s < MINSIZE) {
       s = MINSIZE;
     }
@@ -253,15 +248,15 @@ void OCHashTable<Node_T,Val_T>::check_sizedown(void) {
 template <typename Node_T, typename Val_T>
 void OCHashTable<Node_T,Val_T>::check_sizeup(void) {
   // If it's over full resize up
-  if (table.len() < count) {
-    resize(table.len()*2); 
+  if (table.size() < count) {
+    resize(table.size()*2); 
   } 
 }
 
 template <typename Node_T, typename Val_T>
 void OCHashTable<Node_T,Val_T>::print(void) {
   printf("[\n");
-  for (size_t i=0; i<table.len(); ++i) {
+  for (size_t i=0; i<table.size(); ++i) {
     printf("  ");
     table[i].print();
   }

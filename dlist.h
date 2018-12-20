@@ -106,6 +106,7 @@ class DList {
     }
 
     DList();
+    DList(DList &&l);
     ~DList();
     void enqueue(Node_T*);
     void insert(Node_T*);
@@ -122,6 +123,14 @@ template<typename Node_T, typename Val_T>
 DList<Node_T, Val_T>::DList() {
   head = nullptr;
   tail = nullptr;
+}
+
+template<typename Node_T, typename Val_T>
+DList<Node_T, Val_T>::DList(DList<Node_T, Val_T> &&l) {
+  head = l.head;
+  tail = l.tail;
+  l.head=nullptr;
+  l.tail=nullptr;
 }
 
 template<typename Node_T, typename Val_T>

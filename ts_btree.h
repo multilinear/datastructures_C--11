@@ -85,7 +85,6 @@
 // T must have a valid, trivial, Copy() constructor:
 // Note that T will *move* in memory at times via the copy constructor,
 // so pointers to T cannot be used
-// also we will move it in memory *without* the copy constructor using memmove/memcpy
 //
 // T must have a print method on it like so:
 // void print(void)
@@ -242,8 +241,10 @@ class TSBTreeNode {
       }
       #endif
       // shift the array
-      memmove(&(data[i+1]), &(data[i]), (used-i) * sizeof(T));
-      memmove(&(children[i+2]), &(children[i+1]), (used-i) * sizeof(child));
+      std::copy_backward(data+i, data+used, data+used+1);
+      //memmove(&(data[i+1]), &(data[i]), (used-i) * sizeof(T));
+      std::copy_backward(children+i+1, children+used+1, children+used+2);
+      //memmove(&(children[i+2]), &(children[i+1]), (used-i) * sizeof(child));
       used += 1;
       // and set my element
       set_data(i, datum);
@@ -260,8 +261,10 @@ class TSBTreeNode {
       }
       #endif
       // shift the array
-      memmove(&(data[i+1]), &(data[i]), (used-i) * sizeof(T));
-      memmove(&(children[i+1]), &(children[i]), (used-i+1) * sizeof(child));
+      std::copy_backward(data+i, data+used, data+used+1);
+      //memmove(&(data[i+1]), &(data[i]), (used-i) * sizeof(T));
+      std::copy_backward(children+i, children+used+1, children+used+2);
+      //memmove(&(children[i+1]), &(children[i]), (used-i+1) * sizeof(child));
       used += 1;
       // and set my element
       set_data(i, datum);
@@ -273,8 +276,10 @@ class TSBTreeNode {
       // get the pivot's right child
       *pivot_child = get_node(i+1);
       // shift the array
-      memmove(&(data[i]), &(data[i+1]), (used-i-1) * sizeof(T));
-      memmove(&(children[i+1]), &(children[i+2]), (used-i-1) * sizeof(pivot_child));
+      std::copy(data+i+1, data+used, data+i);
+      //memmove(&(data[i]), &(data[i+1]), (used-i-1) * sizeof(T));
+      std::copy(children+i+2, children+used+1, children+i+1);
+      //memmove(&(children[i+1]), &(children[i+2]), (used-i-1) * sizeof(pivot_child));
       used--;
       return pivot;
     }
@@ -284,8 +289,10 @@ class TSBTreeNode {
       // get the pivot's lect child
       *pivot_child = get_node(i);
       // shift the array
-      memmove(&(data[i]), &(data[i+1]), (used-i-1) * sizeof(T));
-      memmove(&(children[i]), &(children[i+1]), (used-i) * sizeof(pivot_child));
+      std::copy(data+i+1, data+used, data+i);
+      //memmove(&(data[i]), &(data[i+1]), (used-i-1) * sizeof(T));
+      std::copy(children+i+1, children+used+1, children+i);
+      //memmove(&(children[i]), &(children[i+1]), (used-i) * sizeof(pivot_child));
       used--;
       return pivot;
     }
@@ -293,8 +300,10 @@ class TSBTreeNode {
     // returns the pivot datum (so it can be put in the parent)
     T split(TSBTreeNode<T,Val_T,C,SIZE> *right_n) {
       size_t pivot_i = (used-1)/2; // middle element for odd "used", lower of 2 middle for even "used"
-      memcpy(right_n->data, &(data[pivot_i+1]), (used - pivot_i-1) * sizeof(T));
-      memcpy(right_n->children, &(children[pivot_i+1]), (used - pivot_i) * sizeof(right_n));
+      std::copy(data+pivot_i+1, data+used, right_n->data);
+      //memcpy(right_n->data, &(data[pivot_i+1]), (used - pivot_i-1) * sizeof(T));
+      std::copy(children+pivot_i+1, children+used+1, right_n->children);
+      //memcpy(right_n->children, &(children[pivot_i+1]), (used - pivot_i) * sizeof(right_n));
       right_n->used = used - pivot_i-1;
       used = pivot_i;
       return data[pivot_i];
@@ -304,8 +313,10 @@ class TSBTreeNode {
       size_t old_used = used;
       used = used + right_n->used + 1;
       set_data(old_used, pivot);
-      memcpy(&(data[old_used+1]), right_n->data, right_n->used * sizeof(T));
-      memcpy(&(children[old_used+1]), right_n->children, (right_n->used+1) * sizeof(right_n));
+      std::copy(right_n->data, right_n->data+right_n->used, data+old_used+1);
+      //memcpy(&(data[old_used+1]), right_n->data, right_n->used * sizeof(T));
+      std::copy(right_n->children, right_n->children+right_n->used+1, children+old_used+1);
+      //memcpy(&(children[old_used+1]), right_n->children, (right_n->used+1) * sizeof(right_n));
     }
 };
 

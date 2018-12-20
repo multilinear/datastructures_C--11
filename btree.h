@@ -48,6 +48,7 @@
 #include "array.h"
 #include "panic.h"
 #include <algorithm>
+#include <vector>
 
 #ifndef BTREE_H
 #define BTREE_H
@@ -346,9 +347,9 @@ BTree<T,Val_T,C,SIZE>::BTree() {
 // Move constructor
 template<typename T, typename Val_T, typename C, int SIZE>
 BTree<T,Val_T,C,SIZE>::BTree(BTree<T,Val_T,C,SIZE> &&t) {
-  root = t->root;
-  // Just a precaution so only one tree points at things.
-  t->root = nullptr;
+  root = t.root;
+  // ensure the destructor doesn't delete everything
+  t.root = nullptr;
 }
 
 // Destructor
@@ -799,7 +800,7 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
         return *this;
       }
     };
-    UArray<StackNode> stack;
+    std::vector<StackNode> stack;
     StackNode pos;
   public:
     Iterator():pos(nullptr, 0) {}
@@ -815,7 +816,9 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
       // Walk down to the smallest element (left-most)
       auto left_child = pos.node->get_node(0);
       while (left_child) {
-        stack.push(pos);
+        // Deep copy pos to the stack
+        stack.push_back(pos);
+        // And change pos
         pos.node = left_child;
         pos.index = 0;
         left_child = left_child->get_node(0);
@@ -824,7 +827,8 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
 		Iterator& operator=(const Iterator& other) {
 			pos.node = other.pos.node;
 			pos.index = other.pos.index;
-      array_copy<UArray<StackNode>,UArray<StackNode>>(&stack, &other.stack);
+      // Deep copy the whole stack
+      stack = other.stack;
 			return(*this);
 		}
     bool operator==(const Iterator& other) const {
@@ -842,7 +846,9 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
       auto child = pos.node->get_node(pos.index);
       bool found_child = !!child;
       while (child) {
-        stack.push(pos);
+        // deep copy pos to the stack
+        stack.push_back(pos);
+        // And change pos
         pos.node = child;
         pos.index = 0;
         child = pos.node->get_node(0);
@@ -857,11 +863,13 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
       // If there is no next element, go up
       StackNode sn(nullptr,0);
       do {
-        if (!stack.pop(&pos)) {
+        if (!stack.size()) {
           pos.node = nullptr;
           pos.index = 0;
           return *this; 
         }
+        pos = stack.back();
+        stack.pop_back();
       } while (pos.index >= pos.node->get_used());
       return *this;
     }

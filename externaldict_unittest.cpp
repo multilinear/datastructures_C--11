@@ -173,7 +173,7 @@ int main(int argc, char* argv[]) {
       #ifdef DEBUG_OUTPUT
       printf("Inserting %d\n", r);
       #endif
-      // put it in thet dict
+      // put it in the dict
       Node *n = new Node(r);
       dict.insert(n);
       // and in the list
