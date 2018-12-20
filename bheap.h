@@ -150,7 +150,7 @@ class SubHeap {
     }
 
     bool isempty() const {
-      return splits.len() == 0;
+      return splits.size() == 0;
     }
     
     bool isleaf() const {
@@ -181,16 +181,16 @@ class SubHeap {
         right_subheap = i_subheap;
         left_subheap = i_subheap;
         // If we run off splits, use subheaps
-        if (left >= i_subheap->splits.len()) {
-          if (i_subheap->splits.len() < Size || left >= i_subheap->subheaps.len() + Size) {
+        if (left >= i_subheap->splits.size()) {
+          if (i_subheap->splits.size() < Size || left >= i_subheap->subheaps.size() + Size) {
             left_subheap = NULL;
           } else {
             left_subheap = i_subheap->subheaps[left - Size];
             left = 0;
           }
         }
-        if (right >= i_subheap->splits.len()) {
-          if (i_subheap->splits.len() < Size || right >= i_subheap->subheaps.len() + Size) {
+        if (right >= i_subheap->splits.size()) {
+          if (i_subheap->splits.size() < Size || right >= i_subheap->subheaps.size() + Size) {
             right_subheap = NULL;
           } else {
             right_subheap = i_subheap->subheaps[right - Size];
@@ -238,7 +238,7 @@ class SubHeap {
     void bubble_up() {
       SubHeap<T, C, Size> *i_subheap = this;
       SubHeap<T, C, Size> *p_subheap = this;
-      size_t i = i_subheap->splits.len()-1;
+      size_t i = i_subheap->splits.size()-1;
       size_t p;
       while(true) {
         if (i==0) {
@@ -269,9 +269,9 @@ class SubHeap {
       size_t left = 2*i+1;
       SubHeap<T, C, Size> *left_subheap = this;
       bool found_left = true;
-      if (left >= splits.len()) {
+      if (left >= splits.size()) {
         left = left - Size;
-        if (splits.len() < Size || left >= subheaps.len()) {
+        if (splits.size() < Size || left >= subheaps.size()) {
           found_left = false;
         } else {
           left_subheap = subheaps[left];
@@ -291,9 +291,9 @@ class SubHeap {
       size_t right = 2*i+2;
       SubHeap<T, C, Size> *right_subheap = this;
       bool found_right = true;
-      if (right >= splits.len()) {
+      if (right >= splits.size()) {
         right = right - Size;
-        if (splits.len() < Size || right >= subheaps.len()) {
+        if (splits.size() < Size || right >= subheaps.size()) {
           found_right = false;
         } else {
           right_subheap = subheaps[right];
@@ -315,14 +315,14 @@ class SubHeap {
       size_t i;
       size_t res;
       size_t min;
-      if (!subheaps.len() || subheaps.len() < Size) {
+      if (!subheaps.size() || subheaps.size() < Size) {
         return 0;
       }
-      if (splits.len() != Size) {
+      if (splits.size() != Size) {
         PANIC("Subheaps used, but splits not full\n");
       }
       min = subheaps[0]->_min_depth(); 
-      for (i=1; i<subheaps.len(); i++) {
+      for (i=1; i<subheaps.size(); i++) {
         res = subheaps[i]->_min_depth(); 
         if (res < min) {
           min = res;
@@ -335,11 +335,11 @@ class SubHeap {
       size_t i;
       size_t res;
       size_t max;
-      if (!subheaps.len()) {
+      if (!subheaps.size()) {
         return 0;
       }
       max = subheaps[0]->_max_depth(); 
-      for (i=1; i<subheaps.len(); i++) {
+      for (i=1; i<subheaps.size(); i++) {
         res = subheaps[i]->_max_depth(); 
         if (res > max) {
           max = res;
@@ -350,10 +350,10 @@ class SubHeap {
 
     bool _check_parent_pointers() {
       bool res = true;
-      if (!subheaps.len()) {
+      if (!subheaps.size()) {
         return res;
       }
-      for (size_t i=0; i<subheaps.len(); i++) {
+      for (size_t i=0; i<subheaps.size(); i++) {
         if (subheaps[i]->parent != this) {
           printf("real parent=%p, node=%p, parent ptr=%p\n", this, subheaps[i], parent);
           printf("corrupt parent pointer\n"); 
@@ -393,16 +393,16 @@ class SubHeap {
     void print() {
       //printf(" %p:", this);
       printf("(");
-      if (splits.len() > 0) {
+      if (splits.size() > 0) {
         printf("%d", splits[0]);
       }
-      for (size_t i=1; i<splits.len(); i++) {
+      for (size_t i=1; i<splits.size(); i++) {
         printf(",%d", splits[i]);
       }
-      if (subheaps.len() > 0) {
+      if (subheaps.size() > 0) {
         subheaps[0]->print();
       }
-      for (size_t i=1; i<subheaps.len(); i++) {
+      for (size_t i=1; i<subheaps.size(); i++) {
         printf(",");
         subheaps[i]->print();
       }
@@ -456,7 +456,7 @@ class BHeap {
         n = n->parent->subheaps[n->parent_index+1];
         // Descend this branch going left
         // Until a node isn't full of subheaps yet
-        while (n->subheaps.len() == Size+1) {
+        while (n->subheaps.size() == Size+1) {
           n = n->subheaps[0];
         }
         return n;
@@ -479,7 +479,7 @@ class BHeap {
       n = n->parent->subheaps[n->parent_index-1];
       // Descend this branch going left
       // Until a node isn't full of subheaps yet
-      while (n->subheaps.len() == Size+1) {
+      while (n->subheaps.size() == Size+1) {
         n = n->subheaps.revi(1);
       }
       return n;
@@ -491,7 +491,7 @@ class BHeap {
       SubHeap<T, C, Size> * new_tail = new SubHeap<T, C, Size>();
       p->subheaps.push(new_tail);
       // A little hacky, since we just pushed it, it's the last in the list
-      new_tail->parent_index = p->subheaps.len()-1;
+      new_tail->parent_index = p->subheaps.size()-1;
       new_tail->parent = p;
       tail = new_tail;
       PRINT("BHEAP: done making tail\n");
@@ -528,7 +528,7 @@ class BHeap {
         // Take the branch just to the left
         n = n->parent->subheaps[n->parent_index-1];
         // Descend to the right, until we find a node without children
-        while (n->subheaps.len() > 0) {
+        while (n->subheaps.size() > 0) {
           n = n->subheaps.revi(1);
         }
         return n;
@@ -551,7 +551,7 @@ class BHeap {
       // Take the branch just to the right 
       n = n->parent->subheaps[n->parent_index+1];
       // Descend to the left, until we find a node without children
-      while (n->subheaps.len() > 0) {
+      while (n->subheaps.size() > 0) {
         n = n->subheaps[0];
       }
       // On the last level we want the *last* element, order is flipped here (ugh)
@@ -609,16 +609,16 @@ class BHeap {
       //printf("Popping\n"); print();
       BHEAP_CHECK();
       bool found;
-      if (0 == root.splits.len()) {
+      if (0 == root.splits.size()) {
         // If root is empty, forget about it
         found = false;
-      } else if (1 == root.splits.len()) {
+      } else if (1 == root.splits.size()) {
         // Nothing to swap with, so we'll just pop it and return it
         found = tail->splits.pop(val);
       } else {
         // Normal case
         // Could optimize out the swap here.
-        SubHeap<T, C, Size>::swap(tail, tail->splits.len()-1, &root, 0);
+        SubHeap<T, C, Size>::swap(tail, tail->splits.size()-1, &root, 0);
         found = tail->splits.pop(val);
         if (tail->isempty()){
           //printf("Deleting tail\n");

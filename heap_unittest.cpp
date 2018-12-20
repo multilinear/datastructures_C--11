@@ -16,7 +16,7 @@ class HeapCompare {
 
 void print_heap(Heap<DCUArray<int>, int, HeapCompare> *heap) {
   printf("[");
-  for (size_t i=0; i<heap->len(); ++i) {
+  for (size_t i=0; i<heap->size(); ++i) {
     printf("%d ", heap->get(i));
   }
   printf("]\n");

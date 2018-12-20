@@ -56,7 +56,7 @@ class AVLHashTable {
         Iterator(Array<AVL<Node_T, Val_T>> *t, size_t ind) {
           table = t;
           index = ind;
-          if (index >= table->len()) {
+          if (index >= table->size()) {
             iter = (*table)[0].end();
             return;
           } 
@@ -64,7 +64,7 @@ class AVLHashTable {
           // Look for a valid element (if we don't have one)
           while (iter == (*table)[index].end()) {
             index++;
-            if (index >= table->len()) {
+            if (index >= table->size()) {
               break;
             }
             iter = (*table)[index].begin();
@@ -82,7 +82,7 @@ class AVLHashTable {
           return *this;
         }
         bool operator==(const Iterator& other) {
-          return (index >= table->len() && other.index >= other.table->len()) ||
+          return (index >= table->size() && other.index >= other.table->size()) ||
             (index == other.index && iter == other.iter);
         }
         bool operator!=(const Iterator& other) {
@@ -90,7 +90,7 @@ class AVLHashTable {
         }
         Iterator operator++() {
           // If we're at the end, we're done
-          if (index >= table->len()) {
+          if (index >= table->size()) {
             return *this;
           }
           // We were at a valid element (or the end of the array)
@@ -98,7 +98,7 @@ class AVLHashTable {
           iter++;
           while (iter == (*table)[index].end()) {
             index++;
-            if (index >= (*table).len()) {
+            if (index >= (*table).size()) {
               iter = (*table)[0].end();
               break;
             } 
@@ -124,7 +124,7 @@ class AVLHashTable {
       return Iterator(&table, 0);
     }
     Iterator end() {
-      return Iterator(&table, table.len());
+      return Iterator(&table, table.size());
     }
     AVLHashTable();
     AVLHashTable(size_t s);
@@ -157,7 +157,7 @@ AVLHashTable<Node_T,Val_T>::AVLHashTable(size_t s):table(s) {
 
 template <typename Node_T, typename Val_T>
 AVLHashTable<Node_T,Val_T>::~AVLHashTable() {
-  for (size_t i=0; i<table.len(); ++i) {
+  for (size_t i=0; i<table.size(); ++i) {
     if (!table[i].isempty()) {
       PANIC("Hashtable not empty before destruction");
     }
@@ -170,9 +170,9 @@ template <typename Node_T, typename Val_T>
 bool AVLHashTable<Node_T, Val_T>::insert(Node_T *new_node) {
   check_sizeup();
   // set the hash table size 
-  new_node->hs = table.len();
+  new_node->hs = table.size();
   // Hash it
-  size_t i = Node_T::hash(new_node->val()) % table.len();
+  size_t i = Node_T::hash(new_node->val()) % table.size();
   if (table[i].insert(new_node)) {
     count++;
     return true;
@@ -182,14 +182,14 @@ bool AVLHashTable<Node_T, Val_T>::insert(Node_T *new_node) {
 
 template <typename Node_T, typename Val_T>
 Node_T* AVLHashTable<Node_T,Val_T>::get(Val_T key) {
-  size_t i = Node_T::hash(key) % table.len();
+  size_t i = Node_T::hash(key) % table.size();
   return table[i].get(key);
 }
 
 template <typename Node_T, typename Val_T>
 Node_T* AVLHashTable<Node_T,Val_T>::remove(Node_T *n) {
   Val_T v = n->val();
-  size_t i = Node_T::hash(v) % table.len();
+  size_t i = Node_T::hash(v) % table.size();
   table[i].remove(n);
   count--;
   check_sizedown();
@@ -208,12 +208,12 @@ bool AVLHashTable<Node_T,Val_T>::isempty(void) const {
 template <typename Node_T, typename Val_T>
 void AVLHashTable<Node_T,Val_T>::resize(size_t s) {
   // nothing to do
-  if (s == table.len()) {
+  if (s == table.size()) {
     return;
   }
   // If increasing size, we resize before we rehash
-  if (s > table.len()) {
-    size_t old_size = table.len();
+  if (s > table.size()) {
+    size_t old_size = table.size();
     table.resize(s);
     // We have to initialize the lists since
     // array doesn't construct objects it contains
@@ -222,7 +222,7 @@ void AVLHashTable<Node_T,Val_T>::resize(size_t s) {
     }
   }
   // Rehash everything based on "s"
-  for (size_t i=0; i<table.len(); ++i) {
+  for (size_t i=0; i<table.size(); ++i) {
     auto n = table[i].begin();
     while (n != table[i].end()) {
       if (n->hs != s) {
@@ -240,7 +240,7 @@ void AVLHashTable<Node_T,Val_T>::resize(size_t s) {
     }
   }
   // If decreasing we resize after
-  if (s < table.len()) {
+  if (s < table.size()) {
     table.resize(s);
   }
 }
@@ -248,8 +248,8 @@ void AVLHashTable<Node_T,Val_T>::resize(size_t s) {
 template <typename Node_T, typename Val_T>
 void AVLHashTable<Node_T,Val_T>::check_sizedown(void) {
   // If it's under a quarter full resize down
-  if (table.len() > 2*count) {
-    size_t s = table.len() / 2;
+  if (table.size() > 2*count) {
+    size_t s = table.size() / 2;
     if (s < MINSIZE) {
       s = MINSIZE;
     }
@@ -260,14 +260,14 @@ void AVLHashTable<Node_T,Val_T>::check_sizedown(void) {
 template <typename Node_T, typename Val_T>
 void AVLHashTable<Node_T,Val_T>::check_sizeup(void) {
   // If it's over half-full resize up
-  if (table.len() < count) {
-    resize(table.len()*2); 
+  if (table.size() < count) {
+    resize(table.size()*2); 
   } 
 }
 template <typename Node_T, typename Val_T>
 void AVLHashTable<Node_T,Val_T>::print(void) {
   printf("[\n");
-  for (size_t i=0; i<table.len(); ++i) {
+  for (size_t i=0; i<table.size(); ++i) {
     printf("  ");
     table[i].print();
   }

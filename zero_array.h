@@ -93,9 +93,9 @@ class ZeroArray {
       }
     }
     ZeroArray(ZeroArray<T>* input) {
-      ar = (Data*) malloc(input.len()*sizeof(Data));
-      index = (size_t*) malloc(input.len()*sizeof(size_t));
-      length = input.len();
+      ar = (Data*) malloc(input.size()*sizeof(Data));
+      index = (size_t*) malloc(input.size()*sizeof(size_t));
+      length = input.size();
       used = 0;
       array_copy<ZeroArray<T>, ZeroArray<T>>(this, input);
     }
@@ -122,7 +122,7 @@ class ZeroArray {
       length = new_size;
       used = 0;
     }
-    size_t len() const {
+    size_t size() const {
       return length;
     }
     bool isempty() const {

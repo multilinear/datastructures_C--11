@@ -58,8 +58,8 @@ void base_test(void) {
   int test_data[] = {1,2,3,4};
   // Testing array initialization
   AT a(test_data, 4);
-  if (a.len() != 4) {
-    printf("a.len() = %lu\n", a.len());
+  if (a.size() != 4) {
+    printf("a.size() = %lu\n", a.size());
     PANIC("Size is wrong");
   }
   for (int i=0;i<4;i++) {
@@ -74,10 +74,10 @@ void base_test(void) {
     PANIC("Swap doesn't work");
   }
   // Testing revi
-  if (a.revi(1) != a[a.len()-1]) {
+  if (a.revi(1) != a[a.size()-1]) {
     PANIC("Revi doesn't work");
   }
-  if (a.revi(2) != a[a.len()-2]) {
+  if (a.revi(2) != a[a.size()-2]) {
     PANIC("Revi doesn't work");
   }
 }
@@ -89,8 +89,8 @@ void resizable_test(void) {
   AT a(test_data, 4);
   // Testing resize (to smaller only)
   a.resize(3);
-  if (a.len() != 3) {
-    printf("a.len() = %lu, not 3\n", a.len());
+  if (a.size() != 3) {
+    printf("a.size() = %lu, not 3\n", a.size());
     PANIC("Resize failed");
   }
   if (a.revi(1) != 3) {
@@ -112,7 +112,7 @@ void used_test(void) {
   AT ua(test_data, 1);
   // push
   ua.push(6);
-  if (ua.len() != 2 && ua.revi(1) != 6) {
+  if (ua.size() != 2 && ua.revi(1) != 6) {
     PANIC("UA push is broken");
   }
   // pop
@@ -130,11 +130,11 @@ void used_test(void) {
   // drop
   ua.push(1);
   ua.drop();
-  if (ua.len() != 0) {
+  if (ua.size() != 0) {
     PANIC("UA drop is broken");
   }
   ua.drop();
-  if (ua.len() != 0) {
+  if (ua.size() != 0) {
     PANIC("UA drop underflow is broken");
   }
   // full
@@ -205,7 +205,7 @@ int main(void) {
     PANIC("UArray should not be full");
   }
   ua.resize(10);
-  if (ua.len() != 10) {
+  if (ua.size() != 10) {
     PANIC("Used array resize up failed");
   }
   #endif

@@ -97,7 +97,7 @@ class DictUArray {
     T& revi(size_t i) {
       return get(used-i);
     }
-    size_t len() const {
+    size_t size() const {
       return used;
     }
     bool isfull() const {

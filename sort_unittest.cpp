@@ -15,7 +15,7 @@ class IntCompare {
 
 void print_array(Array<uint32_t> *a) {
   printf("[");
-  for (size_t i=0; i<a->len(); i++) {
+  for (size_t i=0; i<a->size(); i++) {
     printf("%d,", (*a)[i]);
   }
   printf("]\n");
@@ -32,7 +32,7 @@ void run(Array<uint32_t>* input, void* _unused){
   Array<uint32_t> br_a(input);  
   Array<uint32_t> r_a(input);  
   Array<uint32_t> fast_a(input);  
-  Array<uint32_t> tmp_a(m_a.len());  
+  Array<uint32_t> tmp_a(m_a.size());  
   //printf("testing: ");
   //print_array(input);
   //printf("Selection: ");
@@ -43,7 +43,7 @@ void run(Array<uint32_t>* input, void* _unused){
   //print_array(&q_a);
   //printf("Quick: ");
   quick_sort<Array<uint32_t>,IntCompare>(&q_a);
-  //printf("Merge Test %lu\n", m_a.len());
+  //printf("Merge Test %lu\n", m_a.size());
   //print_array(&m_a);
   //printf("Merge: ");
   merge_sort<Array<uint32_t>,Array<uint32_t>,IntCompare>(&m_a, &tmp_a);
@@ -55,7 +55,7 @@ void run(Array<uint32_t>* input, void* _unused){
   //printf("bradix_sort output\n");
   radix_sort<Array<uint32_t>,Array<uint32_t>, 5>(&r_a, &tmp_a);
   fast_sort<Array<uint32_t>>(&fast_a, &tmp_a);
-  for (size_t i=0; i<s_a.len(); i++) {
+  for (size_t i=0; i<s_a.size(); i++) {
     if (s_a[i] != b_a[i]) {
       bad = &b_a;
     }
@@ -80,7 +80,7 @@ void run(Array<uint32_t>* input, void* _unused){
   }
   if (bad) {
     printf("ERROR! failed to sort\n");
-    printf("Length was %li\n", input->len());
+    printf("Length was %li\n", input->size());
     printf("Input\n");
     print_array(input);
     printf("Output\n");
@@ -97,14 +97,14 @@ template<typename ArrayType, typename DataType>
 void permutation_helper(ArrayType* a, void (*callback)(ArrayType*, DataType), size_t p, DataType opaque_data) {
   size_t i;
   // When we reach the end, we're done
-  if (p+1 >= a->len()) {
+  if (p+1 >= a->size()) {
     callback(a, opaque_data);
     return;
   }
   // No permutation, just call
   permutation_helper(a, callback, p+1, opaque_data);
   // Then swap with each other option, and call
-  for (i=p+1; i<a->len(); i++) {
+  for (i=p+1; i<a->size(); i++) {
     a->swap(p,i);
     permutation_helper(a, callback, p+1, opaque_data);
     a->swap(p,i);

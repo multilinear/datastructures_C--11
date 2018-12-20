@@ -23,9 +23,9 @@ template <typename AT, typename C>
 void selection_sort(AT *a) {
   size_t smallest;
   size_t i,j;
-  for (i = 0; i < a->len(); i++) {
+  for (i = 0; i < a->size(); i++) {
     smallest = i;
-    for (j = i+1; j < a->len(); j++) {
+    for (j = i+1; j < a->size(); j++) {
       if (C::compare((*a)[j], (*a)[smallest]) < 0) { 
         smallest = j;
       }
@@ -45,12 +45,12 @@ template <typename AT, typename C>
 void bubble_sort(AT *a) {
   size_t i;
   bool swapped = true;
-  if (a->len() < 2) {
+  if (a->size() < 2) {
     return;
   }
   while (swapped) { 
     swapped = false;
-    for (i = 0; i+1 < a->len(); i++) {
+    for (i = 0; i+1 < a->size(); i++) {
       if (C::compare((*a)[i+1], (*a)[i]) < 0) { 
         a->swap(i, i+1);
         swapped = true;
@@ -100,10 +100,10 @@ void quick_sort_helper(AT *a, size_t bottom, size_t top) {
 //   Your not worried about worst-case runtime, just average
 template <typename AT, typename C>
 void quick_sort(AT *a) {
-  if (a->len() <= 0) {
+  if (a->size() <= 0) {
     return;
   }
-  quick_sort_helper<AT, C>(a, 0, a->len()-1);
+  quick_sort_helper<AT, C>(a, 0, a->size()-1);
 }
 
 // This is a trick that lets us write this code once and call it
@@ -149,9 +149,9 @@ void merge_sort_helper(AAT *a, BAT *b, size_t chunk, size_t len) {
 template <typename AT, typename TAT, typename C>
 void merge_sort(AT *in, TAT *tmp) {
   size_t chunk = 1;
-  size_t len = in->len();
+  size_t len = in->size();
   #ifdef SORT_DEBUG
-  if (tmp->len() < in->len()) {
+  if (tmp->size() < in->size()) {
     PANIC("merge_sort, tmp is not large enough\n");
   }
   #endif
@@ -181,11 +181,11 @@ void merge_sort(AT *in, TAT *tmp) {
 template <typename AT, typename C>
 void heap_sort(AT *in) {
 	// *** first we build the heap
-	// push of in.len()-1 is noop
-	if (in->len() <= 1) {
+	// push of in.size()-1 is noop
+	if (in->size() <= 1) {
 		return;
 	}
-	size_t len = in->len();
+	size_t len = in->size();
 	for (size_t i=1; i<len; i++) {
 		// bubble up i
 		size_t j = i;
@@ -289,16 +289,16 @@ void bradix_sort_helper(AT *in, size_t o_low, size_t o_high, uint32_t bit) {
 // two's compliment, as well as sign extension.
 template <typename AT>
 void bradix_sort(AT *in) {
-  if (in->len() <= 1) {
+  if (in->size() <= 1) {
     return;
   }
-  bradix_sort_helper<AT>(in, 0, in->len()-1, 1 << (8*sizeof(decltype((*in)[0]))-1));
+  bradix_sort_helper<AT>(in, 0, in->size()-1, 1 << (8*sizeof(decltype((*in)[0]))-1));
 }
 
 template <typename AAT, typename BAT, uint32_t mod>
 void radix_sort_helper(AAT *in, BAT *out, uint32_t shift) {
   size_t arena[mod+1];
-  size_t in_len = in->len();
+  size_t in_len = in->size();
   // Zero the count table
   for (size_t i=0; i<mod+1; i++) {
     arena[i] = 0; 
@@ -328,7 +328,7 @@ void radix_sort(AAT *in, BAT *buf) {
   // We could use 16, but 32 bit computations are faster
   const uint32_t mod = 1<<arity_bits;
   uint32_t shift = 0;
-  if (in->len() < 2) {
+  if (in->size() < 2) {
     return;
   }
   while(true) {
@@ -349,7 +349,7 @@ void radix_sort(AAT *in, BAT *buf) {
 // Default sorting algorithms
 template <typename AT, typename C>
 void sort(AT *a) {
-  AT b(a->len());
+  AT b(a->size());
   merge_sort(a, &b);
 }
 
@@ -361,7 +361,7 @@ void fast_sort(AT *a, BT *b) {
       return v1 - v2;
     }
   };
-  if (a->len() <=20) {
+  if (a->size() <=20) {
     heap_sort<AT, IntCompare>(a);
   } else {
     radix_sort<AT, BT, 6>(a, b);

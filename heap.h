@@ -43,7 +43,7 @@ class Heap {
     UArrayT ar;
     void _check(size_t i) {
       int c;
-      if (2*i+1 < ar.len()) {
+      if (2*i+1 < ar.size()) {
         c = C::compare(&ar[2*i+1], &ar[i]);
         if (c < 0) {
           printf("2*i+1=%lu i=%lu\n", 2*i+1, i);
@@ -51,7 +51,7 @@ class Heap {
         }
         _check(2*i+1);
       }
-      if (2*i+2 < ar.len()) {
+      if (2*i+2 < ar.size()) {
         c = C::compare(&ar[2*i+2], &ar[i]);
         if (c < 0) {
           PANIC("heap is not in order\n");
@@ -65,7 +65,7 @@ class Heap {
       while(true) {
         size_t left = 2*i + 1;
         size_t right = 2*i + 2;
-        if (right < ar.len()) {
+        if (right < ar.size()) {
           // find the smaller value
           int c = C::compare(&ar[left], &ar[right]);
           if (c > 0) {
@@ -73,7 +73,7 @@ class Heap {
           } else {
             j = left; 
           }
-        } else if (left < ar.len()) {
+        } else if (left < ar.size()) {
           j = left;
         } else {
           return;
@@ -91,7 +91,7 @@ class Heap {
       }
     }
     void bubble_up() {
-      size_t i = ar.len()-1;
+      size_t i = ar.size()-1;
       size_t parent;
       while(i != 0) {
         parent = (i-1)/2;
@@ -118,7 +118,7 @@ class Heap {
     }
     bool pop(T *val) {
       HEAP_CHECK();
-      if (ar.len() > 1) {
+      if (ar.size() > 1) {
         *val = ar[0];
         // notionally we'd like to do this... but
         // pop start mutation before it writes, making
@@ -148,8 +148,8 @@ class Heap {
     void check() {
       _check(0);
     }
-    size_t len() const {
-      return ar.len();
+    size_t size() const {
+      return ar.size();
     }
     const T& get(size_t i) {
       return ar.get(i);

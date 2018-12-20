@@ -62,7 +62,7 @@ class FixedHashTable {
     Node_T* getOne(void);
     Node_T* remove(Node_T *n);
     void print(void);
-    size_t len(void);
+    size_t size(void);
 };
 
 template <typename Node_T, typename Val_T>
@@ -89,7 +89,7 @@ void FixedHashTable<Node_T,Val_T>::reset(size_t s) {
 template <typename Node_T, typename Val_T>
 bool FixedHashTable<Node_T, Val_T>::insert(Node_T *new_node) {
   // Hash it
-  size_t i = Node_T::hash(new_node->val()) % table.len();
+  size_t i = Node_T::hash(new_node->val()) % table.size();
   bool b = table[i].insert(new_node); 
   if (b) {
     l.insert(new_node);
@@ -99,7 +99,7 @@ bool FixedHashTable<Node_T, Val_T>::insert(Node_T *new_node) {
 
 template <typename Node_T, typename Val_T>
 Node_T* FixedHashTable<Node_T,Val_T>::get(Val_T key) {
-  size_t i = Node_T::hash(key) % table.len();
+  size_t i = Node_T::hash(key) % table.size();
   return table[i].get(key);
 }
 
@@ -111,7 +111,7 @@ Node_T* FixedHashTable<Node_T,Val_T>::getOne(void) {
 template <typename Node_T, typename Val_T>
 Node_T* FixedHashTable<Node_T,Val_T>::remove(Node_T *n) {
   Val_T v = n->val();
-  size_t i = Node_T::hash(v) % table.len();
+  size_t i = Node_T::hash(v) % table.size();
   table[i].remove(n);
   l.remove(n);
   return n;
@@ -120,7 +120,7 @@ Node_T* FixedHashTable<Node_T,Val_T>::remove(Node_T *n) {
 template <typename Node_T, typename Val_T>
 void FixedHashTable<Node_T,Val_T>::print(void) {
   printf("[\n");
-  for (size_t i=0; i<table.len(); ++i) {
+  for (size_t i=0; i<table.size(); ++i) {
     printf("  ");
     table[i].print();
   }
@@ -128,8 +128,8 @@ void FixedHashTable<Node_T,Val_T>::print(void) {
 }
  
 template <typename Node_T, typename Val_T>
-size_t FixedHashTable<Node_T,Val_T>::len(void) {
-  return table.len();
+size_t FixedHashTable<Node_T,Val_T>::size(void) {
+  return table.size();
 }
 
 template <typename Node_T, typename Val_T>
@@ -237,8 +237,8 @@ class BoundedHashTable {
     bool insert(Node_T *n) {
       inc();
       // if it's over full resize up
-      if (t1->len() < count+1) {
-        resize(t1->len()*2);
+      if (t1->size() < count+1) {
+        resize(t1->size()*2);
       }
       // Make sure it's not in t2 already
       if (t2->get(n->val())) {
@@ -267,8 +267,8 @@ class BoundedHashTable {
       n->ht->remove(n);
       count--;
       // if it's under half full resize down
-      if (t1->len() > 2*count && !t2->getOne()) {
-        resize(t1->len()/2);
+      if (t1->size() > 2*count && !t2->getOne()) {
+        resize(t1->size()/2);
       }
       return n;
     }

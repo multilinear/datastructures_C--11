@@ -39,10 +39,10 @@ int main(int argc, char **argv) {
     quick_sort<Array<uint32_t>, IntComparitor>(&a);
     #endif
     #ifdef TEST_QUICKSELECT
-    findkth<Array<uint32_t>, IntComparitor, false>(&a, (a.len()-1)/2);
+    findkth<Array<uint32_t>, IntComparitor, false>(&a, (a.size()-1)/2);
     #endif
     #ifdef TEST_LINEARQUICKSELECT
-    findkth<Array<uint32_t>, IntComparitor, true>(&a, (a.len()-1)/2);
+    findkth<Array<uint32_t>, IntComparitor, true>(&a, (a.size()-1)/2);
     #endif
   }
   ftime(&t2);

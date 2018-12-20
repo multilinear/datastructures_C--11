@@ -44,7 +44,7 @@
 // This is an array that's designed to change in size a lot
 // This is for use in heaps and stacks and that sort of thing
 // It's a doubling array, including memory reclamation on downsizing
-// "len()" returns the actively used portion of the array, not the
+// "size()" returns the actively used portion of the array, not the
 // Total available size
 template<typename T>
 class DCUArray {
@@ -211,7 +211,7 @@ class DCUArray {
       ARRAY_CHECK(used-index);
       return (*this)[used-index];
     }
-    size_t len() const {
+    size_t size() const {
       return used;
     }
     bool isfull() const {

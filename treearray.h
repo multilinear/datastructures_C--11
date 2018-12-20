@@ -169,7 +169,7 @@ class TreeArray {
       if(!parent->ar.pop(&res)) {
         PANIC("Attempt to delete node from parent failed");
       }
-      if(parent->ar.len() == 0)  {
+      if(parent->ar.size() == 0)  {
         // Check if the node is now empty
         auto parent_parent = parent->parent;
         delete parent;
@@ -177,11 +177,11 @@ class TreeArray {
         if (!parent) {
           // This should never happen... 
           // If the root was the only node, parent==nullptr
-          // If the root had more than one child, ar.len() > 0
+          // If the root had more than one child, ar.size() > 0
           // Root can't have only one child
           PANIC("pop_from_parent(parent_parent) returned null");
         }
-      } else if(parent == root && parent->ar.len() == 1) {
+      } else if(parent == root && parent->ar.size() == 1) {
         // If root has a singleton child, just make that child root
         root = parent->ar[0];
         root->parent = nullptr;
@@ -190,7 +190,7 @@ class TreeArray {
         return root;
       }
       // Return the tail (or transitive parent thereof)
-      return parent->ar[parent->ar.len()-1];
+      return parent->ar[parent->ar.size()-1];
     }
 
     T& get(size_t i) {
@@ -258,7 +258,7 @@ class TreeArray {
       }
       length = new_length;
     }
-    size_t len() const {
+    size_t size() const {
       return length;
     }
     bool isempty() const {
@@ -360,7 +360,7 @@ class TreeUArray {
       if(!parent->ar.pop(&res)) {
         PANIC("Attempt to delete node from parent failed");
       }
-      if(parent->ar.len() == 0)  {
+      if(parent->ar.size() == 0)  {
         // Check if the node is now empty
         auto parent_parent = parent->parent;
         delete parent;
@@ -368,11 +368,11 @@ class TreeUArray {
         if (!parent) {
           // This should never happen... 
           // If the root was the only node, parent==nullptr
-          // If the root had more than one child, ar.len() > 0
+          // If the root had more than one child, ar.size() > 0
           // Root can't have only one child
           PANIC("pop_from_parent(parent_parent) returned null");
         }
-      } else if(parent == root && parent->ar.len() == 1) {
+      } else if(parent == root && parent->ar.size() == 1) {
         // If root has a singleton child, just make that child root
         root = parent->ar[0];
         root->parent = nullptr;
@@ -381,7 +381,7 @@ class TreeUArray {
         return root;
       }
       // Return the tail (or transitive parent thereof)
-      return parent->ar[parent->ar.len()-1];
+      return parent->ar[parent->ar.size()-1];
     }
 
     T& get(size_t i) {
@@ -449,7 +449,7 @@ class TreeUArray {
       }
       length = new_length;
     }
-    size_t len() {
+    size_t size() {
       return length;
     }
     void swap(size_t i, size_t j) {
@@ -499,7 +499,7 @@ class TreeUArray {
 // This is an array that's designed to change in size a lot
 // This is for use in queues and stacks and that sort of thing
 // It's a doubling array, including memory reclamation on downsizing
-// "len()" returns the actively used portion of the array, not the
+// "size()" returns the actively used portion of the array, not the
 // Total available size
 template<typename T, size_t SizeBits> 
 class TreeUArray {
@@ -509,16 +509,16 @@ class TreeUArray {
     TreeUArray() { }
     TreeUArray(size_t size): ar(size) { }
     TreeUArray(T input[], size_t input_l): ar(input, input_l) { }
-    TreeUArray(TreeUArray<T,SizeBits>* input): ar(input->len()) {
+    TreeUArray(TreeUArray<T,SizeBits>* input): ar(input->size()) {
       array_copy<TreeUArray<T,SizeBits>, TreeUArray<T,SizeBits>>(this, input);
     }
     void push(T data) {
-      size_t len = ar.len();
+      size_t len = ar.size();
       ar.resize(len+1);
       ar[len] = data;
     }
     bool pop(T *val) {
-      size_t len = ar.len();
+      size_t len = ar.size();
       if (len > 0) {
         *val = ar[len-1];
         ar.resize(len-1);
@@ -530,7 +530,7 @@ class TreeUArray {
       ar.resize(size);
     }
     void drop() {
-      size_t len = ar.len();
+      size_t len = ar.size();
       if (len > 0) {
         ar.resize(len-1);
       }
@@ -541,11 +541,11 @@ class TreeUArray {
     }
     // Works like negative indices in python (1 is last element)
     T& revi(size_t index) {
-      ARRAY_CHECK(ar.len()-index);
-      return ar[ar.len()-index];
+      ARRAY_CHECK(ar.size()-index);
+      return ar[ar.size()-index];
     }
-    size_t len() const {
-      return ar.len();
+    size_t size() const {
+      return ar.size();
     }
     bool isfull() const {
       return false;
@@ -556,8 +556,8 @@ class TreeUArray {
     operator bool() const {
       return ar;
     }
-    size_t size() const {
-      return ar.len();
+    size_t capacity() const {
+      return ar.size();
     }
     void swap(size_t i, size_t j) {
       TREEARRAY_CHECK(i);
@@ -567,7 +567,7 @@ class TreeUArray {
       ar[j] = tmp;
     }
     void check(size_t index) const {
-      size_t length = ar.len();
+      size_t length = ar.size();
       if (index >= length) {
         PANIC("Array access out of bounds\n");
       }

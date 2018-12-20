@@ -16,7 +16,7 @@ class IntCompare {
 
 void print_array(Array<uint32_t> *a) {
   printf("[");
-  for (size_t i=0; i<a->len(); i++) {
+  for (size_t i=0; i<a->size(); i++) {
     printf("%d,", (*a)[i]);
   }
   printf("]\n");
@@ -25,7 +25,7 @@ void print_array(Array<uint32_t> *a) {
 void run(Array<uint32_t>* input, size_t k){
   Array<uint32_t> sorted(input);  
   Array<uint32_t> copy(input);  
-  Array<uint32_t> tmp(input->len());  
+  Array<uint32_t> tmp(input->size());  
   fast_sort<Array<uint32_t>,Array<uint32_t>>(&sorted, &tmp);
   size_t ind2 = findkth<Array<uint32_t>, IntCompare, false>(&copy, k);
   size_t ind1 = findkth<Array<uint32_t>, IntCompare, true>(&copy, k);
@@ -45,7 +45,7 @@ void run(Array<uint32_t>* input, size_t k){
     PANIC("findkth (linear=true) returned wrong index\n");
   }
   // Verify we didn't mess with the array
-  for (size_t i=0; i<input->len(); i++) {
+  for (size_t i=0; i<input->size(); i++) {
     if ((*input)[i] != copy[i]) {
       print_array(input);
       print_array(&copy);
@@ -58,14 +58,14 @@ template<typename ArrayType, typename DataType>
 void permutation_helper(ArrayType* a, void (*callback)(ArrayType*, DataType), size_t p, DataType opaque_data) {
   size_t i;
   // When we reach the end, we're done
-  if (p+1 >= a->len()) {
+  if (p+1 >= a->size()) {
     callback(a, opaque_data);
     return;
   }
   // No permutation, just call
   permutation_helper(a, callback, p+1, opaque_data);
   // Then swap with each other option, and call
-  for (i=p+1; i<a->len(); i++) {
+  for (i=p+1; i<a->size(); i++) {
     a->swap(p,i);
     permutation_helper(a, callback, p+1, opaque_data);
     a->swap(p,i);
@@ -87,7 +87,7 @@ int main(){
     if (x>0) {
       testdata[x-1] = x;
     }
-    permutations<Array<uint32_t>, size_t>(&testdata, run, testdata.len()/2); 
+    permutations<Array<uint32_t>, size_t>(&testdata, run, testdata.size()/2); 
   }
   // Larger test on easier to work with numbers
   for (uint32_t x=1; x<20; x++) {
@@ -95,14 +95,14 @@ int main(){
     if (x>0) {
       testdata[x-1] = x;
     }
-    run(&testdata, testdata.len()/2);
+    run(&testdata, testdata.size()/2);
   }
   for (uint32_t x=1; x<20; x++) {
     testdata.resize(x);
     if (x>0) {
       testdata[x-1] = 20-x;
     }
-    run(&testdata, testdata.len()/2);
+    run(&testdata, testdata.size()/2);
   }
   // Random testing of large arrays
   for (uint32_t i=1000; i<1500; i+=1) {
@@ -110,7 +110,7 @@ int main(){
     for (uint32_t x=0; x<i; x++) {
       testdata[x] = rand();
     }
-    run(&testdata, testdata.len()/2);
+    run(&testdata, testdata.size()/2);
   }
   // Test that findkth_pivot_helper is giving a good approximation
   // This is necessary to ensure that we get linear performance from our

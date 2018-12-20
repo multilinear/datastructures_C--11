@@ -6,21 +6,21 @@
 
 void my_print_array2(Array<uint32_t> *a) {
   printf("[");
-  for (size_t i=0; i<a->len(); i++) {
+  for (size_t i=0; i<a->size(); i++) {
     printf("%u,", (*a)[i]);
   }
   printf("]\n");
 }
 void my_print_array(Array<size_t> *a) {
   printf("[");
-  for (size_t i=0; i<a->len(); i++) {
+  for (size_t i=0; i<a->size(); i++) {
     printf("%lu,", (*a)[i]);
   }
   printf("]\n");
 }
 void my_print_array3(Array<uint32_t> *a, Array<size_t> *ind) {
   printf("[");
-  for (size_t i=0; i<ind->len(); i++) {
+  for (size_t i=0; i<ind->size(); i++) {
     printf("%u,", (*a)[(*ind)[i]]);
   }
   printf("]\n");
@@ -127,17 +127,17 @@ size_t findkth_helper(AT *a, Array<size_t> *ind, size_t k, size_t orig_bottom, s
 template<typename AT, typename C, bool linear>
 size_t findkth(AT *a, size_t k) {
   // Build an index array
-  Array<size_t> ind(a->len());
-  for (size_t i=0;i<ind.len(); i++) {
+  Array<size_t> ind(a->size());
+  for (size_t i=0;i<ind.size(); i++) {
     ind[i] = i;
   }
-  size_t i = findkth_helper<AT, C, linear>(a, &ind, k, 0, a->len()-1);
+  size_t i = findkth_helper<AT, C, linear>(a, &ind, k, 0, a->size()-1);
   return ind[i];
 }
  
 template<typename AT, typename C>
 size_t medianfind(AT *a) {
-  return findkth<AT, C>(a, a->len()/2);
+  return findkth<AT, C>(a, a->size()/2);
 }
  
 #endif

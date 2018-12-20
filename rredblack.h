@@ -149,10 +149,10 @@ class RRedBlack{
             return true;
           }
           size_t i;
-          if (stack.len() != other.stack.len()) {
+          if (stack.size() != other.stack.size()) {
             return false;
           }
-          for (i = 0; i < stack.len(); i++) {
+          for (i = 0; i < stack.size(); i++) {
             if (stack.get(i) != other.stack.get(i)) {
               return false;
             }

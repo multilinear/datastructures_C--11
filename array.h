@@ -33,7 +33,7 @@ All Array implementations share a similar meaning for:
 - get(size_t)
 - operator[](size_t)
 - revi(size_t)
-- len() 
+- size() 
 - swap(size_t, size_t)
 
 All Array implementations but StaticArray also share
@@ -68,11 +68,11 @@ Threadsafety:
 // *every* pair of array types
 template<typename AT1, typename AT2>
 void array_copy(AT1 *dest, const AT2 *src) {
-  if (dest->len() != src->len()) {
-    dest->resize(src->len());
+  if (dest->size() != src->size()) {
+    dest->resize(src->size());
   }
-  //std::copy<*AT1::value_type, *AT2::value_type>(src->ar, src->ar+src->len(), dest->ar);
-  for (size_t i = 0; i<src->len(); i++) {
+  //std::copy<*AT1::value_type, *AT2::value_type>(src->ar, src->ar+src->size(), dest->ar);
+  for (size_t i = 0; i<src->size(); i++) {
     (*dest)[i] = src->get(i);
   }
 }
@@ -110,7 +110,7 @@ class StaticArray {
       ARRAY_CHECK(Size-index);
       return ar[Size-index];
     }
-    size_t len() const {
+    size_t size() const {
       return Size;
     }
     void swap(size_t i, size_t j) {
@@ -136,7 +136,7 @@ class StaticArray {
 };
 
 // This is a static array including no dynamic allocation, but tracking usage
-// "len()" returns the actively used portion of the array, not the
+// "size()" returns the actively used portion of the array, not the
 // Total available size
 // This is useful for writing datastructures, for stack allocation etc.
 // Due to being statically allocated this should have no overhead compared
@@ -196,8 +196,11 @@ class StaticUArray {
       ARRAY_CHECK(_used-index);
       return ar[_used-index];
     }
-    size_t len() const {
+    size_t size() const {
       return _used;
+    }
+    size_t capacity() const {
+      return Size;
     }
     bool isfull() const {
       return _used >= Size;
@@ -268,7 +271,7 @@ class Array {
         ar = nullptr;
       }
     }
-    size_t len() const {
+    size_t size() const {
       return _length;
     }
     bool isempty() const {
@@ -310,7 +313,7 @@ class Array {
 // This is an array that's designed to change in size a lot
 // This is for use in queues and stacks and that sort of thing
 // It's a doubling array, including memory reclamation on downsizing
-// "len()" returns the actively used portion of the array, not the
+// "size()" returns the actively used portion of the array, not the
 // Total available size
 template<typename T>
 class UArray {
@@ -328,12 +331,12 @@ class UArray {
     UArray(T input[], size_t input_l): ar(input, input_l) {
       _used = input_l;
     }
-    UArray(UArray<T>* input): ar(input->len()) {
+    UArray(UArray<T>* input): ar(input->size()) {
       _used = 0;
       array_copy<UArray<T>, UArray<T>>(this, input);
     }
     void push(T data) {
-      size_t length = ar.len();
+      size_t length = ar.size();
       if (_used == length) {
         ar.resize(length == 0 ? 1 : length * 2);
       }
@@ -344,7 +347,7 @@ class UArray {
         _used--;
         *val = ar[_used];
         // Reclaim memory if the amount used gets small
-        if (_used < ar.len()/2) {
+        if (_used < ar.size()/2) {
           ar.resize(_used);
         }
         return true;
@@ -352,7 +355,7 @@ class UArray {
       return false;
     }
     void resize(size_t size) {
-      if (size > ar.len() || size < ar.len()/3) {
+      if (size > ar.size() || size < ar.size()/3) {
         ar.resize(size);
       }
       _used = size;
@@ -361,7 +364,7 @@ class UArray {
       if (_used > 0) {
         _used--;
         // Reclaim memory if the amount used gets small
-        if (_used < ar.len()/3) {
+        if (_used < ar.size()/3) {
           ar.resize(_used);
         }
       }
@@ -379,8 +382,11 @@ class UArray {
       ARRAY_CHECK(_used-index);
       return ar[_used-index];
     }
-    size_t len() const {
+    size_t size() const {
       return _used;
+    }
+    size_t capacity() const {
+      return ar.size();
     }
     bool isfull() const {
       return false;
@@ -399,7 +405,7 @@ class UArray {
       ar[j] = tmp;
     }
     void check(size_t index) const {
-      size_t length = ar.len();
+      size_t length = ar.size();
       if (_used > length) {
         PANIC("Array, more elements used than exist\n");
       }

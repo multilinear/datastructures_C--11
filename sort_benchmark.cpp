@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
   ftime(&t2);
   double t = tdiff(t2,t1);
 	// Verify
-	for (size_t i = 0; i<a.len()-1; i++) {
+	for (size_t i = 0; i<a.size()-1; i++) {
 		if (a[i] > a[i+1]) {
       printf("%u > %u\n", a[i], a[i+1]);
 			PANIC("Sort isn't sorting!");

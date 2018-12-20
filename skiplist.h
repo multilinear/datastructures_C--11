@@ -123,8 +123,8 @@ bool SkipList<Node_T,Val_T>::insert(Node_T *newn) {
   if (head->val() > newn->val()) {
     Node_T *tmp = head;
     // Replace head
-    newn->next.resize(head->next.len());
-    for (size_t i = 0; i<newn->next.len(); i++) {
+    newn->next.resize(head->next.size());
+    for (size_t i = 0; i<newn->next.size(); i++) {
       newn->next[i] = head->next[i];
     }
     head = newn;
@@ -175,7 +175,7 @@ bool SkipList<Node_T,Val_T>::insert(Node_T *newn) {
       }
     }
     // Stick ourselves in the list
-    if (newn->next.len() > level-1) {
+    if (newn->next.size() > level-1) {
       newn->next[level-1] = closest->next[level-1];
       closest->next[level-1] = newn;
     }
@@ -224,9 +224,9 @@ void SkipList<Node_T,Val_T>::remove(Node_T *n) {
     head = n->next[0];
 		if (head) {
 			// Make head point to all the lists again 
-			size_t level = head->next.len();
-			head->next.resize(old_head->next.len());
-			for (; level < head->next.len(); level++) {
+			size_t level = head->next.size();
+			head->next.resize(old_head->next.size());
+			for (; level < head->next.size(); level++) {
 				head->next[level] = old_head->next[level];
 			}
 		}
@@ -277,7 +277,7 @@ void SkipList<Node_T,Val_T>::check(void) const {
   size_t l;
   for (l = 0; l<levels-1; l++) {
     for (;n!=nullptr;n=n->next[l]) {
-      if (n->next.len() > levels) {
+      if (n->next.size() > levels) {
         PANIC("skiplist broke badly");
       }
     }
