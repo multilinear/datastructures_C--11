@@ -882,7 +882,6 @@ class BTree<T,Val_T,C,SIZE>::Iterator {
       return pos.node->get_data(pos.index);
     }
     T* operator->() {
-      // TODO: is this right?
       return &pos.node->get_data(pos.index);
     }
 };

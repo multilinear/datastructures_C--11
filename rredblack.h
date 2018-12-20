@@ -275,7 +275,6 @@ bool RRedBlack<Node_T, Val_T>::insert(Node_T *new_n) {
   root->red = false;
   PRINT_TREE();
   CHECK_ALL();
-  // TODO: yeah, we should recursively return a tuple
   return true;
 }    
 

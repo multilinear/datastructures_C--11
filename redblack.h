@@ -104,7 +104,6 @@
 template<typename Node_T, typename Val_T>
 class RedBlackNode_base {
   public:
-    // TODO(mbrewer): try making the first 2 an array
     Node_T *left;
     Node_T *right;
     Node_T *parent;

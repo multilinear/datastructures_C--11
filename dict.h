@@ -29,10 +29,6 @@
 #define DICT_ARITY 30 
 #endif
 
-// TODO: To use pairs like this dict should really support move semantics
-// internally (as data moves about a btree quite often).
-// performance could probably be increased significantly with this small change
-
 template<typename KT, typename VT>
 class Dict {
   private:

@@ -125,7 +125,6 @@ class Heap {
         // the reference potentially no longer valid
         //ar.pop(&(ar[0]));
         // So we do this instead
-        // TODO cast of tmp to an rvalue would use move semantics, saving a copy
         T tmp;
         // We shouldn't need this check, but otherwise we get an uninitialized variable error
         if (!ar.pop(&tmp)){

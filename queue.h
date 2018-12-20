@@ -35,28 +35,21 @@ class Queue {
 		// This dereferences to the DATA, instead of to the node.
     class Iterator {
       private:
-        QueueNode<T>* n;
+        typename List<QueueNode<T>>::Iterator iter;
       public:
-        Iterator(QueueNode<T>* node) {
-          n = node;
-        }
-        Iterator(const Iterator& other) {
-          n = other.n;
-        }
+        Iterator(const typename List<QueueNode<T>>::Iterator &i):iter(i) {}
+        Iterator(const Iterator& other):iter(other.iter) {}
         Iterator& operator=(const Iterator& other) {
-          n = other->_head;
+          iter = other.iter;
         }
         bool operator==(const Iterator& other) const {
-          return n == other.n;
+          return iter == other.iter;
         }
         bool operator!=(const Iterator& other) const {
-          return n != other.n;
+          return iter != other.iter;
         }
         Iterator& operator++() {
-          if (n) {
-						// TODO(mbrewer): This is a bit more invasive than ideal
-            n = n->next;
-          }
+          iter++;
           return *this;
         } 
         Iterator operator++(int) {
@@ -65,17 +58,17 @@ class Queue {
           return tmp;
         } 
         T& operator*() {
-          return n->data;
+          return iter->data;
         }
         T* operator->() {
-          return &(n->data);
+          return &(iter->data);
         }
     };
     Iterator begin() {
-      return Iterator(l.peek());
+      return Iterator(l.begin());
     }
     Iterator end() {
-      return Iterator(nullptr);
+      return Iterator(l.end());
     }
     Queue():l() {
     }
