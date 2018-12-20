@@ -1,10 +1,7 @@
 New:
-  Write medianfind (and variants)
 
 Cleanup:
-  consider replacing comparators with lambdas
   review for move semantics (arrays especially)
-  decltype (sorts especially, can probably replace some templating) 
   drop arrays in favor of vector due to "emplace"
 
 Usability:

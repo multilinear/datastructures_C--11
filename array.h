@@ -81,6 +81,7 @@ class StaticArray {
   private:
     T ar[Size];
   public:
+    typedef T value_type;
     StaticArray() {
     }
     StaticArray(T input[], size_t input_l) {
@@ -145,6 +146,7 @@ class StaticUArray {
     StaticArray<T,Size> ar;
     size_t _used;
   public:
+    typedef T value_type;
     StaticUArray() {
       _used = 0;
     }
@@ -325,6 +327,7 @@ class UArray {
     Array<T> ar;
     size_t _used;
   public:
+    typedef T value_type;
     UArray():ar() {
       _used = 0;
     }
