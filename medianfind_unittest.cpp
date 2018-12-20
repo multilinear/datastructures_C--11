@@ -25,7 +25,8 @@ void print_array(Array<uint32_t> *a) {
 void run(Array<uint32_t>* input, size_t k){
   Array<uint32_t> sorted(input);  
   Array<uint32_t> copy(input);  
-  fast_sort<Array<uint32_t>, uint32_t>(&sorted);
+  Array<uint32_t> tmp(input->len());  
+  fast_sort<Array<uint32_t>,Array<uint32_t>>(&sorted, &tmp);
   size_t ind2 = findkth<Array<uint32_t>, IntCompare, false>(&copy, k);
   size_t ind1 = findkth<Array<uint32_t>, IntCompare, true>(&copy, k);
   // Verify it's the median
@@ -116,6 +117,7 @@ int main(){
   // linear quickselect algorithm
   Array<size_t> ind;
   Array<uint32_t> sorted;
+  Array<uint32_t> tmp;
   for(uint32_t i=10; i<1000; i++) {
     testdata.resize(i);
     for (uint32_t x=0; x<i; x++) {
@@ -129,7 +131,8 @@ int main(){
     uint32_t median = testdata[ind[findkth_pivot_helper<Array<uint32_t>, IntCompare>(&testdata, &ind, 0, i-1)]];
     // now calculate where that lands in the list
     array_copy<Array<uint32_t>,Array<uint32_t>>(&sorted, &testdata);
-    fast_sort<Array<uint32_t>, uint32_t>(&sorted);
+    tmp.resize(i);
+    fast_sort<Array<uint32_t>, Array<uint32_t>>(&sorted, &tmp);
     uint32_t q=0;
     while (sorted[q] != median) {
       q++;

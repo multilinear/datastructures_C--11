@@ -72,13 +72,13 @@ int main(int argc, char **argv) {
     merge_sort<Array<uint32_t>,Array<uint32_t>, IntComparitor>(&a, &b);
     #endif
     #ifdef TEST_BRADIXSORT
-    bradix_sort<Array<uint32_t>,uint32_t>(&a);
+    bradix_sort<Array<uint32_t>>(&a);
     #endif
     #ifdef TEST_RADIXSORT
-    radix_sort<Array<uint32_t>,Array<uint32_t>, uint32_t, RADIX_BITS>(&a, &b);
+    radix_sort<Array<uint32_t>,Array<uint32_t>, RADIX_BITS>(&a, &b);
     #endif
     #ifdef TEST_FASTSORT
-    fast_sort<Array<uint32_t>, uint32_t>(&a);
+    fast_sort<Array<uint32_t>, Array<uint32_t>>(&a, &b);
     #endif
   }
   ftime(&t2);

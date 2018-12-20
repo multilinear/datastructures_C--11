@@ -95,7 +95,7 @@ class StaticArray {
     StaticArray(StaticArray<T, Size>* input) {
       array_copy<StaticArray<T, Size>, StaticArray<T, Size>>(this, input);
     }
-    const T& get(size_t index) const {
+    const T get(size_t index) const {
       ARRAY_CHECK(index);
       return ar[index];
     }
@@ -237,6 +237,7 @@ class Array {
     T *ar;
     size_t _length;
   public:
+    typedef T value_type;
     Array() {
       ar = nullptr;
       resize(0);

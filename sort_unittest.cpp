@@ -51,10 +51,10 @@ void run(Array<uint32_t>* input, void* _unused){
   heap_sort<Array<uint32_t>,IntCompare>(&h_a);
   //printf("bradix_sort input\n");
   //print_array(&br_a);
-  bradix_sort<Array<uint32_t>,uint32_t>(&br_a);
+  bradix_sort<Array<uint32_t>>(&br_a);
   //printf("bradix_sort output\n");
-  radix_sort<Array<uint32_t>,Array<uint32_t>,uint32_t, 5>(&r_a, &tmp_a);
-  fast_sort<Array<uint32_t>, uint32_t>(&fast_a);
+  radix_sort<Array<uint32_t>,Array<uint32_t>, 5>(&r_a, &tmp_a);
+  fast_sort<Array<uint32_t>>(&fast_a, &tmp_a);
   for (size_t i=0; i<s_a.len(); i++) {
     if (s_a[i] != b_a[i]) {
       bad = &b_a;

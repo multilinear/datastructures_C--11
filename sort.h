@@ -239,8 +239,8 @@ void heap_sort(AT *in) {
 	}
 }
 
-template <typename AT, typename VT>
-void bradix_sort_helper(AT *in, size_t o_low, size_t o_high, VT bit) {
+template <typename AT>
+void bradix_sort_helper(AT *in, size_t o_low, size_t o_high, uint32_t bit) {
   //printf("%li, %li, %i\n", o_low, o_high, bit);
   size_t low = o_low;
   size_t high = o_high;
@@ -266,15 +266,15 @@ void bradix_sort_helper(AT *in, size_t o_low, size_t o_high, VT bit) {
     return;
   }
   if (o_low < low) {
-    bradix_sort_helper<AT,VT>(in, o_low, low, bit);
+    bradix_sort_helper<AT>(in, o_low, low, bit);
   }
   if (high < o_high) {
-    bradix_sort_helper<AT,VT>(in, high, o_high, bit);
+    bradix_sort_helper<AT>(in, high, o_high, bit);
   }
 }
 
 // Average and worst-case are O(log(sozeof(VT))N)
-// VT is the type of the values stored inside AT
+// where VT is the type of the values stored inside AT
 // Testing with random 32-bit unsigned integers:
 //   This is slower than quicksort average case, but it's faster worst-case
 //   This is slower than mergesort average case, but it's in-place
@@ -287,12 +287,12 @@ void bradix_sort_helper(AT *in, size_t o_low, size_t o_high, VT bit) {
 // Note that this is designed for primative *unsigned* types. It will not
 // Work correctly on signed types. This is both due to the meaning of
 // two's compliment, as well as sign extension.
-template <typename AT, typename VT>
+template <typename AT>
 void bradix_sort(AT *in) {
   if (in->len() <= 1) {
     return;
   }
-  bradix_sort_helper<AT,VT>(in, 0, in->len()-1, 1 << (8*sizeof(VT)-1));
+  bradix_sort_helper<AT>(in, 0, in->len()-1, 1 << (8*sizeof(decltype((*in)[0]))-1));
 }
 
 template <typename AAT, typename BAT, uint32_t mod>
@@ -322,7 +322,7 @@ void radix_sort_helper(AAT *in, BAT *out, uint32_t shift) {
   }
 }
 
-template <typename AAT, typename BAT, typename VT, const uint32_t arity_bits>
+template <typename AAT, typename BAT, const uint32_t arity_bits>
 void radix_sort(AAT *in, BAT *buf) {
   // Assuming you won't use 32 bits of radix :P
   // We could use 16, but 32 bit computations are faster
@@ -334,13 +334,13 @@ void radix_sort(AAT *in, BAT *buf) {
   while(true) {
     radix_sort_helper<AAT,BAT,mod>(in, buf, shift);
     shift += arity_bits;
-    if (!(VT)(1l<<shift)) {
+    if (!(typename AAT::value_type)(1lu<<shift)) {
       array_copy<AAT, BAT>(in, buf) ;
       break;
     }
     radix_sort_helper<BAT,AAT,mod>(buf, in, shift);
     shift += arity_bits;
-    if (!(VT)(1l<<shift)) {
+    if (!(typename AAT::value_type)(1lu<<shift)) {
       break;
     }
   }
@@ -353,8 +353,8 @@ void sort(AT *a) {
   merge_sort(a, &b);
 }
 
-template <typename AT, typename T>
-void fast_sort(AT *a) {
+template <typename AT, typename BT>
+void fast_sort(AT *a, BT *b) {
   class IntCompare {
   public:
     static int32_t compare(uint32_t v1, uint32_t v2) {
@@ -364,8 +364,7 @@ void fast_sort(AT *a) {
   if (a->len() <=20) {
     heap_sort<AT, IntCompare>(a);
   } else {
-    Array<T> b(a->len());
-    radix_sort<AT, Array<T>, T, 6>(a, &b);
+    radix_sort<AT, BT, 6>(a, b);
   }
 }
 
