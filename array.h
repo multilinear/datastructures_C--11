@@ -3,6 +3,7 @@
  */
 
 #include "panic.h"
+#include <algorithm>
 
 #ifndef ARRAY_H
 #define ARRAY_H
@@ -70,6 +71,7 @@ void array_copy(AT1 *dest, const AT2 *src) {
   if (dest->len() != src->len()) {
     dest->resize(src->len());
   }
+  //std::copy<*AT1::value_type, *AT2::value_type>(src->ar, src->ar+src->len(), dest->ar);
   for (size_t i = 0; i<src->len(); i++) {
     (*dest)[i] = src->get(i);
   }
@@ -78,7 +80,9 @@ void array_copy(AT1 *dest, const AT2 *src) {
 // This is a simple static array including no dynamic allocation
 template<typename T, size_t Size>
 class StaticArray {
-  private:
+  //template<typename AT1, typename AT2>
+  //friend void array_copy(AT1 *dest, const AT2 *src);
+    private:
     T ar[Size];
   public:
     typedef T value_type;
@@ -88,10 +92,7 @@ class StaticArray {
       if (input_l > Size) {
         PANIC("Static Array initializer is too long");
       }
-      // TODO: This should use memcpy
-      for (size_t i=0; i<input_l; i++) {
-        ar[i] = input[i];
-      }
+      std::copy<T*, T*>(input, input+input_l, ar);
     }
     StaticArray(StaticArray<T, Size>* input) {
       array_copy<StaticArray<T, Size>, StaticArray<T, Size>>(this, input);
@@ -150,15 +151,8 @@ class StaticUArray {
     StaticUArray() {
       _used = 0;
     }
-    StaticUArray(T input[], size_t input_l) {
-      if (input_l > Size) {
-        PANIC("Static Array initializer is too long");
-      }
+    StaticUArray(T input[], size_t input_l):ar(input, input_l) {
       _used = input_l;
-      // TODO: This should use memcpy
-      for (size_t i=0; i<input_l; i++) {
-        ar[i] = input[i];
-      }
     }
     StaticUArray(StaticUArray<T, Size>* input) {
       array_copy<StaticUArray<T, Size>, StaticUArray<T, Size>>(this, input);
@@ -251,10 +245,7 @@ class Array {
     Array(T input[], size_t input_l) {
       ar = nullptr;
       resize(input_l);
-      // TODO: This should use memcpy
-      for (size_t i=0; i<input_l; i++) {
-        ar[i] = input[i];
-      }
+      std::copy<T*, T*>(input, input+input_l, ar);
     }
     Array(Array<T>* input) {
       ar = nullptr;

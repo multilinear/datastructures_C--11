@@ -94,6 +94,7 @@ void resizable_test(void) {
     PANIC("Resize failed");
   }
   if (a.revi(1) != 3) {
+    printf("a.revi(1)=%d\n", a.revi(1));
     PANIC("Resize revi semantics are wrong");
   }
   if (a.isempty()) {
