@@ -71,18 +71,17 @@ void array_copy(AT1 *dest, const AT2 *src) {
   if (dest->size() != src->size()) {
     dest->resize(src->size());
   }
-  //std::copy<*AT1::value_type, *AT2::value_type>(src->ar, src->ar+src->size(), dest->ar);
   for (size_t i = 0; i<src->size(); i++) {
-    (*dest)[i] = src->get(i);
+    (*dest)[i] = (*src)[i];
   }
 }
 
 // This is a simple static array including no dynamic allocation
 template<typename T, size_t Size>
 class StaticArray {
-  //template<typename AT1, typename AT2>
-  //friend void array_copy(AT1 *dest, const AT2 *src);
-    private:
+  template<typename AT1, typename AT2>
+  friend void array_copy(AT1 *dest, const AT2 *src);
+  private:
     T ar[Size];
   public:
     typedef T value_type;
@@ -143,6 +142,8 @@ class StaticArray {
 // To using an inline C-style array that tracks how much of the array is used.
 template<typename T, size_t Size>
 class StaticUArray {
+  template<typename AT1, typename AT2>
+  friend void array_copy(AT1 *dest, const AT2 *src);
   private:
     StaticArray<T,Size> ar;
     size_t _used;
@@ -224,196 +225,6 @@ class StaticUArray {
       if (index >= _used) {
         printf("StaticUArray %p access out of bounds index:%lu >= used:%lu\n", this, index, _used);
         PANIC("StaticUArray access of uninitialized data\n");
-      }
-    }
-};
-
-
-// This is just a dynamically allocated array, as you are used to using one.
-template<typename T>
-class Array {
-  private:
-    T *ar;
-    size_t _length;
-  public:
-    typedef T value_type;
-    Array() {
-      ar = nullptr;
-      resize(0);
-    }
-    Array(size_t size) {
-      ar = nullptr;
-      resize(size);
-    }
-    Array(T input[], size_t input_l) {
-      ar = nullptr;
-      resize(input_l);
-      std::copy<T*, T*>(input, input+input_l, ar);
-    }
-    Array(Array<T>* input) {
-      ar = nullptr;
-      _length = 0;
-      array_copy<Array<T>, Array<T>>(this, input);
-    }
-
-    ~Array() {
-      if (ar) {
-        free(ar);
-      }
-      ar = nullptr;
-    }
-    void resize(size_t new_size) {
-      _length = new_size;
-      if (new_size) {
-        ar = (T*) realloc(ar, _length * sizeof(T));
-      } else {
-        free(ar);
-        ar = nullptr;
-      }
-    }
-    size_t size() const {
-      return _length;
-    }
-    bool isempty() const {
-      return !_length;
-    }
-    operator bool() const {
-      return _length;
-    }
-    void swap(size_t i, size_t j) {
-      ARRAY_CHECK(i);
-      ARRAY_CHECK(j);
-      T tmp = ar[i];
-      ar[i] = ar[j];
-      ar[j] = tmp;
-    }
-    // ** Common functions
-    const T& get(size_t index) const {
-      ARRAY_CHECK(index);
-      return ar[index];
-    }
-    T& operator[](size_t index) {
-      ARRAY_CHECK(index);
-      return ar[index];
-    }
-    // Works like negative indices in python (1 is last element)
-    T& revi(size_t index) {
-      ARRAY_CHECK(_length-index);
-      return ar[_length-index];
-    }
-    // ** Check
-    void check(size_t index) const {
-      if (index >= _length) {
-        printf("\nPANIC: index=%lu length=%lu\n", index, _length);
-        PANIC("Array access out of bounds\n");
-      }
-    }
-};
-
-// This is an array that's designed to change in size a lot
-// This is for use in queues and stacks and that sort of thing
-// It's a doubling array, including memory reclamation on downsizing
-// "size()" returns the actively used portion of the array, not the
-// Total available size
-template<typename T>
-class UArray {
-  private:
-    Array<T> ar;
-    size_t _used;
-  public:
-    typedef T value_type;
-    UArray():ar() {
-      _used = 0;
-    }
-    UArray(size_t size):ar(size) {
-      _used = size;
-    }
-    UArray(T input[], size_t input_l): ar(input, input_l) {
-      _used = input_l;
-    }
-    UArray(UArray<T>* input): ar(input->size()) {
-      _used = 0;
-      array_copy<UArray<T>, UArray<T>>(this, input);
-    }
-    void push(T data) {
-      size_t length = ar.size();
-      if (_used == length) {
-        ar.resize(length == 0 ? 1 : length * 2);
-      }
-      ar[_used++] = data;
-    }
-    bool pop(T *val) {
-      if (_used > 0) {
-        _used--;
-        *val = ar[_used];
-        // Reclaim memory if the amount used gets small
-        if (_used < ar.size()/2) {
-          ar.resize(_used);
-        }
-        return true;
-      }
-      return false;
-    }
-    void resize(size_t size) {
-      if (size > ar.size() || size < ar.size()/3) {
-        ar.resize(size);
-      }
-      _used = size;
-    }
-    void drop() {
-      if (_used > 0) {
-        _used--;
-        // Reclaim memory if the amount used gets small
-        if (_used < ar.size()/3) {
-          ar.resize(_used);
-        }
-      }
-    }
-    const T& get(size_t index) const {
-      ARRAY_CHECK(index);
-      return ar.get(index);
-    }
-    T& operator[](size_t index) {
-      ARRAY_CHECK(index);
-      return ar[index];
-    }
-    // Works like negative indices in python (1 is last element)
-    T& revi(size_t index) {
-      ARRAY_CHECK(_used-index);
-      return ar[_used-index];
-    }
-    size_t size() const {
-      return _used;
-    }
-    size_t capacity() const {
-      return ar.size();
-    }
-    bool isfull() const {
-      return false;
-    }
-    bool isempty() const {
-      return !_used;
-    }
-    operator bool() const {
-      return _used;
-    }
-    void swap(size_t i, size_t j) {
-      ARRAY_CHECK(i);
-      ARRAY_CHECK(j);
-      T tmp = ar[i];
-      ar[i] = ar[j];
-      ar[j] = tmp;
-    }
-    void check(size_t index) const {
-      size_t length = ar.size();
-      if (_used > length) {
-        PANIC("Array, more elements used than exist\n");
-      }
-      if (index >= length) {
-        PANIC("Array access out of bounds\n");
-      }
-      if (index >= _used) {
-        PANIC("Array access of uninitialized data\n");
       }
     }
 };

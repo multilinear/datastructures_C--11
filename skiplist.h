@@ -16,7 +16,7 @@
  *   Thread compatible
  */
 
-#include "array.h"
+#include <vector>
 
 #ifndef SKIPLIST_H
 #define SKIPLIST_H
@@ -30,7 +30,7 @@
 template<typename Node_T>
 class SkipListNode_base {
   public:
-    Array<Node_T *> next;
+    std::vector<Node_T *> next;
 		SkipListNode_base():next(){
 		}
 };

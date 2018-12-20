@@ -1,8 +1,8 @@
 
 #include "stdint.h"
 #include "sort.h"
-#include "array.h"
 #include "timer.h"
+#include <vector>
 
 #ifndef TEST_ITERATIONS
 #define TEST_ITERATIONS 1000000
@@ -36,20 +36,20 @@ int main(int argc, char **argv) {
   #endif
   #ifdef TEST_MERGESORT
   printf("MergeSort ");
-  Array<uint32_t> b(TEST_SIZE);
+  std::vector<uint32_t> b(TEST_SIZE);
   #endif
   #ifdef TEST_BRADIXSORT
   printf("BRadixSort ");
   #endif
   #ifdef TEST_RADIXSORT
   printf("RadixSort ");
-  Array<uint32_t> b(TEST_SIZE);
+  std::vector<uint32_t> b(TEST_SIZE);
   #endif
   #ifdef TEST_FASTSORT
   printf("FastSort ");
-  Array<uint32_t> b(TEST_SIZE);
+  std::vector<uint32_t> b(TEST_SIZE);
   #endif
-  Array<uint32_t> a(TEST_SIZE);
+  std::vector<uint32_t> a(TEST_SIZE);
   timeb t1, t2;
   ftime(&t1);
   for (uint32_t j = 0; j<TEST_ITERATIONS; j++) {
@@ -57,28 +57,28 @@ int main(int argc, char **argv) {
       a[i] = rand();
     }
     #ifdef TEST_SELECTSORT
-    selection_sort<Array<uint32_t>, IntComparitor>(&a);
+    selection_sort<std::vector<uint32_t>, IntComparitor>(&a);
     #endif
     #ifdef TEST_BUBBLESORT
-    bubble_sort<Array<uint32_t>, IntComparitor>(&a);
+    bubble_sort<std::vector<uint32_t>, IntComparitor>(&a);
     #endif
     #ifdef TEST_QUICKSORT
-    quick_sort<Array<uint32_t>, IntComparitor>(&a);
+    quick_sort<std::vector<uint32_t>, IntComparitor>(&a);
     #endif
     #ifdef TEST_HEAPSORT
-    heap_sort<Array<uint32_t>, IntComparitor>(&a);
+    heap_sort<std::vector<uint32_t>, IntComparitor>(&a);
     #endif
     #ifdef TEST_MERGESORT
-    merge_sort<Array<uint32_t>,Array<uint32_t>, IntComparitor>(&a, &b);
+    merge_sort<std::vector<uint32_t>,std::vector<uint32_t>, IntComparitor>(&a, &b);
     #endif
     #ifdef TEST_BRADIXSORT
-    bradix_sort<Array<uint32_t>>(&a);
+    bradix_sort<std::vector<uint32_t>>(&a);
     #endif
     #ifdef TEST_RADIXSORT
-    radix_sort<Array<uint32_t>,Array<uint32_t>, RADIX_BITS>(&a, &b);
+    radix_sort<std::vector<uint32_t>,std::vector<uint32_t>, RADIX_BITS>(&a, &b);
     #endif
     #ifdef TEST_FASTSORT
-    fast_sort<Array<uint32_t>, Array<uint32_t>>(&a, &b);
+    fast_sort<std::vector<uint32_t>, std::vector<uint32_t>>(&a, &b);
     #endif
   }
   ftime(&t2);

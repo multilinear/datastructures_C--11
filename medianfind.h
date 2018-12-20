@@ -1,39 +1,17 @@
 #include <stdio.h>
 #include "sort.h"
+#include <vector>
 
 #ifndef MEDIAN_FIND_H
 #define MEDIAN_FIND_H
 
-void my_print_array2(Array<uint32_t> *a) {
-  printf("[");
-  for (size_t i=0; i<a->size(); i++) {
-    printf("%u,", (*a)[i]);
-  }
-  printf("]\n");
-}
-void my_print_array(Array<size_t> *a) {
-  printf("[");
-  for (size_t i=0; i<a->size(); i++) {
-    printf("%lu,", (*a)[i]);
-  }
-  printf("]\n");
-}
-void my_print_array3(Array<uint32_t> *a, Array<size_t> *ind) {
-  printf("[");
-  for (size_t i=0; i<ind->size(); i++) {
-    printf("%u,", (*a)[(*ind)[i]]);
-  }
-  printf("]\n");
-}
-
-
 // Forward declaration for recursion
 template<typename AT, typename C, bool linear>
-size_t findkth_helper(AT *a, Array<size_t> *ind, size_t k, size_t bottom, size_t top);
+size_t findkth_helper(AT *a, std::vector<size_t> *ind, size_t k, size_t bottom, size_t top);
  
 // Must be called on an array of length >= 2
 template<typename AT, typename C>
-size_t findkth_pivot_helper(AT *a, Array<size_t> *ind, size_t bottom, size_t top) {
+size_t findkth_pivot_helper(AT *a, std::vector<size_t> *ind, size_t bottom, size_t top) {
   const size_t chunk = 5;
   size_t len = top-bottom+1;
   // Once it's small enough just pick a pivot
@@ -50,17 +28,19 @@ size_t findkth_pivot_helper(AT *a, Array<size_t> *ind, size_t bottom, size_t top
   // Sort each chunk of 5
   for (size_t i=bottom; i<=top; i+=chunk) {
     for (size_t j=i; j<i+chunk && j<=top; j++) {
+      auto smallest=j;
       for (size_t k=j+1; k<i+chunk && k<=top; k++) {
-        if (C::compare((*a)[(*ind)[j]], (*a)[(*ind)[k]]) > 0) {
-          ind->swap(j,k);
+        if (C::compare((*a)[(*ind)[smallest]], (*a)[(*ind)[k]]) > 0) {
+          smallest=k;
         }
       }
+      std::swap((*ind)[j],(*ind)[smallest]);
     }
   }
   // Shift all the medians to the beginning of the array portion we're in
   // This way we can recurse on the medians
   for (size_t i=0; i<len/chunk; i++) {
-    ind->swap(bottom+i, bottom+(i*chunk)+(chunk/2));
+    std::swap((*ind)[bottom+i],(*ind)[ bottom+(i*chunk)+(chunk/2)]);
   }
   len = len/chunk;
   top = bottom+len-1;
@@ -68,7 +48,7 @@ size_t findkth_pivot_helper(AT *a, Array<size_t> *ind, size_t bottom, size_t top
 }
 
 template<typename AT, typename C, bool linear>
-size_t findkth_helper(AT *a, Array<size_t> *ind, size_t k, size_t orig_bottom, size_t orig_top) {
+size_t findkth_helper(AT *a, std::vector<size_t> *ind, size_t k, size_t orig_bottom, size_t orig_top) {
   // Handle pathalogical cases
   if (k >= orig_top-orig_bottom+1) {
     printf("k=%lu orig_top-orig_bottom+1=%lu\n", k, orig_top-orig_bottom+1);
@@ -85,7 +65,7 @@ size_t findkth_helper(AT *a, Array<size_t> *ind, size_t k, size_t orig_bottom, s
     if (linear) {
       pivot=findkth_pivot_helper<AT, C>(a, ind, bottom, top);
       // Get the pivot out of the way
-      ind->swap(bottom, pivot);
+      std::swap((*ind)[bottom],(*ind)[ pivot]);
     } else {
       pivot=bottom;
     }
@@ -95,7 +75,7 @@ size_t findkth_helper(AT *a, Array<size_t> *ind, size_t k, size_t orig_bottom, s
     size_t i = bottom+1;
     while (i != j) {
       if (C::compare((*a)[(*ind)[i]], (*a)[(*ind)[bottom]]) > 0) {
-        ind->swap(i,j);
+        std::swap((*ind)[i],(*ind)[j]);
         j--;
       } else { 
         i++;
@@ -107,7 +87,7 @@ size_t findkth_helper(AT *a, Array<size_t> *ind, size_t k, size_t orig_bottom, s
       i--; 
     } 
     // Put the pivot back in the middle
-    ind->swap(i, bottom);
+    std::swap((*ind)[i],(*ind)[ bottom]);
     if (i == k+orig_bottom) {
       return i;
     }
@@ -127,7 +107,7 @@ size_t findkth_helper(AT *a, Array<size_t> *ind, size_t k, size_t orig_bottom, s
 template<typename AT, typename C, bool linear>
 size_t findkth(AT *a, size_t k) {
   // Build an index array
-  Array<size_t> ind(a->size());
+  std::vector<size_t> ind(a->size());
   for (size_t i=0;i<ind.size(); i++) {
     ind[i] = i;
   }

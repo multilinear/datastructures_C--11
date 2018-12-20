@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <utility>
 #include "panic.h"
-#include "array.h"
+#include "delayed_copy_array.h"
 #include "avl.h"
 
 #ifndef AVL_HASHTABLE_H
@@ -42,18 +42,18 @@ class AVLHashTableNode_base: public AVLNode_base<Node_T, Val_T> {
 template <typename Node_T, typename Val_T>
 class AVLHashTable {
   private:
-    Array<AVL<Node_T, Val_T>> table;
+    DCUArray<AVL<Node_T, Val_T>> table;
     size_t count = 0;
     void check_sizeup(void);
     void check_sizedown(void);
   public:
     class Iterator {
       private:
-        Array<AVL<Node_T, Val_T>> *table;
+        DCUArray<AVL<Node_T, Val_T>> *table;
         size_t index;
         typename AVL<Node_T, Val_T>::Iterator iter;
       public:
-        Iterator(Array<AVL<Node_T, Val_T>> *t, size_t ind) {
+        Iterator(DCUArray<AVL<Node_T, Val_T>> *t, size_t ind) {
           table = t;
           index = ind;
           if (index >= table->size()) {

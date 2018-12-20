@@ -30,7 +30,7 @@ void selection_sort(AT *a) {
         smallest = j;
       }
     }
-    a->swap(i, smallest);
+    std::swap((*a)[i],(*a)[smallest]);
   }
 }
 
@@ -52,7 +52,7 @@ void bubble_sort(AT *a) {
     swapped = false;
     for (i = 0; i+1 < a->size(); i++) {
       if (C::compare((*a)[i+1], (*a)[i]) < 0) { 
-        a->swap(i, i+1);
+        std::swap((*a)[i],(*a)[i+1]);
         swapped = true;
       }
     }
@@ -66,7 +66,7 @@ void quick_sort_helper(AT *a, size_t bottom, size_t top) {
   }
   if (bottom + 1 == top) {
     if (C::compare((*a)[bottom], (*a)[top]) > 0) {
-      a->swap(bottom, top);
+      std::swap((*a)[bottom],(*a)[top]);
     }
     return;
   }
@@ -80,10 +80,10 @@ void quick_sort_helper(AT *a, size_t bottom, size_t top) {
       right--;
     }
     if (left < right) {
-      a->swap(left, right);
+      std::swap((*a)[left], (*a)[right]);
     }
   }
-  a->swap(bottom, right);
+  std::swap((*a)[bottom],(*a)[right]);
   if (right > bottom) {
     quick_sort_helper<AT, C>(a, bottom, right-1);
   }
@@ -194,7 +194,7 @@ void heap_sort(AT *in) {
 			parent = (j-1)/2;
 			int c = C::compare((*in)[parent], (*in)[j]);
 			if (c<0) {
-				in->swap(parent, j);
+				std::swap((*in)[parent],(*in)[j]);
 			} else {
 				break;
 			}
@@ -205,7 +205,7 @@ void heap_sort(AT *in) {
   // Again when heap is size 1, we ignore it (the loop below skips index 0)
 	for (size_t k = len-1; k>0; k--) {
 		// pop the smallest element off the heap (and make the heap 1 element smaller)
-		in->swap(k, 0);
+		std::swap((*in)[k],(*in)[ 0]);
 		// now bubble the new value down
 		size_t i = 0;
 		size_t j;
@@ -229,7 +229,7 @@ void heap_sort(AT *in) {
 			// if not we're done
 			int c = C::compare((*in)[i], (*in)[j]);
 			if (c < 0) {
-				in->swap(i,j);
+				std::swap((*in)[i],(*in)[j]);
 			} else {
 				break;
 			}
@@ -247,7 +247,7 @@ void bradix_sort_helper(AT *in, size_t o_low, size_t o_high, uint32_t bit) {
   // Note: We sort assuming an unsigned type
   do {
     if((*in)[low] & bit) {
-      in->swap(low, high); 
+      std::swap((*in)[low],(*in)[high]); 
       high--;
     } else {
       low++;

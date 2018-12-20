@@ -3,8 +3,9 @@
 #include <cstdint>
 #include <stdio.h>
 #include "panic.h"
-#include "array.h"
 #include "sort.h"
+#include "permutations.h"
+#include <vector>
 
 class IntCompare {
   public:
@@ -13,7 +14,7 @@ class IntCompare {
     }
 };
 
-void print_array(Array<uint32_t> *a) {
+void print_array(std::vector<uint32_t> *a) {
   printf("[");
   for (size_t i=0; i<a->size(); i++) {
     printf("%d,", (*a)[i]);
@@ -21,40 +22,40 @@ void print_array(Array<uint32_t> *a) {
   printf("]\n");
 }
 
-void run(Array<uint32_t>* input, void* _unused){
-  Array<uint32_t> *bad = nullptr;
+void run(std::vector<uint32_t>* input, int _unused){
+  std::vector<uint32_t> *bad = nullptr;
   //printf("Run\n");
-  Array<uint32_t> s_a(input);  
-  Array<uint32_t> b_a(input);  
-  Array<uint32_t> q_a(input);  
-  Array<uint32_t> m_a(input);  
-  Array<uint32_t> h_a(input);  
-  Array<uint32_t> br_a(input);  
-  Array<uint32_t> r_a(input);  
-  Array<uint32_t> fast_a(input);  
-  Array<uint32_t> tmp_a(m_a.size());  
+  std::vector<uint32_t> s_a(*input);  
+  std::vector<uint32_t> b_a(*input);  
+  std::vector<uint32_t> q_a(*input);  
+  std::vector<uint32_t> m_a(*input);  
+  std::vector<uint32_t> h_a(*input);  
+  std::vector<uint32_t> br_a(*input);  
+  std::vector<uint32_t> r_a(*input);  
+  std::vector<uint32_t> fast_a(*input);  
+  std::vector<uint32_t> tmp_a(m_a.size());  
   //printf("testing: ");
   //print_array(input);
   //printf("Selection: ");
-  selection_sort<Array<uint32_t>,IntCompare>(&s_a);
+  selection_sort<std::vector<uint32_t>,IntCompare>(&s_a);
   //print_array(&s_a);
   //printf("Bubble: ");
-  bubble_sort<Array<uint32_t>,IntCompare>(&b_a);
+  bubble_sort<std::vector<uint32_t>,IntCompare>(&b_a);
   //print_array(&q_a);
   //printf("Quick: ");
-  quick_sort<Array<uint32_t>,IntCompare>(&q_a);
+  quick_sort<std::vector<uint32_t>,IntCompare>(&q_a);
   //printf("Merge Test %lu\n", m_a.size());
   //print_array(&m_a);
   //printf("Merge: ");
-  merge_sort<Array<uint32_t>,Array<uint32_t>,IntCompare>(&m_a, &tmp_a);
+  merge_sort<std::vector<uint32_t>,std::vector<uint32_t>,IntCompare>(&m_a, &tmp_a);
   //print_array(&m_a);
-  heap_sort<Array<uint32_t>,IntCompare>(&h_a);
+  heap_sort<std::vector<uint32_t>,IntCompare>(&h_a);
   //printf("bradix_sort input\n");
   //print_array(&br_a);
-  bradix_sort<Array<uint32_t>>(&br_a);
+  bradix_sort<std::vector<uint32_t>>(&br_a);
   //printf("bradix_sort output\n");
-  radix_sort<Array<uint32_t>,Array<uint32_t>, 5>(&r_a, &tmp_a);
-  fast_sort<Array<uint32_t>>(&fast_a, &tmp_a);
+  radix_sort<std::vector<uint32_t>,std::vector<uint32_t>, 5>(&r_a, &tmp_a);
+  fast_sort<std::vector<uint32_t>>(&fast_a, &tmp_a);
   for (size_t i=0; i<s_a.size(); i++) {
     if (s_a[i] != b_a[i]) {
       bad = &b_a;
@@ -93,39 +94,16 @@ void run(Array<uint32_t>* input, void* _unused){
 }
 
 
-template<typename ArrayType, typename DataType>
-void permutation_helper(ArrayType* a, void (*callback)(ArrayType*, DataType), size_t p, DataType opaque_data) {
-  size_t i;
-  // When we reach the end, we're done
-  if (p+1 >= a->size()) {
-    callback(a, opaque_data);
-    return;
-  }
-  // No permutation, just call
-  permutation_helper(a, callback, p+1, opaque_data);
-  // Then swap with each other option, and call
-  for (i=p+1; i<a->size(); i++) {
-    a->swap(p,i);
-    permutation_helper(a, callback, p+1, opaque_data);
-    a->swap(p,i);
-  }
-}
-
-template<typename ArrayType, typename DataType>
-void permutations(Array<uint32_t>* a, void (*callback)(ArrayType*, void*), DataType opaque_data) {
-  permutation_helper<ArrayType>(a, callback, 0, opaque_data);
-}
-
 int main(){
   printf("Begin Sort.h unittest\n");
-  Array<uint32_t> testdata; 
+  std::vector<uint32_t> testdata; 
   // Exhaustive testing of up to 8 elements
   for (int x=0; x<10; x++) {
     testdata.resize(x);
     if (x>0) {
       testdata[x-1] = x;
     }
-    permutations<Array<uint32_t>, void*>(&testdata, run, NULL); 
+    permutations<std::vector<uint32_t>, int>(&testdata, run, 0); 
   }
   // Random testing of large arrays
   for (uint32_t i=1000; i<1500; i+=1) {
@@ -133,7 +111,7 @@ int main(){
     for (uint32_t x=0; x<i; x++) {
       testdata[x] = rand();
     }
-    run(&testdata, NULL);
+    run(&testdata, 0);
   }
   printf("PASS\n");
   return 0;

@@ -54,7 +54,8 @@
 #include <stdio.h>
 #include <utility>
 #include "panic.h"
-#include "array.h"
+#include <vector>
+#include <algorithm>
 
 #ifndef RREDBLACK_H
 #define RREDBLACK_H
@@ -115,7 +116,7 @@ class RRedBlack{
   public:
     class Iterator {
       private:
-        UArray<Node_T*> stack;
+        std::vector<Node_T*> stack;
         Node_T *n;
       public:
         Iterator() {
@@ -127,18 +128,26 @@ class RRedBlack{
 						return;
 					}
           while (n->left) {
-            stack.push(n);
+            stack.push_back(n);
             n = n->left;
           }
           return;
         }
         Iterator(const Iterator& other) {
           n = other.n;
-          array_copy<UArray<Node_T*>,UArray<Node_T*>>(&stack, &(other.stack));
+          stack.resize(other.stack.size());
+          for (size_t i=0; i<other.stack.size(); i++) {
+            stack[i] = other.stack[i];
+          }
+          //std::copy(other.stack.data(), other.stack.data()+other.stack.size(), stack.data());
         }
         Iterator& operator=(const Iterator& other) {
           n = other.n;
-          array_copy<UArray<Node_T*>,UArray<Node_T*>>(&stack, &(other.stack));
+          stack.resize(other.stack.size());
+          for (size_t i=0; i<other.stack.size(); i++) {
+            stack[i] = other.stack[i];
+          }
+          //std::copy(other.stack.data(), other.stack.data()+other.stack.size(), stack.data());
           return *this;
         }
         bool operator==(const Iterator& other) const {
@@ -153,7 +162,7 @@ class RRedBlack{
             return false;
           }
           for (i = 0; i < stack.size(); i++) {
-            if (stack.get(i) != other.stack.get(i)) {
+            if (stack[i] != other.stack[i]) {
               return false;
             }
           }
@@ -168,12 +177,15 @@ class RRedBlack{
             // 'cause we're done with that node anyway
             n = n->right;
             while (n->left) {
-              stack.push(n);
+              stack.push_back(n);
               n = n->left;
             }
            return *this;
           }
-          if (!stack.pop(&n)) {
+          if (stack.size()) {
+            n = stack.back();
+            stack.pop_back();
+          } else {
             n = nullptr;
           }
           return *this;

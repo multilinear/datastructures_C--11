@@ -8,7 +8,8 @@ RADIX_BITS ?= 5
 BTREE_ARITY ?= 32 
 
 # Build lists
-UNITTESTS=array uarray staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set skiplist sort ts_btree ts_ringbuffer ts_work_queue medianfind
+#UNITTESTS=array uarray staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set skiplist sort ts_btree ts_ringbuffer ts_work_queue medianfind
+UNITTESTS=staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set skiplist sort ts_btree ts_ringbuffer ts_work_queue medianfind
 HEAPS_BENCHMARKS=bheap boundedheap heap_dcarray
 
 DICTS_BENCHMARKS=skiplist avlhashtable btree ochashtable hashtable btreehashtable rredblack ts_btree boundedhashtable avl redblack dlist

@@ -1,6 +1,7 @@
 New:
 
 Cleanup:
+  move semantics for Iterator construction
   review for move semantics (arrays especially)
   drop arrays in favor of vector due to "emplace"
 
