@@ -1,6 +1,6 @@
-/* Copyright:  Matthew Brewer (mbrewer@smalladventures.net)  2017-02-12 
+/* Copyright:  Matthew Brewer (mbrewer@smalladventures.net)
  *
- * A collection of sorting algorithms
+ * A radix string-sorting algorithm 
  */
  
 #include "array.h"
@@ -34,7 +34,6 @@ void print_vec(vector<string*> &v, size_t start, size_t end) {
 }
 
 bool radix_sort_helper(vector<string*> &in, vector<string*> &out, size_t start, size_t end, vector<size_t> &slice_out, size_t byte, size_t &slice_i) {
-  printf("radix_sort_helper(start=%lu,end=%lu,byte=%lu)\n", start, end, byte);
   print_vec(in, start, end);
   size_t arena[buckets+2];
   bool done = true;
@@ -75,7 +74,6 @@ bool radix_sort_helper(vector<string*> &in, vector<string*> &out, size_t start, 
     index = arena[index]++;
     out[index] = in[i];
   }
-  printf("finished radix_sort_helper\n");
   print_vec(out, start, end);
   return done;
 }
@@ -93,7 +91,6 @@ void radix_sort(vector<string*> &in, vector<string*> &out, vector<size_t> &slice
     size_t sstart;
     size_t new_slice;
  
-    printf("in ");
     print_table(slice_in);
     // Move from in -> out
     done = true;
@@ -113,14 +110,12 @@ void radix_sort(vector<string*> &in, vector<string*> &out, vector<size_t> &slice
     byte++;
 
     if (done) {
-      printf("done\n");
       for(size_t i=0; i<in.size(); i++) {
         in[i] = out[i];
       }
       return;
     }
     
-    printf("out ");
     print_table(slice_out);
     // Move from out -> in
     // Slice table currntly goes upwards
