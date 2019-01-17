@@ -1,0 +1,145 @@
+/* Copyright:  Matthew Brewer (mbrewer@smalladventures.net)  2017-02-12 
+ *
+ * A collection of sorting algorithms
+ */
+ 
+#include "array.h"
+#include "math.h"
+#include <string>
+#include <vector>
+#include <cstdint>
+
+#ifndef STRING_SORT_H
+#define STRING_SORT_H
+
+using std::vector;
+using std::string;
+
+const size_t buckets = 256;
+
+void print_table(vector<size_t> &t) {
+  printf ("[");
+  for (size_t i=0; i<t.size(); i++) {
+    printf ("%lu, ", t[i]);
+  }
+  printf ("]\n");
+}
+
+void print_vec(vector<string*> &v, size_t start, size_t end) {
+  printf ("[");
+  for (size_t i=start; i<end; i++) {
+    printf ("%s, ", v[i]->c_str());
+  }
+  printf ("]\n");
+}
+
+bool radix_sort_helper(vector<string*> &in, vector<string*> &out, size_t start, size_t end, vector<size_t> &slice_out, size_t byte, size_t &slice_i) {
+  printf("radix_sort_helper(start=%lu,end=%lu,byte=%lu)\n", start, end, byte);
+  print_vec(in, start, end);
+  size_t arena[buckets+2];
+  bool done = true;
+  // Zero the count table
+  for (size_t i=0; i<buckets+2; i++) {
+    arena[i] = 0; 
+  }
+  // Count occurences
+  // Note the "+1" here, this makes summation much simpler later
+  arena[0] = start;
+  for (size_t i=start; i<end; i++) {
+    if (in[i]->size() <= byte) {
+      arena[1]++;
+    } else {
+      arena[((uint32_t)((*(in[i]))[byte]))+2]++;
+    }
+  }
+  // Sum the account table to make indices
+  size_t sum = arena[0];
+  for (size_t i=1; i<buckets+2; i++) {
+    if (arena[i] > 1) done = false;
+    sum += arena[i];
+    // Also update our slice table, but only for non-empty buckets
+    // (which become non-empty slices)
+    if (arena[i]) {
+      slice_out[slice_i++] = sum;
+    }
+    arena[i] = sum;
+  }
+  // Place everything at those indices
+  for (size_t i=start; i<end; i++) {
+    int index;
+    if (in[i]->size() <= byte) {
+      index=0;
+    } else {
+      index = ((uint32_t)((*(in[i]))[byte]))+1;
+    }
+    index = arena[index]++;
+    out[index] = in[i];
+  }
+  printf("finished radix_sort_helper\n");
+  print_vec(out, start, end);
+  return done;
+}
+
+
+void radix_sort(vector<string*> &in, vector<string*> &out, vector<size_t> &slice_in, vector<size_t> &slice_out) {
+  if (in.size() < 2) {
+    return;
+  }
+  uint32_t byte = 0;
+  slice_in[0] = in.size();
+  bool done = false;
+  while(!done) {
+    size_t slice;
+    size_t sstart;
+    size_t new_slice;
+ 
+    printf("in ");
+    print_table(slice_in);
+    // Move from in -> out
+    done = true;
+    sstart=0;
+    slice=0;
+    new_slice=0;
+    while(sstart < in.size()) {
+      size_t ssend = slice_in[slice];
+      if (sstart + 1 < ssend) {
+        done &= radix_sort_helper(in, out, sstart, ssend, slice_out, byte, new_slice);
+      } else {
+        in[sstart] = out[sstart];
+      }
+      sstart = ssend;
+      slice++;
+    }
+    byte++;
+
+    if (done) {
+      printf("done\n");
+      for(size_t i=0; i<in.size(); i++) {
+        in[i] = out[i];
+      }
+      return;
+    }
+    
+    printf("out ");
+    print_table(slice_out);
+    // Move from out -> in
+    // Slice table currntly goes upwards
+    done = true;
+    sstart=0;
+    slice=0;
+    new_slice=0;
+    while(sstart < in.size()) {
+      size_t ssend = slice_out[slice];
+      if (sstart + 1 < ssend) {
+        done &= radix_sort_helper(out, in, sstart, ssend, slice_in, byte, new_slice);
+      } else {
+        in[sstart] = out[sstart]; 
+      }
+      sstart = ssend;
+      slice++;
+    }
+    byte++;
+  }
+}
+
+#endif // STRING_SORT_H

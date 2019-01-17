@@ -9,7 +9,7 @@ BTREE_ARITY ?= 32
 
 # Build lists
 #UNITTESTS=array uarray staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set skiplist sort ts_btree ts_ringbuffer ts_work_queue medianfind
-UNITTESTS=staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set skiplist sort ts_btree ts_ringbuffer ts_work_queue medianfind
+UNITTESTS=staticarray staticuarray dictarray treearray treeuarray dcuarray zeroarray avlhashtable avl bheap boundedheap boundedhashtable btreehashtable btree dict dlist ochashtable hashtable heap list queue redblack ringbuffer rredblack set skiplist sort ts_btree ts_ringbuffer ts_work_queue medianfind stringsort
 HEAPS_BENCHMARKS=bheap boundedheap heap_dcarray
 
 DICTS_BENCHMARKS=skiplist avlhashtable btree ochashtable hashtable btreehashtable rredblack ts_btree boundedhashtable avl redblack dlist
@@ -151,3 +151,5 @@ medianfind_unittest: *.h *.cpp ; $(CC) $(CFLAGS) medianfind_unittest.cpp -o medi
 sortselect_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_SORTSELECT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} medianfind_benchmark.cpp -o sortselect_benchmark
 quickselect_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_QUICKSELECT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} medianfind_benchmark.cpp -o quickselect_benchmark
 linearquickselect_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} medianfind_benchmark.cpp -o linearquickselect_benchmark
+
+stringsort_unittest: *.h *.cpp ; $(CC) $(CFLAGS) stringsort_unittest.cpp -o stringsort_unittest

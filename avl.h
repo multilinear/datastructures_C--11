@@ -132,8 +132,8 @@ class AVL{
 						return;
 					}
           // Find the left-most branch
-          while (n->left) {
-            n = n->left;
+          while (n->AVLNode_base<Node_T,Val_T>::left) {
+            n = n->AVLNode_base<Node_T,Val_T>::left;
             level++;
           }
           return;
@@ -159,16 +159,16 @@ class AVL{
         }
         Iterator& operator++() {
           // Check if we can go right, and if we have already been right
-          if (n->right && !((1<<level) & bits)) {
+          if (n->AVLNode_base<Node_T,Val_T>::right && !((1<<level) & bits)) {
             // Mark that we've been right from here
             bits |= (1<<level);
-            n = n->right;
+            n = n->AVLNode_base<Node_T,Val_T>::right;
             level++;
             // new branch, so clear the "have we been right" bit
             bits &= ~(1<<level);
             // And walk all the way down the left
-            while (n->left) {
-              n = n->left;
+            while (n->AVLNode_base<Node_T,Val_T>::left) {
+              n = n->AVLNode_base<Node_T,Val_T>::left;
               level++;
               // new branch, so clear the "have we been right" bit
               bits &= ~(1<<level);
@@ -176,13 +176,13 @@ class AVL{
            return *this;
           }
           // Can't go right, so go up
-          n = n->parent;
+          n = n->AVLNode_base<Node_T,Val_T>::parent;
           // clear bits in prep for next descent
           bits &= ~(1<<level);
           level--;
           // Keep going till we find a node we haven't already completed
           while (n && ((1<<level) & bits)) {
-            n = n->parent;
+            n = n->AVLNode_base<Node_T,Val_T>::parent;
             // clear bits in prep for next descent
             bits &= ~(1<<level);
             level--;
@@ -235,9 +235,9 @@ Node_T *AVL<Node_T, Val_T>::get(Val_T v) {
     }
     int c = Node_T::compare(v, n->val());
     if (c > 0) {
-      n = n->right;
+      n = n->AVLNode_base<Node_T,Val_T>::right;
     } else if (c < 0) {
-      n = n->left;
+      n = n->AVLNode_base<Node_T,Val_T>::left;
     } else {
       return n;
     }
@@ -258,50 +258,50 @@ bool AVL<Node_T, Val_T>::isempty(void) const {
  */
 template<typename Node_T, typename Val_T>
 int AVL<Node_T, Val_T>::_rotate_left(Node_T *a) {
-  Node_T *b = a->right;
-  Node_T *c = b->left;
-  Node_T *parent = a->parent;
-  b->left = a;
-  a->parent = b;
-  a->right = c;
+  Node_T *b = a->AVLNode_base<Node_T,Val_T>::right;
+  Node_T *c = b->AVLNode_base<Node_T,Val_T>::left;
+  Node_T *parent = a->AVLNode_base<Node_T,Val_T>::parent;
+  b->AVLNode_base<Node_T,Val_T>::left = a;
+  a->AVLNode_base<Node_T,Val_T>::parent = b;
+  a->AVLNode_base<Node_T,Val_T>::right = c;
   if (c) {
-    c->parent = a;
+    c->AVLNode_base<Node_T,Val_T>::parent = a;
   }
   if (parent) {
-    if (parent->left == a) {
-      parent->left = b;
+    if (parent->AVLNode_base<Node_T,Val_T>::left == a) {
+      parent->AVLNode_base<Node_T,Val_T>::left = b;
     } else {
-      parent->right = b;
+      parent->AVLNode_base<Node_T,Val_T>::right = b;
     }
   } else {
     root = b;
   }
-  b->parent = parent;
+  b->AVLNode_base<Node_T,Val_T>::parent = parent;
   // and update balance factors
   // YES this is hard to figure out! the result table is terrible.
   // I ran out the entire table, then figured out the rules below from 
   // staring at it. There's probably something better *shrug*
-  int8_t a_balance = a->balance;
-  int8_t b_balance = b->balance;
+  int8_t a_balance = a->AVLNode_base<Node_T,Val_T>::balance;
+  int8_t b_balance = b->AVLNode_base<Node_T,Val_T>::balance;
   // this is how much deeper the rotation make this subtree.
   // Often negative.
   // In an AVL tree, we should never perform rotations
   // that make it positive.
   int deeper; 
   if (b_balance >= 0) {
-    a->balance = a_balance + 1;
+    a->AVLNode_base<Node_T,Val_T>::balance = a_balance + 1;
     // this case is unneeded, leaving here though
     // because it was so much work to figure out
     //if (a_balance >= 0) {
-    //  b->balance = a_balance + b_balance + 2;
+    //  b->AVLNode_base<Node_T,Val_T>::balance = a_balance + b_balance + 2;
     //  deeper = 1;
     //} else {
-    b->balance = b_balance + 1;
+    b->AVLNode_base<Node_T,Val_T>::balance = b_balance + 1;
     deeper = 0;
     //}
   } else {
-    a->balance = a_balance - b_balance + 1;
-    b->balance = a_balance + 2;
+    a->AVLNode_base<Node_T,Val_T>::balance = a_balance - b_balance + 1;
+    b->AVLNode_base<Node_T,Val_T>::balance = a_balance + 2;
     // for a_balance 1 deeper should actually be 1 not 2
     // but a_balance is always -2 or -1 here, or we're not doing the rotation
     // in an AVL tree
@@ -320,46 +320,46 @@ int AVL<Node_T, Val_T>::_rotate_left(Node_T *a) {
  */
 template<typename Node_T, typename Val_T>
 int AVL<Node_T, Val_T>::_rotate_right(Node_T *a) {
-  Node_T *b = a->left;
-  Node_T *c = b->right;
-  Node_T *parent = a->parent;
-  b->right = a;
-  a->parent = b;
-  a->left = c;
+  Node_T *b = a->AVLNode_base<Node_T,Val_T>::left;
+  Node_T *c = b->AVLNode_base<Node_T,Val_T>::right;
+  Node_T *parent = a->AVLNode_base<Node_T,Val_T>::parent;
+  b->AVLNode_base<Node_T,Val_T>::right = a;
+  a->AVLNode_base<Node_T,Val_T>::parent = b;
+  a->AVLNode_base<Node_T,Val_T>::left = c;
   if (c) {
-    c->parent = a;
+    c->AVLNode_base<Node_T,Val_T>::parent = a;
   }
   if (parent) {
-    if (parent->right == a) {
-      parent->right = b;
+    if (parent->AVLNode_base<Node_T,Val_T>::right == a) {
+      parent->AVLNode_base<Node_T,Val_T>::right = b;
     } else {
-      parent->left = b;
+      parent->AVLNode_base<Node_T,Val_T>::left = b;
     }
   } else {
     root = b;
   }
-  b->parent = parent;
+  b->AVLNode_base<Node_T,Val_T>::parent = parent;
   // and update balance factors
   // YES this is hard to figure out! the result table is terrible.
   // I ran out the entire table, then figured out the rules below from 
   // staring at it. There's probably something better *shrug*
-  int8_t a_balance = a->balance;
-  int8_t b_balance = b->balance;
+  int8_t a_balance = a->AVLNode_base<Node_T,Val_T>::balance;
+  int8_t b_balance = b->AVLNode_base<Node_T,Val_T>::balance;
   int deeper;
   if (b_balance <= 0) {
-    a->balance = a_balance - 1;
+    a->AVLNode_base<Node_T,Val_T>::balance = a_balance - 1;
     // this case is unneeded, leaving here though
     // because it was so much work to figure out
     //if (a_balance <= 0) {
-    //  b->balance = a_balance + b_balance - 2;
+    //  b->AVLNode_base<Node_T,Val_T>::balance = a_balance + b_balance - 2;
     //  deeper = 1;
     //} else {
-    b->balance = b_balance - 1;
+    b->AVLNode_base<Node_T,Val_T>::balance = b_balance - 1;
     deeper = 0;
     //}
   } else {
-    a->balance = a_balance - b_balance - 1;
-    b->balance = a_balance - 2;
+    a->AVLNode_base<Node_T,Val_T>::balance = a_balance - b_balance - 1;
+    b->AVLNode_base<Node_T,Val_T>::balance = a_balance - 2;
     // for a_balance -1 deeper should actually be 1 not 2
     // but a_balance is always 2 or 1 here, or we're not doing the rotation
     // in an AVL tree
@@ -374,13 +374,13 @@ bool AVL<Node_T, Val_T>::insert(Node_T *n) {
   PRINT("Begin Insert\n");
   CHECK_ALL();
   PRINT_TREE();
-  n->right = nullptr;
-  n->left = nullptr;
-  n->balance = 0;
+  n->AVLNode_base<Node_T,Val_T>::right = nullptr;
+  n->AVLNode_base<Node_T,Val_T>::left = nullptr;
+  n->AVLNode_base<Node_T,Val_T>::balance = 0;
   // We do this here, so we don't have to do the check every iteration
   if (!root) {
     root = n;
-    root->parent = nullptr;
+    root->AVLNode_base<Node_T,Val_T>::parent = nullptr;
     PRINT_TREE();
     CHECK_ALL();
     PRINT("Insert complete\n");
@@ -392,19 +392,19 @@ bool AVL<Node_T, Val_T>::insert(Node_T *n) {
   while (true) {
     int c = Node_T::compare(n->val(), parent->val());
     if (c > 0) {
-      if (!parent->right) {
-        parent->right = n;
-        n->parent = parent;
+      if (!parent->AVLNode_base<Node_T,Val_T>::right) {
+        parent->AVLNode_base<Node_T,Val_T>::right = n;
+        n->AVLNode_base<Node_T,Val_T>::parent = parent;
         break;
       }
-      parent = parent->right;
+      parent = parent->AVLNode_base<Node_T,Val_T>::right;
     } else if (c < 0) {
-      if (!parent->left) {
-        parent->left = n;
-        n->parent = parent;
+      if (!parent->AVLNode_base<Node_T,Val_T>::left) {
+        parent->AVLNode_base<Node_T,Val_T>::left = n;
+        n->AVLNode_base<Node_T,Val_T>::parent = parent;
         break;
       }
-      parent = parent->left;
+      parent = parent->AVLNode_base<Node_T,Val_T>::left;
     } else {
       // We already have one of those
       return false;
@@ -425,45 +425,45 @@ bool AVL<Node_T, Val_T>::insert(Node_T *n) {
   // loop invariant is n and parent are done, we're working on grandparent
 
   // fix parent's balance
-  if (parent->left == n) {
-    parent->balance += 1;
-    if (parent->balance <= 0) {
+  if (parent->AVLNode_base<Node_T,Val_T>::left == n) {
+    parent->AVLNode_base<Node_T,Val_T>::balance += 1;
+    if (parent->AVLNode_base<Node_T,Val_T>::balance <= 0) {
       CHECK_ALL();
       return true;
     }
   } else {
-    parent->balance -= 1;
-    if (parent->balance >= 0) {
+    parent->AVLNode_base<Node_T,Val_T>::balance -= 1;
+    if (parent->AVLNode_base<Node_T,Val_T>::balance >= 0) {
       CHECK_ALL();
       return true;
     }
   }
-  // so we need to start at new_n->parent->parent, or grandparent
+  // so we need to start at new_n->AVLNode_base<Node_T,Val_T>::parent->AVLNode_base<Node_T,Val_T>::parent, or grandparent
   // conveniently, parent is the other node we need a handle for.
-  Node_T *grandparent = parent->parent;
+  Node_T *grandparent = parent->AVLNode_base<Node_T,Val_T>::parent;
   while (grandparent) {
     // fix grandparent's balance
-    if (grandparent->left == parent) {
-      grandparent->balance += 1;
+    if (grandparent->AVLNode_base<Node_T,Val_T>::left == parent) {
+      grandparent->AVLNode_base<Node_T,Val_T>::balance += 1;
       // if balance is 0 or less, we aren't the deep branch
       // so we haven't added to the depth of grandparent.
-      if (grandparent->balance <= 0) {
+      if (grandparent->AVLNode_base<Node_T,Val_T>::balance <= 0) {
         break;
       } 
-      if (grandparent->balance == 2) {
-        if (parent->balance == -1) {
+      if (grandparent->AVLNode_base<Node_T,Val_T>::balance == 2) {
+        if (parent->AVLNode_base<Node_T,Val_T>::balance == -1) {
           PRINT("LEFT RIGHT\n");
           PRINT_TREE();
           _rotate_left(parent);
           PRINT_TREE();
-          parent = parent->parent; 
+          parent = parent->AVLNode_base<Node_T,Val_T>::parent; 
         }
         PRINT("LEFT LEFT\n");
         PRINT_TREE();
         // rotate grandparent and parent right 
         int deeper = _rotate_right(grandparent); 
         PRINT_TREE();
-        grandparent = parent->parent;
+        grandparent = parent->AVLNode_base<Node_T,Val_T>::parent;
         // if we made this branch shallower, we're done
         if (deeper < 0) {
           break;
@@ -471,25 +471,25 @@ bool AVL<Node_T, Val_T>::insert(Node_T *n) {
         continue;
       }
     } else {
-      grandparent->balance -= 1;
+      grandparent->AVLNode_base<Node_T,Val_T>::balance -= 1;
       // if balance is 0 or less, we aren't the deep branch
       // so we haven't added to the depth of grandparent.
-      if (grandparent->balance >= 0) {
+      if (grandparent->AVLNode_base<Node_T,Val_T>::balance >= 0) {
         break;
       }
-      if (grandparent->balance == -2) {
-        if (parent->balance == 1) {
+      if (grandparent->AVLNode_base<Node_T,Val_T>::balance == -2) {
+        if (parent->AVLNode_base<Node_T,Val_T>::balance == 1) {
           PRINT("RIGHT LEFT\n");
           PRINT_TREE();
           _rotate_right(parent);
           PRINT_TREE();
-          parent = parent->parent; 
+          parent = parent->AVLNode_base<Node_T,Val_T>::parent; 
         }
         PRINT("RIGHT RIGHT\n");
         PRINT_TREE();
         int deeper = _rotate_left(grandparent);
         PRINT_TREE();
-        grandparent = parent->parent;
+        grandparent = parent->AVLNode_base<Node_T,Val_T>::parent;
         // if we made this branch shallower, we're done
         if (deeper < 0) {
           break;
@@ -499,7 +499,7 @@ bool AVL<Node_T, Val_T>::insert(Node_T *n) {
     }
     // go up to the next one
     parent = grandparent;
-    grandparent = grandparent->parent;
+    grandparent = grandparent->AVLNode_base<Node_T,Val_T>::parent;
   }
   PRINT_TREE();
   CHECK_ALL();
@@ -528,7 +528,7 @@ void AVL<Node_T, Val_T>::remove(Node_T *n)  {
 
   // Swap nodes so we're deleting something with only one child
   Node_T *child;
-  if (n->right) {
+  if (n->AVLNode_base<Node_T,Val_T>::right) {
     Node_T *replacement;
     Node_T *tmp;
     PRINT("finding replacement\n");
@@ -536,16 +536,16 @@ void AVL<Node_T, Val_T>::remove(Node_T *n)  {
     // if you decide to go left then right there's a lot of code to change.
     //
     // we grab the leftmost node from the right subtree
-    replacement = n->right;
-    while (replacement->left) {
-      replacement = replacement->left;
+    replacement = n->AVLNode_base<Node_T,Val_T>::right;
+    while (replacement->AVLNode_base<Node_T,Val_T>::left) {
+      replacement = replacement->AVLNode_base<Node_T,Val_T>::left;
     }
     // NOTE: do NOT just swap contents! even if you can figure out how
     //   We do not control memory allocation, and we have no idea if
     //   someone else has a pointer to that node. we have to move
     //   metadata instead.
-    Node_T *parent = n->parent;
-    if (replacement->parent != n) {
+    Node_T *parent = n->AVLNode_base<Node_T,Val_T>::parent;
+    if (replacement->AVLNode_base<Node_T,Val_T>::parent != n) {
       // If n is not the parent, we swap all state
       PRINT("n is not replacement's parent case\n");
 
@@ -553,19 +553,19 @@ void AVL<Node_T, Val_T>::remove(Node_T *n)  {
       //   therefore it's a left child 
       //   Thus we can elide the check for which child replacement is
       // make n, replacement's parent's child
-      replacement->parent->left = n;
-      n->parent = replacement->parent;
+      replacement->AVLNode_base<Node_T,Val_T>::parent->AVLNode_base<Node_T,Val_T>::left = n;
+      n->AVLNode_base<Node_T,Val_T>::parent = replacement->AVLNode_base<Node_T,Val_T>::parent;
 
-      tmp = replacement->right;
+      tmp = replacement->AVLNode_base<Node_T,Val_T>::right;
       // make n's right child, replacement's right child 
-      replacement->right = n->right;
-      if (replacement->right) {
-        replacement->right->parent = replacement;
+      replacement->AVLNode_base<Node_T,Val_T>::right = n->AVLNode_base<Node_T,Val_T>::right;
+      if (replacement->AVLNode_base<Node_T,Val_T>::right) {
+        replacement->AVLNode_base<Node_T,Val_T>::right->AVLNode_base<Node_T,Val_T>::parent = replacement;
       }
       // make replacement's right child, n's right child
-      n->right = tmp;
-      if(n->right) {
-        n->right->parent = n;
+      n->AVLNode_base<Node_T,Val_T>::right = tmp;
+      if(n->AVLNode_base<Node_T,Val_T>::right) {
+        n->AVLNode_base<Node_T,Val_T>::right->AVLNode_base<Node_T,Val_T>::parent = n;
       }
     } else {
       // if n is the parent, we have to special case things out
@@ -573,48 +573,48 @@ void AVL<Node_T, Val_T>::remove(Node_T *n)  {
       // known: replacement can only be n's right child
       //   because we took one step right, then walked left
       // make replacement's right child, n's right child
-      n->right = replacement->right;
-      if (n->right) {
-        n->right->parent = n;
+      n->AVLNode_base<Node_T,Val_T>::right = replacement->AVLNode_base<Node_T,Val_T>::right;
+      if (n->AVLNode_base<Node_T,Val_T>::right) {
+        n->AVLNode_base<Node_T,Val_T>::right->AVLNode_base<Node_T,Val_T>::parent = n;
       }
       // make n, replacement's right child
-      replacement->right = n;
-      n->parent = replacement;
+      replacement->AVLNode_base<Node_T,Val_T>::right = n;
+      n->AVLNode_base<Node_T,Val_T>::parent = replacement;
 
     }
     // make n's left child, replacement's left child
-    replacement->left = n->left;
-    if (replacement->left) {
-      replacement->left->parent = replacement;
+    replacement->AVLNode_base<Node_T,Val_T>::left = n->AVLNode_base<Node_T,Val_T>::left;
+    if (replacement->AVLNode_base<Node_T,Val_T>::left) {
+      replacement->AVLNode_base<Node_T,Val_T>::left->AVLNode_base<Node_T,Val_T>::parent = replacement;
     }
     // We know replacement doesn't have a left child
     //  Thus we can elide the null check and reparent
     // make replacement's left child, n's left child
-    n->left = nullptr;
+    n->AVLNode_base<Node_T,Val_T>::left = nullptr;
     // and make replacement, parent's child
     if (parent) {
-      if (parent->left == n) {
-        parent->left = replacement;
+      if (parent->AVLNode_base<Node_T,Val_T>::left == n) {
+        parent->AVLNode_base<Node_T,Val_T>::left = replacement;
       } else {
-        parent->right = replacement;
+        parent->AVLNode_base<Node_T,Val_T>::right = replacement;
       }
     } else {
       root = replacement;
     }
-    replacement->parent = parent;
+    replacement->AVLNode_base<Node_T,Val_T>::parent = parent;
     // swap color too
     int8_t tmp_balance;
-    tmp_balance = replacement->balance;
-    replacement->balance = n->balance;
-    n->balance = tmp_balance;
+    tmp_balance = replacement->AVLNode_base<Node_T,Val_T>::balance;
+    replacement->AVLNode_base<Node_T,Val_T>::balance = n->AVLNode_base<Node_T,Val_T>::balance;
+    n->AVLNode_base<Node_T,Val_T>::balance = tmp_balance;
     // and continue with removing n, now in a more useful place
     PRINT("Done replacement\n");
     PRINT_TREE();
     // our new n can only have a right child
-    child = n->right;
+    child = n->AVLNode_base<Node_T,Val_T>::right;
   } else {
     // if we don't have a right child we use the left one
-    child = n->left;
+    child = n->AVLNode_base<Node_T,Val_T>::left;
   }
   // If there's no right subtree than n is fine to delete already
   // Nodeswap is complete
@@ -624,76 +624,76 @@ void AVL<Node_T, Val_T>::remove(Node_T *n)  {
   // we're going to remove n, but we'll wait until later to simplify logic here.
   Node_T *sibling;
   Node_T *old_n = n;
-  while (n->parent) {
-    Node_T *parent = n->parent;
-    if (parent->left == n) { 
-      sibling = parent->right;
-      parent->balance -= 1; 
-      if (parent->balance == -2) {
-        if (sibling->balance == 1) {
+  while (n->AVLNode_base<Node_T,Val_T>::parent) {
+    Node_T *parent = n->AVLNode_base<Node_T,Val_T>::parent;
+    if (parent->AVLNode_base<Node_T,Val_T>::left == n) { 
+      sibling = parent->AVLNode_base<Node_T,Val_T>::right;
+      parent->AVLNode_base<Node_T,Val_T>::balance -= 1; 
+      if (parent->AVLNode_base<Node_T,Val_T>::balance == -2) {
+        if (sibling->AVLNode_base<Node_T,Val_T>::balance == 1) {
           PRINT("RIGHT, LEFT\n");
           PRINT_TREE();
           _rotate_right(sibling);
           PRINT_TREE();
-          sibling = sibling->parent; 
+          sibling = sibling->AVLNode_base<Node_T,Val_T>::parent; 
         }
         PRINT("RIGHT, RIGHT\n");
         PRINT_TREE();
         int deeper = _rotate_left(parent);
         PRINT_TREE();
-        parent = parent->parent;
+        parent = parent->AVLNode_base<Node_T,Val_T>::parent;
         // since we're removing, making it shallower
         // doesn't help us
         // and it better not be deeper
         if (deeper == 0) {
           break;
         }
-      } else if (parent->balance == -1) {
+      } else if (parent->AVLNode_base<Node_T,Val_T>::balance == -1) {
         break;
       }
     } else {
-      sibling = parent->left;
-      parent->balance += 1; 
+      sibling = parent->AVLNode_base<Node_T,Val_T>::left;
+      parent->AVLNode_base<Node_T,Val_T>::balance += 1; 
       // we removed an element from n's subtree.
       // so n's sibling is the side with extra elements
-      if (parent->balance == 2) {
-        if (sibling->balance == -1) {
+      if (parent->AVLNode_base<Node_T,Val_T>::balance == 2) {
+        if (sibling->AVLNode_base<Node_T,Val_T>::balance == -1) {
           PRINT("LEFT, RIGHT\n");
           PRINT_TREE();
           _rotate_left(sibling);
           PRINT_TREE();
-          sibling = sibling->parent; 
+          sibling = sibling->AVLNode_base<Node_T,Val_T>::parent; 
         }
         PRINT("LEFT, LEFT\n");
         PRINT_TREE();
         int deeper = _rotate_right(parent); 
         PRINT_TREE();
-        parent = parent->parent;
+        parent = parent->AVLNode_base<Node_T,Val_T>::parent;
         // since we're removing, making it shallower
         // doesn't help us
         // and it better not be deeper
         if (deeper == 0) {
           break; 
         }
-      } else if (parent->balance >= 1) {
+      } else if (parent->AVLNode_base<Node_T,Val_T>::balance >= 1) {
         break;
       }
     }
     // go up to the next one
     n = parent;
   }
-  Node_T *parent = old_n->parent;
+  Node_T *parent = old_n->AVLNode_base<Node_T,Val_T>::parent;
   if (parent) {
-    if (parent->left == old_n) {
-      parent->left = child;
+    if (parent->AVLNode_base<Node_T,Val_T>::left == old_n) {
+      parent->AVLNode_base<Node_T,Val_T>::left = child;
     } else {
-      parent->right = child;
+      parent->AVLNode_base<Node_T,Val_T>::right = child;
     }
   } else {
     root = child;
   }
   if (child) {
-    child->parent = parent;
+    child->AVLNode_base<Node_T,Val_T>::parent = parent;
   }
   PRINT_TREE();
   CHECK_ALL();
@@ -710,8 +710,8 @@ void AVL<Node_T, Val_T>::_check(Node_T *parent, Node_T *n) const {
   if (!n) {
     return;
   }
-  _check(n, n->left);
-  if (n->parent != parent) {
+  _check(n, n->AVLNode_base<Node_T,Val_T>::left);
+  if (n->AVLNode_base<Node_T,Val_T>::parent != parent) {
     printf("Node: ");
     n->print();
     printf(" Parent: ");
@@ -719,7 +719,7 @@ void AVL<Node_T, Val_T>::_check(Node_T *parent, Node_T *n) const {
     printf("\n");
     PANIC("Node is corrupt, it doesn't point to it's parent");
   }
-  _check(n, n->right);
+  _check(n, n->AVLNode_base<Node_T,Val_T>::right);
 }
 
 template<typename Node_T, typename Val_T>
@@ -732,12 +732,12 @@ size_t AVL<Node_T, Val_T>::_checkAll(Node_T *parent, Node_T *n) const {
   if (!n) {
     return 0;
   } 
-  size_t size_l = _checkAll(n, n->left);
-  size_t size_r = _checkAll(n, n->right);
+  size_t size_l = _checkAll(n, n->AVLNode_base<Node_T,Val_T>::left);
+  size_t size_r = _checkAll(n, n->AVLNode_base<Node_T,Val_T>::right);
   // If this is outside of a 32 bit integer, something REALLY
   // exciting happened (it should be -2 to 2... always)
   int diff = size_l-size_r;
-  if ((ssize_t) (size_l - size_r) != n->balance) {
+  if ((ssize_t) (size_l - size_r) != n->AVLNode_base<Node_T,Val_T>::balance) {
     print();
     printf("node's balance is wrong: ");
     n->print();
@@ -752,7 +752,7 @@ size_t AVL<Node_T, Val_T>::_checkAll(Node_T *parent, Node_T *n) const {
     printf("\n");
     PANIC("left and right subtrees differ in size"); 
   }
-  if (n->parent != parent) {
+  if (n->AVLNode_base<Node_T,Val_T>::parent != parent) {
     PRINT_TREE();
     printf("Node: ");
     n->print();
@@ -780,8 +780,8 @@ void AVL<Node_T, Val_T>::_print(Node_T *n) const {
   printf("(");
   n->print();
   printf("|");
-  _print(n->left);
-  _print(n->right);
+  _print(n->AVLNode_base<Node_T,Val_T>::left);
+  _print(n->AVLNode_base<Node_T,Val_T>::right);
   printf(")");
 }
 
