@@ -16,12 +16,14 @@ DICTS_BENCHMARKS=skiplist avlhashtable btree ochashtable hashtable btreehashtabl
 
 SORTS_BENCHMARKS=quicksort heapsort mergesort bradixsort radixsort fastsort
 
+STRINGSORTS_BENCHMARKS=stringradixsort stringquicksort
+
 MEDIANFINDS_BENCHMARKS=sortselect quickselect linearquickselect
 
 # These are less interesting, but you can add them in if you're curious
 # selectsort.cpp bubblesort.cpp 
 
-BENCHMARKS=$(HEAPS_BENCHMARKS) $(DICTS_BENCHMARKS) $(SORTS_BENCHMARKS) dict $(MEDIANFINDS_BENCHMARKS)
+BENCHMARKS=$(HEAPS_BENCHMARKS) $(DICTS_BENCHMARKS) $(SORTS_BENCHMARKS) $(STRINGSORTS_BENCHMARKS) dict $(MEDIANFINDS_BENCHMARKS)
 
 UNITTEST_EXES=$(UNITTESTS:%=%_unittest) 
 BENCHMARK_EXES=$(BENCHMARKS:%=%_benchmark)
@@ -46,6 +48,9 @@ dicts_benchmark: dicts_benchmarks; $(DICTS_BENCHMARKS:%=./%_benchmark &&) true
 
 sorts_benchmarks: $(SORTS_BENCHMARKS:=_benchmark)
 sorts_benchmark: sorts_benchmarks; $(SORTS_BENCHMARKS:%=./%_benchmark &&) true
+
+stringsorts_benchmarks: $(STRINGSORTS_BENCHMARKS:=_benchmark)
+stringsorts_benchmark: stringsorts_benchmarks; $(STRINGSORTS_BENCHMARKS:%=./%_benchmark &&) true
 
 medianfinds_benchmarks: $(MEDIANFINDS_BENCHMARKS:=_benchmark)
 medianfinds_benchmark: medianfinds_benchmarks; $(MEDIANFINDS_BENCHMARKS:%=./%_benchmark &&) true
@@ -153,3 +158,5 @@ quickselect_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_QUICKSELECT -DTEST_ITE
 linearquickselect_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_LINEARQUICKSELECT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} medianfind_benchmark.cpp -o linearquickselect_benchmark
 
 stringsort_unittest: *.h *.cpp ; $(CC) $(CFLAGS) stringsort_unittest.cpp -o stringsort_unittest
+stringradixsort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_RADIXSORT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} stringsort_benchmark.cpp -o stringradixsort_benchmark
+stringquicksort_benchmark: *.h *.cpp ; $(CC) $(CFLAGS) -DTEST_QUICKSORT -DTEST_ITERATIONS=${TEST_ITERATIONS} -DTEST_SIZE=${TEST_SIZE} stringsort_benchmark.cpp -o stringquicksort_benchmark

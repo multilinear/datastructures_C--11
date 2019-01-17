@@ -4,9 +4,14 @@
 #include <vector>
 #include <cstdint>
 #include "stdio.h"
+#include "permutations.h"
 
 using std::vector;
 using std::string;
+
+vector<string*> tmp;
+vector<size_t> tmp2;
+vector<size_t> tmp3;
 
 void print_array(vector<string*> &v) {
   printf("[");
@@ -14,13 +19,6 @@ void print_array(vector<string*> &v) {
     printf("\"%s\", ", v[i]->c_str());
   }
   printf("]\n");
-}
-
-void call_sort(vector<string*> &input, vector<string*> &tmp, vector<size_t> &tmp2, vector<size_t> &tmp3) {
-  tmp.resize(input.size());
-  tmp2.resize(input.size());
-  tmp3.resize(input.size());
-  radix_sort(input, tmp, tmp2, tmp3);
 }
 
 void check_sorted(vector<string*> &input) {
@@ -33,12 +31,25 @@ void check_sorted(vector<string*> &input) {
   }
 }
 
+void call_sort(vector<string*> *input, int _unused) {
+  tmp.resize(input->size());
+  tmp2.resize(input->size());
+  tmp3.resize(input->size());
+  radix_sort(*input, tmp, tmp2, tmp3);
+  check_sorted(*input);
+}
+
+string* generate_random_string() {
+  string *s = new string();
+  while (rand()%5 != 1) {
+    s->push_back(((char)(rand()%26)) + 'A');
+  }
+  return s;
+}
+
 int main(){
-  printf("Begin StringSort.h unittest\n");
   vector<string*> input;
-  vector<string*> tmp;
-  vector<size_t> tmp2;
-  vector<size_t> tmp3;
+  printf("Begin StringSort.h unittest\n");
   input.push_back(new string("A"));
   input.push_back(new string("B"));
   input.push_back(new string("Q"));
@@ -49,9 +60,22 @@ int main(){
   input.push_back(new string(""));
   input.push_back(new string("Z"));
   input.push_back(new string("ZZZZWERG"));
-  print_array(input);
-  call_sort(input, tmp, tmp2, tmp3);
-  check_sorted(input);
+  call_sort(&input, 0);
+
+  input.resize(0);
+  for (size_t i=0; i<8; i++) {
+    input.push_back(generate_random_string());
+  }
+  permutations<vector<string*>, int>(&input, call_sort, 0);
+
+  for (size_t i=0; i<1000; i++) {
+    input.resize(0);
+    for (size_t j=0; j<i; j++) {
+      input.push_back(generate_random_string());
+    }
+    call_sort(&input, 0);
+  }
+
   printf("PASSED\n");
 }
 
