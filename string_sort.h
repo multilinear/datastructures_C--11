@@ -1,6 +1,7 @@
 /* Copyright:  Matthew Brewer (mbrewer@smalladventures.net)
  *
  * A radix string-sorting algorithm 
+ * Note: As implemented this is ASCII only
  */
  
 #include "array.h"
@@ -15,7 +16,8 @@
 using std::vector;
 using std::string;
 
-const size_t buckets = 256;
+// Limited to ASCII
+const size_t buckets = 128;
 
 void print_table(vector<size_t> &t) {
   printf ("[");
@@ -33,7 +35,7 @@ void print_vec(vector<string*> &v, size_t start, size_t end) {
   printf ("]\n");
 }
 
-bool radix_sort_helper(vector<string*> &in, vector<string*> &out, size_t start, size_t end, vector<size_t> &slice_out, size_t byte, size_t &slice_i) {
+inline bool radix_sort_helper(vector<string*> &in, vector<string*> &out, size_t start, size_t end, vector<size_t> &slice_out, size_t byte, size_t &slice_i) {
   size_t arena[buckets+2];
   bool done = true;
   bool used_only_first_bucket = true;
@@ -42,7 +44,7 @@ bool radix_sort_helper(vector<string*> &in, vector<string*> &out, size_t start, 
     arena[i] = 0; 
   }
   // Count occurences
-  // Note the "+1" here, this makes summation much simpler later
+  // Note the "+1" here, this makes summation simpler later
   arena[0] = 0;
   for (size_t i=start; i<end; i++) {
     if (in[i]->size() <= byte) {
@@ -56,7 +58,7 @@ bool radix_sort_helper(vector<string*> &in, vector<string*> &out, size_t start, 
   arena[0] = start;
   size_t sum = arena[0];
   for (size_t i=1; i<buckets+2; i++) {
-    if (arena[i] > 1) done = false;
+    //if (arena[i] > 1) done = false;
     sum += arena[i];
     // Also update our slice table, but only for non-empty buckets
     // (which become non-empty slices)
@@ -103,7 +105,7 @@ void radix_sort(vector<string*> &in, vector<string*> &out, vector<size_t> &slice
     new_slice=0;
     while(sstart < in.size()) {
       size_t ssend = slice_in[slice];
-       done &= radix_sort_helper(in, out, sstart, ssend, slice_out, byte, new_slice);
+      done &= radix_sort_helper(in, out, sstart, ssend, slice_out, byte, new_slice);
       sstart = ssend;
       slice++;
     }
